@@ -1,7 +1,12 @@
-import express, { response } from "express"
+import express from "express"
 import dotenv from "dotenv"
 import mongoose from "mongoose"
 import authRoute from "./routes/auth.js"
+import usersRoute from "./routes/users.js"
+import desksRoute from "./routes/desks.js"
+import floorsRoute from "./routes/floors.js"
+
+
 const app = express()
 
 dotenv.config()
@@ -23,11 +28,12 @@ mongoose.connection.on("connected", ()=>{
 })
 
 // Middlewares
-app.use("/auth", authRoute);
+app.use("/api/auth", authRoute);    
+app.use("/api/users", usersRoute);    
+app.use("/api/desks", desksRoute);    
+app.use("/api/floors", floorsRoute);    
 
-app.get("/users", (req, res)=>{
-    res.send("Hello first request")
-})
+
 
 app.listen(8800, () => {
     connect()
