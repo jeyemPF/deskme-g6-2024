@@ -29,7 +29,6 @@ mongoose.connection.on("connected", ()=>{
 })
 
 // Middlewares
-
 app.use(express.json())
 
 app.use("/api/auth", authRoute);    
@@ -37,6 +36,16 @@ app.use("/api/users", usersRoute);
 app.use("/api/desks", desksRoute);    
 app.use("/api/floors", floorsRoute);    
 app.use("/api/reservations", reservationsRoute);    
+
+app.use((err,req,res,next)=>{
+    const errorStatus = err.status || 500
+    const errorMessage = err.message || "parang may mali sa ginawa mo"
+    return res.status(errorStatus).json({
+        success: false, status: errorStatus, message: errorMessage, stack: err.stack
+    })
+})
+
+
 
 
 
