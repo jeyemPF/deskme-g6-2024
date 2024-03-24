@@ -1,13 +1,20 @@
 import User from "../models/User.js";
 import transporter from "../utils/emailService.js";
 import Mailgen from "mailgen";
+import bcrypt from "bcryptjs"
+import { createError } from "../utils/error.js";
 
 export const register = async (req, res, next) => {
     try {
+
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(req.body.password, salt)
+
+
         const { username, email, password } = req.body;
 
         // Create a new user instance
-        const newUser = new User({ username, email, password });
+        const newUser = new User({ username, email, password: hash});
 
         // Save the new user to the database
         await newUser.save();
@@ -27,7 +34,7 @@ export const register = async (req, res, next) => {
         // Generate email content
         const emailContent = {
             body: {
-                name: username,
+                name: username, // Change this to emailContent.body.name
                 intro: 'Welcome to DeskMe! We\'re very excited to have you on board.',
                 action: {
                     instructions: 'To get started with DeskMe, please click here:',
@@ -40,6 +47,7 @@ export const register = async (req, res, next) => {
                 outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
             }
         };
+        
 
         // Generate an HTML email with the provided contents
         const emailBody = mailGenerator.generate(emailContent);
@@ -49,7 +57,7 @@ export const register = async (req, res, next) => {
 
         // Send registration confirmation email
         await transporter.sendMail({
-            from: 'johmmackfaeldonia@gmail.com',
+            from: 'deskmecompany@gmail.com',
             to: email,
             subject: 'Registration Confirmation',
             html: emailBody, // HTML content
@@ -59,7 +67,18 @@ export const register = async (req, res, next) => {
         // Send a success response
         res.status(200).send("User has been created");
     } catch (err) {
-        // Handle errors
+        // Handle errors`
+        next(err);
+    }
+};
+
+
+export const login = async (req, res, next) => {
+    try{
+        const user = User.findOne({username:req.body.username})
+        if(!user) return next (createError())
+        res.status(200).send("User has been created.");
+    }catch (err){
         next(err);
     }
 };
