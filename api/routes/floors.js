@@ -2,22 +2,23 @@ import express from "express"
 import Floor from "../models/Floor.js"
 import { createError } from "../utils/error.js"
 import { createFloor, deleteFloor, getFloor, getFloors, updateFloor } from "../controllers/floor.js"
+import { verifyAdmin } from "../utils/verifyToken.js"
 
 const router = express.Router()
 
 // CREATE
-router.post("/", createFloor);
+router.post("/", verifyAdmin, createFloor);
 
 // UPDATE
-router.put("/:id", updateFloor);
+router.put("/:id", verifyAdmin, updateFloor);
 
 // DELETE
-router.delete("/:id", deleteFloor);
+router.delete("/:id", verifyAdmin, deleteFloor);
 
 // GET
-router.get("/:id", getFloor);
+router.get("/:id", verifyAdmin, getFloor);
 
 // GET ALL
-router.get("/", getFloors);
+router.get("/",  verifyAdmin, getFloors);
 
 export default router
