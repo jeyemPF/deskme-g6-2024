@@ -43,7 +43,11 @@ const DeskSchema = new Schema({
             type: String,
             required: false
         }
-    }
-});
+    },
+    deskIds: [{
+        number: Number,
+        unavailableDates: [{ type: Date }]
+    }]
+}, { timestamps: true });
 
 export default mongoose.model('Desk', DeskSchema);

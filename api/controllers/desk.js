@@ -28,13 +28,22 @@ export const updateDesk = async (req, res, next) => {
 };
 
 export const deleteDesk = async (req, res, next) => {
+    const floorId = req.params.floorId;
     try {
         await Desk.findByIdAndDelete(req.params.id);
+        try {
+            await Floor.findByIdAndUpdate(floorId, { $pull: { rooms: req.params.id } });
+        } catch (err) {
+           
+            next(err);
+        }
         res.status(200).json({ message: "Desk has been deleted" });
     } catch (err) {
+    
         next(err);
     }
 };
+
 
 export const getDeskById = async (req, res, next) => {
     try {
