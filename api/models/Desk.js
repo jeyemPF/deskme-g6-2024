@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const DeskSchema = new Schema({
-    number: {
-        type: Number,
+    title: {
+        type: String,
         required: true,
     },
     type: {
