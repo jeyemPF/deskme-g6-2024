@@ -19,18 +19,18 @@ export const verifyToken = (req, res, next) => {
 };
 
 // User Verification
-export const verifyUser = (req, res, next) => {
-    verifyToken(req, res, (err) => {
-        if (err) {
-            return next(err); // Forward the error to the error handling middleware
-        }
-        if (req.user.id === req.params.id || req.user.isAdmin) {
-            next();
-        } else {
-            return next(createError(403, "You are not authorized!"));
-        }
-    });
-};
+// export const verifyUser = (req, res, next) => {
+//     verifyToken(req, res, (err) => {
+//         if (err) {
+//             return next(err); // Forward the error to the error handling middleware
+//         }
+//         if (req.user.id === req.params.id || req.user.isAdmin) {
+//             next();
+//         } else {
+//             return next(createError(403, "You are not authorized!"));
+//         }
+//     });
+// };
 
 
 // Admin verification

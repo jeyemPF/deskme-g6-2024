@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 const FloorSchema = new Schema({
-    number: {
+    number: {   
         type: Number,
         required: true,
     },

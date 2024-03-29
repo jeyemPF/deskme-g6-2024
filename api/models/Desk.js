@@ -2,9 +2,10 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const DeskSchema = new Schema({
-    title: {
-        type: String,
+    desk: {
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
+        ref: "Desk",
     },
     type: {
         type: String,
@@ -28,11 +29,6 @@ const DeskSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Reservation',
         required: false
-    },
-    floor: {
-        type: Schema.Types.ObjectId,
-        ref: 'Floor',
-        required: true
     },
     maintenance: {
         lastServicedDate: {
