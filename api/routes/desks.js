@@ -17,6 +17,6 @@ router.delete("/:id/:floorid", verifyAdmin, deleteDesk);
 router.get("/:id", verifyAdmin, getDeskById);
 
 // GET ALL
-router.get("/", verifyAdmin, getAllDesks);
+router.get("/", getAllDesks);
 
 export default router;

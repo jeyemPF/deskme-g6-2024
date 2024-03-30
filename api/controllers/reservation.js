@@ -1,9 +1,7 @@
 import Reservation from "../models/Reservation.js";
-import User from "../models/User.js";
-
 
 // Controller function to create a new reservation
-export const createReservation = async (req, res) => {
+export const createReservation = async (req, res, next) => {
     try {
         // Extract data from the request body
         const { userId, deskId, date, startTime, endTime } = req.body;
@@ -25,11 +23,11 @@ export const createReservation = async (req, res) => {
         // Return a success response
         res.status(201).json(savedReservation);
     } catch (error) {
-        // Handle errors
-        console.error('Error creating reservation:', error);
-        res.status(500).json({ message: 'Failed to create reservation' });
+        // Handle errors    
+        next(error);
     }
 };
+
 
 // Controller function to update an existing reservation
 export const updateReservation = async (req, res, next) => {

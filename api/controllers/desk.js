@@ -1,13 +1,14 @@
 import Desk from "../models/Desk.js";
 import Floor from "../models/Floor.js";
+import Reservation from "../models/Reservation.js";
 
 export const createDesk = async (req, res, next) => {
-    const floorId = req.params.floorId;
+    const reservationId = req.params.reservationId;
     const newDesk = new Desk(req.body);
 
     try {
         const savedDesk = await newDesk.save();
-        await Floor.findByIdAndUpdate(floorId, { $push: { desk: savedDesk._id } });
+        await Reservation.findByIdAndUpdate(reservationId, { $push: { desk: savedDesk._id } });
         res.status(201).json(savedDesk);
     } catch (err) {
         next(err);
