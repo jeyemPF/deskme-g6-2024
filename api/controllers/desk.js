@@ -15,6 +15,7 @@ export const createDesk = async (req, res, next) => {
     }
 };
 
+
 export const updateDesk = async (req, res, next) => {
     try {
         const updatedDesk = await Desk.findByIdAndUpdate(

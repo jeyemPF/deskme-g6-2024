@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const DeskSchema = new Schema({
     desk: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
         ref: "Desk",
     },
     type: {
