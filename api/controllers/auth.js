@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import transporter from "../utils/emailService.js";
+import { transporter, getEmailContent, emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail} from '../utils/emailService.js';
 import Mailgen from "mailgen";
 import bcrypt from "bcryptjs"
 import { createError } from "../utils/error.js";
@@ -20,59 +20,25 @@ export const register = async (req, res, next) => {
         // Create a new user instance
         const newUser = new User({ username, email, password: hash});
 
-        // Save the new user to the database
+        // Save the new user to the database    
         await newUser.save();
 
         // Create a Mailgen instance
-        const mailGenerator = new Mailgen({
-            theme: "default",
-            product: {
-                // Your product name or logo
-                name: "DeskMe",
-                link: "https://example.com/",
-                // Optional product logo
-                // logo: "https://mailgen.js/img/logo.png"
-            }
-        });
-        
+        const mailGenerator = generateMailGenerator();
 
         // Generate email content
-        const emailContent = {
-            body: {
-                name: username, // Change this to emailContent.body.name
-                intro: 'Welcome to DeskMe! We\'re very excited to have you on board.',
-                action: {
-                    instructions: 'To get started with DeskMe, please click here:',
-                    button: {
-                        color: '#22BC66',
-                        text: 'Confirm your account',
-                        link: 'https://deskme.com/confirm?s=d9729feb74992cc3482b350163a1a010'
-                    }
-                },
-                outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
-            }
-        };
-        
+        const emailContent = emailContents(User.username);
 
-        // Generate an HTML email with the provided contents
+         // Generate an HTML email with the provided contents
         const emailBody = mailGenerator.generate(emailContent);
 
         // Generate the plaintext version of the e-mail (for clients that do not support HTML)
         const emailText = mailGenerator.generatePlaintext(emailContent);
 
         // Send registration confirmation email
-        await transporter.sendMail({
-            from: 'deskmecompany@gmail.com',
-            to: email,
-            subject: 'Registration Confirmation',
-            html: emailBody, // HTML content
-            text: emailText // Plaintext content
-        });
-
-        // Send a success response
-        res.status(200).send("User has been created");
+        const message = await sendRegistrationConfirmationEmail(email, emailBody, emailText);
+        res.status(200).send(message);
     } catch (err) {
-        // Handle errors`
         next(err);
     }
 };
@@ -140,21 +106,11 @@ export const forgotPassword = async (req, res, next) => {
 
         // Generate reset password email content
         const resetUrl = `http://yourwebsite.com/reset-password/${resetToken}`;
-        const emailContent = {
-            body: {
-                name: user.username,
-                intro: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.',
-                action: {
-                    instructions: 'Click the button below to reset your password:',
-                    button: {
-                        color: '#22BC66',
-                        text: 'Reset your password',
-                        link: resetUrl
-                    }
-                },
-                outro: 'If you did not request this, please ignore this email and your password will remain unchanged.'
-            }
-        };
+        // Inside your function where you need email content
+        
+        const emailContent = getEmailContent(user.username, resetUrl);
+        // Use transporter to send email
+
 
         // Send reset password email
         await transporter.sendMail({
