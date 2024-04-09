@@ -1,6 +1,6 @@
 import express from "express"
-import { deleteUser, getUser, getUsers, updateUser } from "../controllers/user.js";
-import { verifyAdmin } from "../utils/verifyToken.js";
+import { deleteUser, getUser, getUsers, updateUser, createAdminUser } from "../controllers/user.js";
+import { verifyAdmin, verifySuperAdmin } from "../utils/verifyToken.js";
 
 
 const router = express.Router()
@@ -21,12 +21,15 @@ const router = express.Router()
 router.put("/:id", verifyAdmin, updateUser);
 
 // DELETE
-router.delete("/:id", verifyAdmin,  deleteUser);
+router.delete("/:id", verifyAdmin, verifySuperAdmin,  deleteUser);
 
 // GET
-router.get("/:id", verifyAdmin,  getUser );
+router.get("/:id", verifyAdmin, verifySuperAdmin, getUser );
 
 // GET ALL
-router.get("/", verifyAdmin, getUsers);
+router.get("/", verifyAdmin,verifySuperAdmin, getUsers);
+
+// CREATE ADMIN
+router.post("/", verifySuperAdmin, createAdminUser );
 
 export default router

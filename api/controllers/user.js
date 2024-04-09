@@ -46,3 +46,41 @@ export const getUsers = async (req, res, next) => {
         next(err);
     }
 };
+
+
+// CREATE
+export const createAdminUser = async (req, res, next) => {
+    try {
+        const { username, email, password } = req.body;
+
+        // Validate input data
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: "Username, email, and password are required" });
+        }
+
+        // Check if the user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: "User with this email already exists" });
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create a new admin user
+        const newAdmin = new User({
+            username,
+            email,
+            password: hashedPassword,
+            role: 'admin' // Set the role to indicate admin privileges
+        });
+
+        // Save the new admin user to the database
+        await newAdmin.save();
+
+        res.status(201).json({ message: "Admin user created successfully" });
+    } catch (err) {
+        // Handle errors
+        next(err);
+    }
+};
