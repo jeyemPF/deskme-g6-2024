@@ -1,6 +1,5 @@
 import User from "../models/User.js";
-import { transporter, getEmailContent, emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail} from '../utils/emailService.js';
-import Mailgen from "mailgen";
+import { transporter, getEmailContent, emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail ,sendPasswordResetEmail } from '../utils/emailService.js';
 import bcrypt from "bcryptjs"
 import { createError } from "../utils/error.js";
 import  jwt  from "jsonwebtoken";
@@ -42,7 +41,6 @@ export const register = async (req, res, next) => {
         next(err);
     }
 };
-
 // LOGIN
 export const login = async (req, res, next) => {
     try {
@@ -73,23 +71,11 @@ export const login = async (req, res, next) => {
     }
 };
 
-
 // forgot and reset password
-
-
 
 // Forgot Password
 export const forgotPassword = async (req, res, next) => {
-    const mailGenerator = new Mailgen({
-        theme: "default",
-        product: {
-            // Your product name or logo
-            name: "DeskMe",
-            link: "https://example.com/",
-            // Optional product logo
-            // logo: "https://mailgen.js/img/logo.png"
-        }
-    });
+    const mailGenerator = generateMailGenerator();
     
     try {
         const { email } = req.body;
@@ -113,15 +99,7 @@ export const forgotPassword = async (req, res, next) => {
 
 
         // Send reset password email
-        await transporter.sendMail({
-            from: 'deskmecompany@gmail.com',
-            to: email,
-            subject: 'Reset Password',
-            html: mailGenerator.generate(emailContent), // Use mailGenerator here
-            text: mailGenerator.generatePlaintext(emailContent) // Use mailGenerator here
-        });
-
-        // Send success response
+        await sendPasswordResetEmail(email, 'Reset Password', mailGenerator.generate(emailContent), mailGenerator.generatePlaintext(emailContent));
         res.status(200).send("Password reset email sent successfully");
     } catch (err) {
         next(err);

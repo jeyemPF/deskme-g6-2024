@@ -35,7 +35,7 @@ export const verifyToken = (req, res, next) => {
 
 // Admin verification
 export const verifyAdmin = (req, res, next) => {
-    verifyToken(req, res, (err) => {
+        verifyToken(req, res, (err) => {
         if (err) {
             return next(err);
         }

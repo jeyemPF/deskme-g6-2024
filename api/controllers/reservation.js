@@ -42,8 +42,6 @@ export const createReservation = async (req, res, next) => {
     }
 };
 
-
-
 // Controller function to update an existing reservation
 export const updateReservation = async (req, res, next) => {
     try {
