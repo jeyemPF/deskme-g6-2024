@@ -13,23 +13,27 @@ const router = express.Router()
 //     res.send("Hello user, you are logged in");
 // });
 
-// router.get("/checkadmin/:id", verifyAdmin, (req, res, next) => {
-//     res.send("Hello admin, you are logged in and you can delete all accounts");
-// });
+router.get("/checkadmin/:id", verifyAdmin, (req, res, next) => {
+    res.send("Hello admin, you are logged in and you can delete all accounts");
+});
 
 // UPDATE
 router.put("/:id", verifyAdmin, updateUser);
 
 // DELETE
-router.delete("/:id", verifyAdmin, verifySuperAdmin,  deleteUser);
+// Only super admins can delete users
+router.delete("/:id", verifySuperAdmin, deleteUser);
 
 // GET
-router.get("/:id", verifyAdmin, verifySuperAdmin, getUser );
+// Both admins and super admins can get a single user
+router.get("/:id", verifyAdmin, getUser);
 
 // GET ALL
-router.get("/", verifyAdmin,verifySuperAdmin, getUsers);
+// Both admins and super admins can get all users
+router.get("/", verifyAdmin, getUsers);
 
 // CREATE ADMIN
-router.post("/", verifySuperAdmin, createAdminUser );
+// Only super admins can create admin users
+router.post("/", verifySuperAdmin, createAdminUser);
 
 export default router

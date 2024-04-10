@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-import { transporter, getEmailContent, emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail ,sendPasswordResetEmail } from '../utils/emailService.js';
+import {  getEmailContent, emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail ,sendPasswordResetEmail } from '../utils/emailService.js';
 import bcrypt from "bcryptjs"
 import { createError } from "../utils/error.js";
 import  jwt  from "jsonwebtoken";

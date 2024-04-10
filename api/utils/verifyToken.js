@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { createError } from "./error.js";
 
 // TOKEN VERIFICATION
-export const verifyToken = (req, res, next) => {
+export const verifyToken = (req, _res, next) => {
     const token = req.cookies.access_token;
     if (!token) {
         return next(createError(401, "You are not authenticated"));
@@ -19,7 +19,7 @@ export const verifyToken = (req, res, next) => {
 
 // ADMIN VERIFICATION
 // ADMIN VERIFICATION
-export const verifyAdmin = (req, res, next) => {
+export const verifyAdmin = (req, _res, next) => {
     if (!req.user || req.user.role !== "admin") {
         return next(createError(403, "You are not authorized to access this resource as an admin"));
     }
@@ -27,9 +27,11 @@ export const verifyAdmin = (req, res, next) => {
 };
 
 // SUPER ADMIN VERIFICATION
-export const verifySuperAdmin = (req, res, next) => {
+export const verifySuperAdmin = (req, _res, next) => {
     if (!req.user || req.user.role !== "superadmin") {
         return next(createError(403, "You are not authorized to access this resource as a super admin"));
     }
     next();
 };
+
+
