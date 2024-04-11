@@ -1,5 +1,4 @@
 import Desk from "../models/Desk.js";
-import Floor from "../models/Floor.js";
 import Reservation from "../models/Reservation.js";
 
 export const createDesk = async (req, res, next) => {
