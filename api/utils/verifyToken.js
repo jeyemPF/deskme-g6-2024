@@ -17,7 +17,7 @@ export const verifyToken = (req, _res, next) => {
     });
 };
 
-// ADMIN VERIFICATION
+
 // ADMIN VERIFICATION
 export const verifyAdmin = (req, _res, next) => {
     if (!req.user || req.user.role !== "admin") {
