@@ -1,6 +1,6 @@
 import express from "express"
 import { deleteUser, getUser, getUsers, updateUser, createAdminUser } from "../controllers/user.js";
-import { verifyAdmin, verifySuperAdmin } from "../utils/verifyToken.js";
+import { verifyAdmin, verifySuperAdmin, verifyAdminOrSuperAdmin } from "../utils/verifyToken.js";
 
 
 const router = express.Router()
@@ -18,7 +18,7 @@ const router = express.Router()
 // });
 
 // UPDATE
-router.put("/:id", verifyAdmin, updateUser);
+router.put("/:id", verifyAdminOrSuperAdmin, updateUser);
 
 // DELETE
 // Only super admins can delete users
@@ -26,11 +26,11 @@ router.delete("/:id", verifySuperAdmin, deleteUser);
 
 // GET
 // Both admins and super admins can get a single user
-router.get("/:id", verifyAdmin, getUser);
+router.get("/:id", verifyAdminOrSuperAdmin, getUser);
 
 // GET ALL
 // Both admins and super admins can get all users
-router.get("/", verifyAdmin, getUsers);
+router.get("/", verifyAdminOrSuperAdmin, getUsers);
 
 // CREATE ADMIN
 // Only super admins can create admin users

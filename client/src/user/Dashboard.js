@@ -10,7 +10,7 @@ import { LuUserSquare } from "react-icons/lu";
 import { FaRegBookmark } from "react-icons/fa6";
 import { PiDesktopTowerBold } from "react-icons/pi";
 import { PiWarning } from "react-icons/pi";
-import Calendar from '../components/calendar';
+import Calendar from '../components/Calendar.js';
 import { CgMenuGridO } from "react-icons/cg";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';

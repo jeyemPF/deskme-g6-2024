@@ -6,6 +6,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Ma
 import Authenticate from '../src/auth/Authenticate';
 import Login from '../src/auth/Login';
 import AuthenticateSuccess from '../src/auth/AuthenticateSuccess';
+import Dashboard from '../src/user/Dashboard';
+import Booking from '../src/user/Booking';
+import ManageBooking from '../src/user/ManageBooking';
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/authenticate" element={<Authenticate />} />
         <Route path="/authenticatesuccess" element={<AuthenticateSuccess />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/booking' element={<Booking />} />
+        <Route path='/managebooking' element={<ManageBooking />} />
    
       </Routes>
     </Router> 

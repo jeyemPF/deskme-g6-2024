@@ -13,7 +13,7 @@ import { PiWarning } from "react-icons/pi";
 import { CgMenuGridO } from "react-icons/cg";
 import { useNavigate } from 'react-router-dom';
 import Input from 'postcss/lib/input';
-import Calendar from '../components/calendar';
+import Calendar from '../components/Calendar.js';
 
 
 
