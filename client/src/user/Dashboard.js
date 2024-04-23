@@ -1,27 +1,25 @@
-import React from 'react'
-import Logo from '../assets/Logo.png'
-import { MdOutlineDashboard } from "react-icons/md";
-import { IoBookOutline } from "react-icons/io5";
-import { RiBookLine } from "react-icons/ri";
-import { PiArrowUDownRightLight } from "react-icons/pi";
-import { BiMoon } from "react-icons/bi";
-import { GrNotification } from "react-icons/gr";
-import { LuUserSquare } from "react-icons/lu";
-import { FaRegBookmark } from "react-icons/fa6";
-import { PiDesktopTowerBold } from "react-icons/pi";
-import { PiWarning } from "react-icons/pi";
+import React, { useEffect, useState } from 'react';
+import Logo from '../assets/Logo.png';
+import { MdOutlineDashboard } from 'react-icons/md';
+import { IoBookOutline } from 'react-icons/io5';
+import { RiBookLine } from 'react-icons/ri';
+import { PiArrowUDownRightLight } from 'react-icons/pi';
+import { BiMoon } from 'react-icons/bi';
+import { GrNotification } from 'react-icons/gr';
+import { LuUserSquare } from 'react-icons/lu';
+import { FaRegBookmark } from 'react-icons/fa6';
+import { PiDesktopTowerBold } from 'react-icons/pi';
+import { PiWarning } from 'react-icons/pi';
 import Calendar from '../components/Calendar.js';
-import { CgMenuGridO } from "react-icons/cg";
+import { CgMenuGridO } from 'react-icons/cg';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-
-
+import axios from 'axios';
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
 
-    const navigate = useNavigate();
-
-    const handleClick = () => {
+  const handleClick = () => {
     navigate('/booking');
   };
   const handleDashboard = () => {
@@ -35,31 +33,49 @@ function Dashboard() {
     navigate('/');
   };
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Make API call to fetch user data
+        const response = await axios.get('http://localhost:8800/api/user');
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
 
+    fetchUserData();
+  }, []);
 
   return (
     <div className='bg-gray-100'>
-        <div className='flex flex-row-reverse gap-10'>
-
-            <div className='border-t-2 w-[80%] h-[85px] bg-white rounded-es-2xl'>
-                <div className='flex gap-5 justify-between'>
-                    <h1 className='text-3xl font-black pl-5 pt-8'>Dashboard</h1>
-                    <div className='flex gap-3 mr-8'>
-                        <div className='flex gap-2 pt-5'> 
-                            <button className="text-black text-xl"><BiMoon /></button>
-                            <p className=' text-xl pt-1'>|</p>
-                            <button className="text-black text-xl"><GrNotification /></button>
-                        </div>
-                        <div className='flex pt-5 gap-3'>
-                            <button className="text-black text-5xl"><LuUserSquare /></button>
-                            <div className='flex-col'>
-                                <h1 className='font-bold'>John Carlo</h1>
-                                <h1 className='text-xs'>Customer</h1>
-                            </div>
-                          
-                        </div>
-                    </div>
+      <div className='flex flex-row-reverse gap-10'>
+        <div className='border-t-2 w-[80%] h-[85px] bg-white rounded-es-2xl'>
+          <div className='flex gap-5 justify-between'>
+            <h1 className='text-3xl font-black pl-5 pt-8'>Dashboard</h1>
+            <div className='flex gap-3 mr-8'>
+              <div className='flex gap-2 pt-5'>
+                <button className='text-black text-xl'>
+                  <BiMoon />
+                </button>
+                <p className=' text-xl pt-1'>|</p>
+                <button className='text-black text-xl'>
+                  <GrNotification />
+                </button>
+              </div>
+              {user && (
+                <div className='flex pt-5 gap-3'>
+                  <button className='text-black text-5xl'>
+                    <LuUserSquare />
+                  </button>
+                  <div className='flex-col'>
+                    <h1 className='font-bold'>{user.name}</h1>
+                    <h1 className='text-xs'>{user.role}</h1>
+                  </div>
                 </div>
+              )}
+            </div>
+          </div>
                 <div className='flex gap-5'>
                     <div className='pt-10'>
                         <div className='border w-60 h-32 rounded-xl bg-[linear-gradient(90deg,_#FFFFFF_0%,_#D9F2D4_76.7%)] [box-shadow:0px_4px_4px_0px_#0000001A]'>

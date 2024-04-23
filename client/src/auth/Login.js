@@ -21,10 +21,6 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate("/authenticate");
-  };
-
   const handleLogin = async () => {
     try {
 
@@ -37,7 +33,8 @@ function Login() {
       console.log('Login successful');
       console.log('Response:', response.data); 
 
-      // Assuming na nag-success 'yung authentication, gawin nyo na dito 'yung gusto nyo mangyari, p'wede nyo i-redirect sa dashboard or whatever
+      // Redirect to the dashboard route after successful login
+      navigate("/dashboard");
   
     } catch (error) {
       // error.response.data.message (bigay ng backend na error)
