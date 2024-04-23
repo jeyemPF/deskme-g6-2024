@@ -9,6 +9,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const [errorMessage, setErrorMessage] = useState('')
+
   const handleInputChange = (setValue) => (event) => {
     setValue(event.target.value);
   };
@@ -34,9 +36,12 @@ function Login() {
   
       console.log('Login successful');
       console.log('Response:', response.data); 
+
+      // Assuming na nag-success 'yung authentication, gawin nyo na dito 'yung gusto nyo mangyari, p'wede nyo i-redirect sa dashboard or whatever
   
     } catch (error) {
       // error.response.data.message (bigay ng backend na error)
+      // setErrorMessage(error.response.data.message)
       console.error('Login failed:', error.response.data.message);
     }
   }
