@@ -72,7 +72,7 @@ export const createAdminUser = async (req, res, next) => {
             username,
             email,
             password: hashedPassword,
-            role: 'admin' // Set the role to indicate admin privileges
+            role: 'admin' 
         });
 
         // Save the new admin user to the database
