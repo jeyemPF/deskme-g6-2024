@@ -1,19 +1,33 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import cors from "cors"; 
 import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
 import desksRoute from "./routes/desks.js";
 import reservationsRoute from "./routes/reservations.js";
 import cookieParser from "cookie-parser";
 
+import cors from "cors";
+
 const app = express();
 
-// Enable CORS
-app.use(cors());
-
 dotenv.config();
+
+// Dito 'yung mga p'wedeng mag-access ng backend
+// URL ng frontend
+const allowedOrigins = ["http://localhost:3000"];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
 
 const connect = async () => {
   try {

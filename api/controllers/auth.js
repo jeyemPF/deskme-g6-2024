@@ -44,6 +44,7 @@ export const register = async (req, res, next) => {
 // LOGIN
 export const login = async (req, res, next) => {
     try {
+        console.log('triggered')
         const user = await User.findOne({ email: req.body.email });
         if (!user) return next(createError(404, "Email doesn't exist in our system!"));
 
