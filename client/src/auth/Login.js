@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
-import { FcGoogle } from "react-icons/fc";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 function Login() {
   const [password, setPassword] = useState("");
@@ -22,6 +22,24 @@ function Login() {
   const handleClick = () => {
     navigate("/authenticate");
   };
+
+  const handleLogin = async () => {
+    try {
+
+      const credentials = {
+        email, password
+      }
+
+      const response = await axios.post('http://localhost:8800/api/auth/login', credentials);
+  
+      console.log('Login successful');
+      console.log('Response:', response.data); 
+  
+    } catch (error) {
+      // error.response.data.message (bigay ng backend na error)
+      console.error('Login failed:', error.response.data.message);
+    }
+  }
 
   useEffect(() => {
     console.log(email);
@@ -78,7 +96,7 @@ function Login() {
 
           <div className="text-center pt-10 pb-5">
             <button
-              onClick={handleClick}
+              onClick={handleLogin}
               className=" text-white bg-black font-semibold rounded-full text-xl py-3 w-[80%] "
             >
               Sign in
