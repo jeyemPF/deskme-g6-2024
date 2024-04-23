@@ -3,9 +3,12 @@ import Logo from '../assets/Logo.png';
 import { IoMenuSharp } from 'react-icons/io5';
 import desk1 from '../assets/desk1.avif';    
 import desk2 from '../assets/desk2.avif';
-import { GrShieldSecurity } from "react-icons/gr";
-import { LiaUserFriendsSolid } from "react-icons/lia";
-import { MdOutlinePrivacyTip } from "react-icons/md";
+import { PiShieldCheckBold } from "react-icons/pi";
+import { PiUsersThreeBold } from "react-icons/pi";
+import { PiFolderLockBold } from "react-icons/pi";
+import { PiRocketFill } from "react-icons/pi";
+import { PiBookBookmarkFill } from "react-icons/pi";
+import { PiCloudArrowUpFill } from "react-icons/pi";
 import { TbClockPlus } from "react-icons/tb";
 import { MdOnlinePrediction } from "react-icons/md";
 import { GoBook } from "react-icons/go";
@@ -14,13 +17,8 @@ import offer1 from '../assets/offer1.webp';
 import offer2 from '../assets/offer2.webp';
 import { IoIosArrowDown } from "react-icons/io";
 import { RiQuestionMark } from "react-icons/ri";
-import { FaFacebook } from "react-icons/fa";
-import { RiLinkedinLine } from "react-icons/ri";
-import { PiFigmaLogoBold } from "react-icons/pi";
-import { SiTailwindcss } from "react-icons/si";
-import { BiLogoTypescript } from "react-icons/bi";
-import { FaGithubSquare } from "react-icons/fa";
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 function Home() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,204 +27,138 @@ function Home() {
     setIsOpen(!isOpen);
   };
 
-  return (
-    <div>
-      <Navbar/>
-       <div className='flex flex-col md:flex-row items-center px-4 md:px-12 lg:px-20 xl:px-36 pt-8 md:pt-12 pb-8 md:pb-14'>
-        <div className='md:w-1/2'>
-          <div className=''>
-            <h1 className='text-2xl md:text-3xl lg:text-4xl'>
-              <span className='text-[44px] font-bold'>Make every <i><span className='font-black'>click count.</span></i></span>
-              <p className='font-normal md:text-lg lg:text-3xl mt-5'>"Book. Click. Thrive." <br/>Elevate with DeskMe where <br/>booking meets brilliance!</p>
+return (
+
+  // ----------------------------- First Section ----------------------------- //
+  // Contains the Navbar, Pictures, and 4 features.
+
+  // Done and Responsive.
+
+  <div className='container'>
+    <Navbar/>
+        <div className=' flex flex-col xl:flex-row items-center'>
+          <div className='w-full md:w-2/4y'>
+            <h1 className='text-2xl xl:ml-32 xl:text-left sm:text-center sm:text-base sm:pt-12 sm:ml-0'>
+              <span className='text-5xl font-extrabold leading-8 lg:text-5xl md:text-4xl sm:text-2xl'>Make every <i><span className='font-black'>click count.</span></i></span>
+              <p className='font-normal text-lg pt-1 leading-5 lg:text-lg md:text-base sm:text-xs'>
+              DeskMe is built to elevate individuals, providing a seamless <br /> intersection where booking meets brilliance,  empowering <br /> users to thrive through the power of connection <br /> and convenience.
+              </p>
+              <button className='text-white bg-black font-semibold text-lg rounded-lg border-2 border-black shadow-lg hover:bg-white hover:text-black transition-colors duration-300 mt-3 md:mx-auto md:px-7 md:py-3 sm:px-5 sm:py-2'>Book Now</button>
             </h1>
-            <button className='text-white mt-5 bg-black font-semibold rounded-lg text-sm px-5 py-2.5 md:px-6 md:py-3 lg:text-base lg:px-7 xl:text-lg xl:px-8 xl:py-4'>Book Now</button>
+          </div>
+
+          <div className='flex items-center justify-center'>
+            <div className='flex gap-4 mr-28'>
+              <div className='pt-28'>
+                <img className='hidden xl:block lg:h-80 lg:w-96 rounded-xl border-2 border-black shadow-xl transition duration-300 transform hover:scale-105' src={desk1} alt="Desk 1"/>
+              </div>
+              <div className='pt-16'>
+                <img className='hidden xl:block lg:h-80 lg:w-96 rounded-xl border-2 border-black shadow-xl transition duration-300 transform hover:scale-105' src={desk2} alt="Desk 2"/>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className='md:w-1/2 md:flex hidden md:items-center md:justify-center pt-10 md:pt-0'>
-          <div className='sm:flex flex-col md:flex-row md:gap-4'>
-            <div className='md:pt-8 lg:pt-28'>
-              <img className='h-48 md:h-64 lg:h-80 w-32 md:w-40 lg:w-48 rounded-xl border-2 border-black' src={desk1} alt="Desk 1"/>
-            </div>
-            <div className='md:pt-8 lg:pt-16'>
-              <img className='h-48 md:h-64 lg:h-80 w-32 md:w-40 lg:w-48 rounded-xl border-2 border-black' src={desk2} alt="Desk 2"/> 
-            </div>
+        <div className="flex items-center justify-center gap-10 pt-20 flex-wrap xs:flex-col">
+          <div className="flex items-center mb-10 sm:mb-3 md:mb-10 xs:w-full xs:text-center">
+            <p className="p-2 text-2xl xs:text-xl"><PiShieldCheckBold /></p>
+            <p className="text-xl xs:text-base xs:block xs:mx-auto">|</p>
+            <p className="ml-2 text-base sm:text-lg xs:text-sm font-semibold xs:mx-auto">Security</p>
           </div>
-        </div>  
-      </div>
+          <div className="flex items-center mb-10 sm:mb-3 md:mb-10 xs:w-full xs:text-center">
+            <p className="p-2 text-2xl xs:text-xl"><PiUsersThreeBold /></p>
+            <p className="text-xl xs:text-base xs:block xs:mx-auto">|</p>
+            <p className="ml-2 text-base sm:text-lg xs:text-sm font-semibold xs:mx-auto">Friendly</p>
+          </div>
+          <div className="flex items-center sm:mb-3 md:mb-10 xs:w-full xs:text-center">
+            <p className="p-2 text-2xl xs:text-xl"><PiFolderLockBold /></p>
+            <p className="text-xl xs:text-base xs:block xs:mx-auto">|</p>
+            <p className="ml-2 text-base sm:text-lg xs:text-sm font-semibold xs:mx-auto">Privacy</p>
+          </div>
+          <div className="flex items-center sm:mb-3 md:mb-10 xs:w-full xs:text-center">
+            <p className="p-2 text-2xl xs:text-xl"><TbClockPlus /></p>
+            <p className="text-xl xs:text-base xs:block xs:mx-auto">|</p>
+            <p className="ml-2 text-base sm:text-lg xs:text-sm font-semibold xs:mx-auto">Efficient</p>
+          </div>
+          <div className='h-[1px] w-[80%] bg-black'></div>
+        </div>
 
-      <div className="flex items-center sm:flex-row justify-center gap-10 pb-4">
-      <div className="flex items-center  sm:mb-0">
-        <p className="p-2 text-2xl sm:text-3xl"><GrShieldSecurity /></p>
-        <p>|</p>
-        <p className="ml-2 text-base sm:text-lg">Security</p>
-      </div>
-      <div className="flex items-center  sm:mb-0">
-        <p className="p-2 text-2xl sm:text-3xl"><LiaUserFriendsSolid /></p>
-        <p>|</p>
-        <p className="ml-2 text-base sm:text-lg">Friendly</p>
-      </div>
-      <div className="flex items-center  sm:mb-0">
-        <p className="p-2 text-2xl sm:text-3xl"><MdOutlinePrivacyTip /></p>
-        <p>|</p>
-        <p className="ml-2 text-base sm:text-lg">Privacy</p>
-      </div>
-      <div className="flex items-center">
-        <p className="p-2 text-2xl sm:text-3xl"><TbClockPlus /></p>
-        <p>|</p>
-        <p className="ml-2 text-base sm:text-lg">Efficient</p>
-      </div>
-    </div>
+      {/* --------------------------------- Second Section --------------------------------- */}
+      {/* Contains the Reasons on choosing DeskMe */}
 
-    <div className='h-[1px] w-[80%] ml-36 bg-gray-300'></div>
+      {/* Done and Responsive. */}
 
-    <div>
-        <div className='text-center'>
-            <div className='text-3xl md:text-4xl lg:text-5xl font-black pt-5 pb-2'>
-              <h1>Reasons to choose DeskMe</h1>
+        <div className='container'>
+          <div className='text-center'>
+            <div className='text-4xl font-black pt-12 pb-5'>
+              <h1 className='text-black'>Reasons to choose DeskMe</h1>
             </div>
 
-            <div className='text-lg md:text-xl lg:text-2xl pb-12 '>
+            <div className='text-xl pb-12 font-normal'>
                 <h1>Where booking becomes a breeze! Your easy pass to <br/> hassle-free reservations. Swift, seamless, and stress-free!</h1>
             </div>
 
-            <div className='flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-20 justify-center items-center pb-12 '>
-                <div className='box-border h-48 md:h-64 w-48 md:w-64 p-4 border-2 rounded-2xl border-black'>
-                  <div className='text-5xl md:text-8xl pl-10 md:pl-16'><MdOnlinePrediction /></div>
-                  <div className='text-base md:text-xl font-bold'>24/7 Online</div>
-                  <div className='font-semibold text-sm md:text-base'><h1>"Round-the-clock <br/>excellence! We're here 24/7, <br/>because needs never <br/>sleep."</h1></div>
+            <div className='flex justify-center pb-10 md:flex-row sm:flex-col sm:items-center md:space-y-0 sm:space-y-4 xl:gap-28 lg:gap-10 md:gap-5'>
+              <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-2 rounded-xl border-black shadow-lg'>
+                <div className='text-7xl transition duration-300 transform hover:scale-105'><PiRocketFill /></div>
+                <div className='text-xl font-extrabold p-3 text-black-700'>24/7 Online</div>
+                <div className='text-sm font-medium text-black-500'>
+                  Round-the-clock excellence! We're here 24/7, because needs never sleep.
                 </div>
-
-                <div className='box-border h-48 md:h-64 w-48 md:w-64 p-4 border-2 rounded-2xl border-black'>
-                  <div className='text-5xl md:text-8xl pl-10 md:pl-16'><GoBook /></div>
-                  <div className='text-base md:text-xl font-bold'>Fast Booking</div>
-                  <div className='font-semibold text-sm md:text-base'><h1>"Quick and easy! Fast <br/>booking, because your<br/>time matters."</h1></div>
-                </div>
-
-                <div className='box-border h-48 md:h-64 w-48 md:w-64 p-4 border-2 rounded-2xl border-black'>
-                  <div className='text-5xl md:text-8xl pl-10 md:pl-16'><BsCloudCheck /></div>
-                  <div className='text-base md:text-xl font-bold'>Cloud Storage</div>
-                  <div className='font-semibold text-sm md:text-base'><h1>"Sky high storage, <br/>lightning-fast access<br/>your data's new home <br/>in the cloud!"</h1></div>
-                </div>
-
-            </div>
-
-            <div className='flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-20 pl-4 md:pl-12 xl:pl-48 pt-10'>
-              <div className='h-96 w-[500px]'>
-                  <img className='rounded-2xl border-2 border-black' src={offer1} alt="Offer 1"/>
               </div>
 
-              <div className='w-full md:w-1/2 lg:w-1/3'>
-                  <h1 className='text-3xl md:text-5xl font-black pt-8 pb-6'>We Offer</h1>
-                  <p className='text-lg md:text-2xl'>Book with ease, experience with<br/>delight! Elevate your journey with<br/>our seamless booking - where<br/>every click sparks satisfaction.Your <br/> great adventure starts here!</p>
+              <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-2 rounded-xl border-black shadow-lg'>
+                <div className='text-7xl transition duration-300 transform hover:scale-105'><PiBookBookmarkFill /></div>
+                <div className='text-xl font-extrabold p-3 text-black-700'>Fast Booking</div>
+                <div className='text-sm font-medium text-black-500'>"Quick and easy! Fast booking, because your time matters."</div>
               </div>
 
-            </div>
-
-            <div className='flex flex-col md:flex-row gap-8 md:gap-12 lg:gap-20 md:pl-12 xl:pl-48 '>
-              <div className='w-full md:w-1/2 lg:w-1/3'>
-                    <h1 className='text-3xl md:text-5xl font-black pt-8 pb-6 md:pb-10'>Innovative</h1>
-                    <p className='text-lg md:text-2xl'>Experience the future with our<br/>innovative system where<br/>simplicity meets sophistication.<br/>Redefining possibilities, one<br/>breakthrough at a time.</p>
-              </div>
-
-              <div className='h-96 w-[500px]'>
-                  <img className='rounded-2xl border-2 border-black' src={offer2} alt="Offer 2"/>
+              <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-2 rounded-xl border-black shadow-lg'>
+                <div className='text-7xl transition duration-300 transform hover:scale-105'><PiCloudArrowUpFill /></div>
+                <div className='text-xl font-extrabold p-3 text-black-700'>Cloud Storage</div>
+                <div className='text-sm font-medium text-black-500'>"Sky high storage, lightning-fast access your data's new home in the cloud!"</div>
               </div>
             </div>
-        </div>
-    </div>
-
-    <div className='h-[1px] w-[80%] ml-36 bg-gray-300'></div>
-
-    <div>
-      <div className='ml-40 pt-8'>
-        <h1 className='text-5xl font-black pb-4'>Frequently asked questions</h1>
-        <p className='text-2xl pb-6'>Got questions? Weve got answers! Check out our FAQ's for quick <br/>solutions and breeze through any uncertainties.</p>
-      </div>
-
-        <div> 
-            <div className='flex justify-center font-medium pl-96 text-xl pb-3'>
-                <button>View All</button>
-            </div>
-            <div className=' h-[1px] bg-gray-300 w-[55%] ml-40'></div>
-
-            <div className='flex'>
-                <div className='flex-col'>
-                    <div className='flex ml-40 gap-32'>
-                        <h1 className='text-2xl pt-4 pb-4'>How do I make a reservation using the booking system?</h1>
-                        <button className='text-2xl pt-2'><IoIosArrowDown /></button>
-                    </div>
-
-                    <div className=' h-[1px] bg-gray-300 w-[82%] ml-40'></div> 
-
-                    <div className='flex ml-40 gap-10'>
-                        <h1 className='text-2xl pt-4 pb-4'>What happens if i encounter issues during the booking process?</h1>
-                        <button className='text-2xl pt-2'><IoIosArrowDown /></button>
-                    </div>
-                    <div className=' h-[1px] bg-gray-300 w-[82%] ml-40'></div> 
-
-                    <div className='flex ml-40 gap-32'>
-                        <h1 className='text-2xl pt-4 pb-4'>Can I make changes to my booking after it's confirmed?</h1>
-                        <button className='text-2xl pt-2'><IoIosArrowDown /></button>
-                    </div>
-                    <div className=' h-[1px] bg-gray-300 w-[82%] ml-40'></div> 
-                </div>
-                <div className='text-9xl ml-40'><RiQuestionMark /></div>
-
-            </div>
+          </div>
         </div>
 
-        <div className="flex justify-center pt-20 pb-16 gap-2">
-            <div>
-             <input className='border-2 border-black rounded-full p-2 w-[700px]' placeholder='Enter your email:'></input>
-            </div>
-           <button className=' text-white bg-black font-semibold rounded-full text-sm px-5 p-2 w-[10%]'>Submit</button>
-        </div> 
+        {/* --------------------------------- Third Section --------------------------------- */}
+        {/* Contains the Offers */}
 
-        <div className='flex justify-center gap-20 pt-10 bg-gray-100'>
-            <div className='pb-10'>
-                <img className='w-48' src={Logo}/>
-                <h1 className='text-xl font-light'>Hotdesk Booking System</h1>
-                <h1 className='text-xl font-light'>BSIS 3 | Team 6</h1>
+        {/* Done */}
+        <div className='container'>
+          <div className='flex lg:flex-row lg:justify-center lg:gap-16 pt-12 pb-12 sm:items-center sm:flex-col'>
+            <div className='flex h-72 lg:w-[500px] md:h-72 md:w-[500px] sm:h-60 sm:w-[260px]'>
+                <img className='rounded-2xl border-2 border-black shadow-xl' src={offer1} alt="Offer 1"/>
             </div>
 
-             <div>
-                 <h1 className='text-2xl font-black pb-5'>Quick links</h1>
-                 <h1 className='text-lg'>Home</h1>
-                 <h1 className='text-lg'>About Us</h1>
-                 <h1 className='text-lg'>Services</h1>
-                 <h1 className='text-lg'>Contact Us</h1>
-             </div>
+            <div className='w-1/3'>
+                <h1 className='text-4xl font-black lg:pt-8 lg:pb-6 lg:text-left sm:text-center sm:pt-5'>We Offer</h1>
+                <p className='text-xl lg:text-left lg:pt-0 sm:text-center sm:pt-5'>Book with ease, experience with delight! Elevate your journey with our seamless booking where every click sparks satisfaction.Your great adventure starts here!</p>
+            </div>
+          </div>
 
-             <div>
-                 <h1 className='text-2xl font-black pb-5'>Company</h1>
-                 <h1 className='text-lg'>Terms & Condition</h1>
-                 <h1 className='text-lg'>Privacy Policy</h1>
-             </div>
+          <div className='flex lg:flex-row lg:justify-center lg:gap-16 pb-12 sm:items-center sm:flex-col-reverse'>
+            <div className='w-1/3 text-right'>
+                  <h1 className='text-4xl font-black lg:pt-3 lg:pb-6 lg:text-right sm:text-center sm:pt-5'>Innovative</h1>
+                  <p className='text-xl lg:pt-0 lg:text-right sm:text-center sm:pt-5'>Experience the future with our innovative system where simplicity meets sophistication. Redefining possibilities, one breakthrough at a time.</p>
+            </div>
 
-             <div>
-                 <h1 className='text-2xl font-black pb-5'>Get in touch</h1>
-                 <div className='flex justify-center gap-2'>
-                    <h1 className='text-3xl'><FaFacebook/></h1>
-                    <h1 className='text-3xl'><RiLinkedinLine /></h1> 
-                 </div>
-             </div>
-
-             <div>
-                 <h1 className='text-2xl font-black pb-5'>Special thanks to</h1>
-                 <div className='flex justify-center gap-2'>
-                    <h1 className='text-3xl'><PiFigmaLogoBold /></h1>
-                    <h1 className='text-3xl'><SiTailwindcss /></h1> 
-                 </div>
-                    <div className='flex justify-center gap-2'>
-                        <h1 className='text-3xl'><BiLogoTypescript /></h1>
-                        <h1 className='text-3xl'><FaGithubSquare /></h1>
-                    </div>
-             </div>
-
+            <div className='flex h-72 lg:w-[500px] md:h-72 md:w-[500px] sm:h-60 sm:w-[260px]'>
+                <img className='rounded-2xl border-2 border-black shadow-xl' src={offer2} alt="Offer 2"/>
+            </div>
+          </div>
+          <div className='h-[1px] w-[80%] bg-black mx-auto'></div>
         </div>
 
-    </div>
+
+        {/* --------------------------------- Fourth Section --------------------------------- */}
+        {/* Contains the FAQ's */}
+
+        {/* Ongoing */}
+
+        <Footer/>
+
     </div>
   );
 }
