@@ -23,25 +23,32 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-
       const credentials = {
-        email, password
+        email,
+        password
       }
-
+  
       const response = await axios.post('http://localhost:8800/api/auth/login', credentials);
   
       console.log('Login successful');
-      console.log('Response:', response.data); 
-
+      console.log('Response:', response.data);
+  
       // Redirect to the dashboard route after successful login
       navigate("/dashboard");
   
     } catch (error) {
-      // error.response.data.message (bigay ng backend na error)
-      // setErrorMessage(error.response.data.message)
-      console.error('Login failed:', error.response.data.message);
+      if (error.response && error.response.status === 401) {
+        // Unauthorized (401) status code indicates incorrect password
+        console.error('Incorrect password');
+        setErrorMessage('Incorrect password'); // Set error message for incorrect password
+      } else {
+        // Handle other errors
+        console.error('Login failed:', error.response ? error.response.data.message : error.message);
+        setErrorMessage('Login failed. Please try again later.');
+      }
     }
   }
+  
 
   useEffect(() => {
     console.log(email);
