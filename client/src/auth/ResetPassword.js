@@ -27,21 +27,13 @@ const InputField = ({ type, name, placeholder, value, onChange, icon }) => {
 };
 
 const ResetPassword = () => {
-  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'email') {
       setEmail(value);
-    } else if (name === 'password') {
-      setPassword(value);
-    }
+    } 
   };
 
   const navigate = useNavigate();
@@ -57,7 +49,7 @@ const ResetPassword = () => {
           <button onClick={handleClick1} className='text-2xl'><HiOutlineXMark /></button>
         </div>
         <h1 className='text-4xl font-black text-left'>Reset Password</h1>
-        <p className='font-normal text-left mt-1'>Always remember your password.</p>
+        <p className='font-normal text-sm text-left mt-2'>Enter your email, and we'll send a code to your inbox.</p>
 
         <div className='mt-12'>
           <InputField
@@ -68,7 +60,7 @@ const ResetPassword = () => {
             onChange={handleChange}
             icon={null}
           />
-            <button type='submit' onClick={handleClick1} className='bg-white text-black font-semibold rounded-2xl mt-12 mb-4 border-2 border-black py-3 w-full hover:bg-black hover:text-white transition-colors duration-300'>Confirm</button>
+            <button className='bg-white text-black font-semibold rounded-2xl mt-12 mb-4 border-2 border-black py-3 w-full hover:bg-black hover:text-white transition-colors duration-300'>Confirm</button>
         </div>
       </div>
       <div className='text-center text-base font-light mt-2'>
