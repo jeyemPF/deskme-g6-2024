@@ -139,7 +139,7 @@ return (
           </div>
 
           <div className='flex lg:flex-row lg:justify-center lg:gap-16 pb-12 sm:items-center sm:flex-col-reverse'>
-            <div className='w-1/3' >
+            <div className='w-1/3'>
             <div className='flex items-center lg:justify-end justify-center w-full  '>  
             <h1 className='text-4xl font-black  lg:pb-6 sm:text-center lg:pt-5'>Innovative</h1></div>
                 
