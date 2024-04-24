@@ -139,8 +139,10 @@ return (
           </div>
 
           <div className='flex lg:flex-row lg:justify-center lg:gap-16 pb-12 sm:items-center sm:flex-col-reverse'>
-            <div className='w-1/3 text-right'>
-                  <h1 className='text-4xl font-black lg:pt-3 lg:pb-6 lg:text-right sm:text-center sm:pt-5'>Innovative</h1>
+            <div className='w-1/3' >
+            <div className='flex items-center lg:justify-end justify-center w-full  '>  
+            <h1 className='text-4xl font-black  lg:pb-6 sm:text-center lg:pt-5'>Innovative</h1></div>
+                
                   <p className='text-xl lg:pt-0 lg:text-right sm:text-center sm:pt-5'>Experience the future with our innovative system where simplicity meets sophistication. Redefining possibilities, one breakthrough at a time.</p>
             </div>
 
