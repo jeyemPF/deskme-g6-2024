@@ -12,7 +12,7 @@ const DeskSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['available', 'reserved', 'occupied'],
+        enum: ['available', 'reserved', 'unavailable'],
         default: 'available'
     },
     features: {

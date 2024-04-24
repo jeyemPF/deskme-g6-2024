@@ -22,7 +22,6 @@ const ReservationHistorySchema = new Schema(
             required: true,
           },
         
-
         type: {
             type: String,
             enum: ["REJECTED", "CANCELED", "COMPLETED", "EXPIRED", "ABORTED"],
