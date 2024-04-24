@@ -9,6 +9,10 @@ import AuthenticateSuccess from '../src/auth/AuthenticateSuccess';
 import Dashboard from '../src/user/Dashboard';
 import Booking from '../src/user/Booking';
 import ManageBooking from '../src/user/ManageBooking';
+<<<<<<< HEAD
+=======
+import ResetPassword from '../src/auth/ResetPassword';
+>>>>>>> jc
 
 function App() {
   return (
@@ -20,6 +24,10 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
+<<<<<<< HEAD
+=======
+        <Route path="/resetpassword" element={<ResetPassword />} />
+>>>>>>> jc
         <Route path="/authenticate" element={<Authenticate />} />
         <Route path="/authenticatesuccess" element={<AuthenticateSuccess />} />
         <Route path='/dashboard' element={<Dashboard />} />
