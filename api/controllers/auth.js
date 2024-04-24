@@ -46,9 +46,9 @@ export const login = async (req, res, next) => {
     try {
         console.log('triggered')
         const user = await User.findOne({ email: req.body.email });
-        if (!user) return next(createError(404, "Email doesn't exist in our system!"));
+        if (!user) return next(createError(404, "Invalid email address or password"));
 
-        const isPasswordCorrect = await bcrypt.compare(
+        const isPasswordCorrect = bcrypt.compare(
             req.body.password,
             user.password
         );

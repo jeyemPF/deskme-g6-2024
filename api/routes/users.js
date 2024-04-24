@@ -36,4 +36,5 @@ router.get("/", verifyAdminOrSuperAdmin, getUsers);
 // Only super admins can create admin users
 router.post("/", verifySuperAdmin, createAdminUser);
 
+
 export default router
