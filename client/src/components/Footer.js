@@ -6,7 +6,7 @@ const Footer = () => {
             <footer
             className="text-center text-neutral-950 lg:text-left">
             <div
-                className="flex items-center justify-center border-b-2 border-black p-6 lg:justify-between">
+                className="flex items-center justify-center border-t-2 border-b-2 border-black p-6 lg:justify-between">
                 <div className="mr-12 hidden lg:block font-semibold">
                 <span>Get connected with us on social networks:</span>
                 </div>

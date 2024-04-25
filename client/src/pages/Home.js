@@ -19,6 +19,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { RiQuestionMark } from "react-icons/ri";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,13 +28,13 @@ function Home() {
     setIsOpen(!isOpen);
   };
 
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/Login');
+  };
+
 return (
-
-  // ----------------------------- First Section ----------------------------- //
-  // Contains the Navbar, Pictures, and 4 features.
-
-  // Done and Responsive.
-
   <div className='container'>
     <Navbar/>
         <div className=' flex flex-col xl:flex-row items-center'>
@@ -43,7 +44,7 @@ return (
               <p className='font-normal text-lg pt-1 leading-5 lg:text-lg md:text-base sm:text-xs'>
               DeskMe is built to elevate individuals, providing a seamless <br /> intersection where booking meets brilliance,  empowering <br /> users to thrive through the power of connection <br /> and convenience.
               </p>
-              <button className='text-white bg-black font-semibold text-lg rounded-lg border-2 border-black shadow-lg hover:bg-white hover:text-black transition-colors duration-300 mt-3 md:mx-auto md:px-7 md:py-3 sm:px-5 sm:py-2'>Book Now</button>
+              <button onClick={handleClick} className='text-white bg-black font-semibold text-lg rounded-lg border-2 border-black shadow-lg hover:bg-white hover:text-black transition-colors duration-300 mt-3 md:mx-auto md:px-7 md:py-3 sm:px-5 sm:py-2'>Book Now</button>
             </h1>
           </div>
 
@@ -83,11 +84,6 @@ return (
           <div className='h-[1px] w-[80%] bg-black'></div>
         </div>
 
-      {/* --------------------------------- Second Section --------------------------------- */}
-      {/* Contains the Reasons on choosing DeskMe */}
-
-      {/* Done and Responsive. */}
-
         <div className='container'>
           <div className='text-center'>
             <div className='text-4xl font-black pt-12 pb-5'>
@@ -122,10 +118,6 @@ return (
           </div>
         </div>
 
-        {/* --------------------------------- Third Section --------------------------------- */}
-        {/* Contains the Offers */}
-
-        {/* Done */}
         <div className='container'>
           <div className='flex lg:flex-row lg:justify-center lg:gap-16 pt-12 pb-12 sm:items-center sm:flex-col'>
             <div className='flex h-72 lg:w-[500px] md:h-72 md:w-[500px] sm:h-60 sm:w-[260px]'>
@@ -149,14 +141,7 @@ return (
                 <img className='rounded-2xl border-2 border-black shadow-xl' src={offer2} alt="Offer 2"/>
             </div>
           </div>
-          <div className='h-[1px] w-[80%] bg-black mx-auto'></div>
         </div>
-
-
-        {/* --------------------------------- Fourth Section --------------------------------- */}
-        {/* Contains the FAQ's */}
-
-        {/* Ongoing */}
 
         <Footer/>
 
