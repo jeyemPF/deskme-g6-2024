@@ -1,9 +1,10 @@
 import express from 'express';
-import { toggleAutoAccepting } from '../controllers/switchController'; // Import the controller function
+import { toggleAutoAccepting, getSwitchState } from '../controllers/switch.js'; // Import the controller function
 
 const router = express.Router();
 
-// Define routes
 router.post('/toggleAutoAccepting', toggleAutoAccepting);
+
+router.get('/getSwitchState', getSwitchState);
 
 export default router;
