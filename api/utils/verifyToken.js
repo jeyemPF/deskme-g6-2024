@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { createError } from "./error.js";
 
+
 // Middleware to verify JWT token
 export const verifyToken = (req, _res, next) => {
     const token = req.cookies.access_token;
