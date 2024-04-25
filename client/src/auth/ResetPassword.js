@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { HiOutlineXMark } from "react-icons/hi2";
 import { useNavigate } from 'react-router-dom';
 
-const InputField = ({ type, name, placeholder, value, onChange, icon }) => {
+const InputField = ({ type, name, placeholder, value, onChange, icon, error }) => {
   return (
     <div className='relative'>
       <input
@@ -22,24 +22,41 @@ const InputField = ({ type, name, placeholder, value, onChange, icon }) => {
           {icon.component}
         </button>
       )}
+      {error && <p className='text-red-500 text-sm'>{error}</p>}
     </div>
   );
 };
 
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'email') {
       setEmail(value);
-    } 
+    }
   };
 
   const navigate = useNavigate();
 
   const handleClick1 = () => {
     navigate('/login');
+  };
+
+  const isEmpty = (str) => {
+    return str.trim() === '';
+  };
+
+  const handleConfirm = () => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (isEmpty(email)) {
+      setEmailError('Please fill out this field.');
+    } else if (!emailRegex.test(email)) {
+      setEmailError('Please enter a valid email address.');
+    } else {
+      // Add your logic here to handle the confirm button click
+    }
   };
 
   return (
@@ -52,15 +69,16 @@ const ResetPassword = () => {
         <p className='font-normal text-sm text-left mt-2'>Enter your email, and we'll send a code to your inbox.</p>
 
         <div className='mt-12'>
-          <InputField
-            type='email'
-            name='email'
-            placeholder='Email Address:'
-            value={email}
-            onChange={handleChange}
-            icon={null}
-          />
-            <button className='bg-white text-black font-semibold rounded-2xl mt-12 mb-4 border-2 border-black py-3 w-full hover:bg-black hover:text-white transition-colors duration-300'>Confirm</button>
+            <InputField
+              type='email'
+              name='email'
+              placeholder='Email Address:'
+              value={email}
+              onChange={handleChange}
+              icon={null}
+              error={emailError}
+            />
+            <button className='bg-white text-black font-semibold rounded-2xl mt-12 mb-4 border-2 border-black py-3 w-full hover:bg-black hover:text-white transition-colors duration-300' onClick={handleConfirm}>Confirm</button>
         </div>
       </div>
       <div className='text-center text-base font-light mt-2'>
@@ -71,5 +89,4 @@ const ResetPassword = () => {
     </div>
   );
 };
-
 export default ResetPassword;
