@@ -84,32 +84,3 @@ export const createAdminUser = async (req, res, next) => {
         next(err);
     }
 };
-
-
-export const login = async (req, res, next) => {
-    try {
-        // Find the user by email
-        const user = await User.findOne({ email: req.body.email });
-
-        // If user doesn't exist, return an error
-        if (!user) {
-            return next(createError(404, "User not found"));
-        }
-
-        // Check if the password is correct
-        const isPasswordCorrect = await bcrypt.compare(req.body.password, user.password);
-
-        // If password is incorrect, return an error
-        if (!isPasswordCorrect) {
-            return next(createError(400, "Wrong password or email!"));
-        }
-
-        // Sign a JWT token with user's ID and role
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET);
-
-        // Return user's details along with token
-        res.status(200).json({ user: user, token: token });
-    } catch (err) {
-        next(err);
-    }
-}
