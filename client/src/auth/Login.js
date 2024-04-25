@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'
+import axios from 'axios';
 
 const InputField = ({ type, name, placeholder, value, onChange, icon }) => {
   return (
@@ -32,8 +32,8 @@ function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleInputChange = (setValue) => (event) => {
     setValue(event.target.value);
@@ -43,22 +43,12 @@ function Login() {
     setShowPassword(!showPassword);
   };
 
-  const navigate = useNavigate();
-
-  const handleClick1 = () => {
-    navigate('/resetpassword');
-  };
-
-  const handleClick2 = () => {
-    navigate('/');
-  };
-
   const handleLogin = async () => {
     try {
       const credentials = {
         email,
         password
-      }
+      };
   
       const response = await axios.post('http://localhost:8800/api/auth/login', credentials);
   
@@ -76,11 +66,10 @@ function Login() {
       } else {
         // Handle other errors
         console.error('Login failed:', error.response ? error.response.data.message : error.message);
-        setErrorMessage('Login failed. Please try again later.');
+        setErrorMessage('Invalid email or incorrect password.');
       }
     }
   }
-  
 
   useEffect(() => {
     console.log(email);
@@ -91,7 +80,7 @@ function Login() {
     <div className='flex flex-col items-center justify-center mt-32'>
       <div className='border-2 border-black rounded-lg shadow-lg w-full max-w-md p-8'>
         <div className='flex justify-end'>
-          <button onClick={handleClick2} className='text-2xl'><HiOutlineXMark /></button>
+          <button onClick={() => navigate('/')} className='text-2xl'><HiOutlineXMark /></button>
         </div>
         <h1 className='text-4xl font-black text-left'>Sign in</h1>
         <p className='font-normal text-left mt-1'>Stay updated on your bookings.</p>
@@ -121,13 +110,7 @@ function Login() {
           />
         </div>
 
-        <div class="flex items-left mt-4 mb-4">
-          <input type="checkbox" id="ce976249-77f6-469a-9301-40f1eec73660" class="w-4 h-5 text-black bg-gray-100 border-black rounded hover:cursor-pointer" />
-          <label for="ce976249-77f6-469a-9301-40f1eec73660" class="ms-2 text-sm font-medium text-black dark:text-black hover:cursor-pointer">Remember Me</label>
-          <div class="list-none ml-auto">
-            <li onClick={handleClick1} class="font-medium text-sm hover:underline cursor-pointer">Forgot password?</li>
-          </div>
-        </div>
+        <div className="text-red-500 mt-2">{errorMessage}</div>
 
         <div className='text-center mt-14 mb-5'>
           <button onClick={handleLogin} className='bg-white text-black font-semibold rounded-2xl border-2 border-black py-3 w-full hover:bg-black hover:text-white transition-colors duration-300'>Sign in</button>

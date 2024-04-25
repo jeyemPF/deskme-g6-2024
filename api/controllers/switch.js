@@ -1,4 +1,4 @@
-import Switch from '../models/Switch'; 
+import Switch from '../models/Switch.js'; 
 
 // Controller function to handle a request to toggle autoAccepting
 export const toggleAutoAccepting = async (req, res, next) => {
