@@ -6,13 +6,13 @@ const Footer = () => {
             <footer
             className="text-center text-neutral-950 lg:text-left">
             <div
-                className="flex items-center justify-center border-b-2 border-black p-6 lg:justify-between">
+                className="flex items-center justify-center border-t-2 border-b-2 border-black p-6 lg:justify-between dark:border-white">
                 <div className="mr-12 hidden lg:block font-semibold">
-                <span>Get connected with us on social networks:</span>
+                <span className='dark:text-white'>Get connected with us on social networks:</span>
                 </div>
                 {/* <!-- Social network icons container --> */}
                 <div className="flex justify-center">
-                <a className="mr-6 text-neutral-600 dark:text-neutral-950 transition duration-300 transform hover:scale-150 cursor-pointer">
+                <a className="mr-6 text-black transition duration-300 transform hover:scale-150 cursor-pointer dark:text-white">
                     <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-4 w-4"
@@ -22,7 +22,7 @@ const Footer = () => {
                         d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
                     </svg>
                 </a>
-                <a className="mr-6 text-neutral-600 dark:text-neutral-950 transition duration-300 transform hover:scale-150 cursor-pointer">
+                <a className="mr-6 text-black transition duration-300 transform hover:scale-150 cursor-pointer dark:text-white">
                     <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-4 w-4"
@@ -32,7 +32,7 @@ const Footer = () => {
                         d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
                     </svg>
                 </a>
-                <a className="text-neutral-600 dark:text-neutral-950 transition duration-300 transform hover:scale-150 cursor-pointer">
+                <a className="text-black transition duration-300 transform hover:scale-150 cursor-pointer dark:text-white">
                     <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-4 w-4"
@@ -51,10 +51,10 @@ const Footer = () => {
                 {/* <!-- DeskMe section --> */}
                 <div className="">
                     <h6
-                    className="mb-4 text-2xl flex items-center justify-center font-bold md:justify-start">
+                    className="mb-4 text-2xl flex items-center justify-center font-bold md:justify-start dark:text-white">
                     DeskMe
                     </h6>
-                    <p>
+                    <p className='dark:text-white'>
                     Streamline your workspace experience with our intuitive booking system. 
                     We ensures your workspace is ready when you are.
                     </p>
@@ -62,52 +62,52 @@ const Footer = () => {
                 {/* <!-- Useful links section --> */}
                 <div className="">
                     <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start">
+                    className="mb-4 flex justify-center font-bold md:justify-start dark:text-white">
                     Quick links
                     </h6>
                     <p className="mb-4">
-                    <a className="text-neutral-600 dark:text-neutral-950 hover:underline underline-offset-2 cursor-pointer"
+                    <a className="text-black dark:text-white hover:underline underline-offset-2 cursor-pointer"
                     >Home</a>
                     </p>
                     <p className="mb-4">
-                    <a className="text-neutral-600 dark:text-neutral-950 hover:underline underline-offset-2 cursor-pointer"
+                    <a className="text-black dark:text-white hover:underline underline-offset-2 cursor-pointer"
                     >About us</a>
                     </p>
                     <p className="mb-4">
-                    <a className="text-neutral-600 dark:text-neutral-950 hover:underline underline-offset-2 cursor-pointer"
+                    <a className="text-black dark:text-white hover:underline underline-offset-2 cursor-pointer"
                     >Services</a>
                     </p>
                     <p>
-                    <a className="text-neutral-600 dark:text-neutral-950 hover:underline underline-offset-2 cursor-pointer"
+                    <a className="text-black dark:text-white hover:underline underline-offset-2 cursor-pointer"
                     >Contact Us</a>
                     </p>
                 </div>
                 {/* <!-- Company section --> */}
                 <div className="">
                     <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start">
+                    className="mb-4 flex justify-center font-bold md:justify-start dark:text-white">
                     Company
                     </h6>
                     <p className="mb-4">
-                    <a className="text-neutral-600 dark:text-neutral-950 hover:underline underline-offset-2 cursor-pointer"
+                    <a className="text-black dark:text-white hover:underline underline-offset-2 cursor-pointer"
                     >Pricing</a>
                     </p>
                     <p className="mb-4">
-                    <a className="text-neutral-600 dark:text-neutral-950 hover:underline underline-offset-2 cursor-pointer"
+                    <a className="text-black dark:text-white hover:underline underline-offset-2 cursor-pointer"
                     >Terms & Conditions</a>
                     </p>
                     <p className="mb-4">
-                    <a className="text-neutral-600 dark:text-neutral-950 hover:underline underline-offset-2 cursor-pointer"
+                    <a className="text-black dark:text-white hover:underline underline-offset-2 cursor-pointer"
                     >Privacy Policy</a>
                     </p>
                 </div>
                 {/* <!-- Contact section --> */}
                 <div>
                     <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start">
+                    className="mb-4 flex justify-center font-bold md:justify-start dark:text-white">
                     Contact
                     </h6>
-                    <p className="mb-4 flex items-center justify-center md:justify-start">
+                    <p className="mb-4 flex items-center justify-center md:justify-start dark:text-white">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -120,7 +120,7 @@ const Footer = () => {
                     </svg>
                     Apalit, Pampanga 2016
                     </p>
-                    <p className="mb-4 flex items-center justify-center md:justify-start">
+                    <p className="mb-4 flex items-center justify-center md:justify-start dark:text-white">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -133,7 +133,7 @@ const Footer = () => {
                     </svg>
                     deskme@gmail.com
                     </p>
-                    <p className="mb-4 flex items-center justify-center md:justify-start">
+                    <p className="mb-4 flex items-center justify-center md:justify-start dark:text-white">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
@@ -150,15 +150,15 @@ const Footer = () => {
                 {/* <!-- Special thanks section --> */}
                 <div className="">
                     <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start">
+                    className="mb-4 flex justify-center font-bold md:justify-start dark:text-white">
                     Help
                     </h6>
                     <p className="mb-4">
-                    <a className="text-neutral-600 dark:text-neutral-950 hover:underline underline-offset-2 cursor-pointer"
+                    <a className="text-black dark:text-white hover:underline underline-offset-2 cursor-pointer"
                     >FAQs and Guides</a>
                     </p>
                     <p className="mb-4">
-                    <a className="text-neutral-600 dark:text-neutral-950 hover:underline underline-offset-2 cursor-pointer"
+                    <a className="text-black dark:text-white hover:underline underline-offset-2 cursor-pointer"
                     >Customer Support</a>
                     </p>
                 </div>
@@ -166,7 +166,7 @@ const Footer = () => {
             </div>
 
             {/* <!--Copyright section--> */}
-            <div className="p-6 text-center border-t-2 border-black">
+            <div className="p-6 text-center border-t-2 border-black dark:text-white dark:border-white">
                 <span>© 2023 DeskMe, All right reserved. </span>
             </div>
             </footer>
