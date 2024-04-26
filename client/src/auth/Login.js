@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from 'axios'
 
-const InputField = ({ type, name, placeholder, value, onChange, icon }) => {
+const InputField = ({ type, name, placeholder, value, onChange, icon, error }) => {
   return (
     <div className='relative'>
       <input
@@ -24,26 +24,55 @@ const InputField = ({ type, name, placeholder, value, onChange, icon }) => {
           {icon.component}
         </button>
       )}
+      {error && <p className='text-red-500 text-sm'>{error}</p>}
     </div>
   );
 };
 
 function Login() {
-  const [password, setPassword] = useState("");
+  // Email
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState('');
+  // Password
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
 
-  const handleInputChange = (setValue) => (event) => {
-    setValue(event.target.value);
-  };
-
+  // Toggle Password Visibility
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  // Navigation
+  const navigate = useNavigate();
+
+  const handleClick1 = () => {
+    navigate('/resetpassword');
+  };
+
+  const handleClick2 = () => {
+    navigate('/');
+  };
+
+  // Validations
+  const isEmpty = (str) => {
+    return str.trim() === '';
+  };
+
   const handleLogin = async () => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (isEmpty(email)) {
+      setEmailError('Please fill out this field.');
+      return;
+    } else if (!emailRegex.test(email)) {
+      setEmailError('Please enter a valid email address.');
+      return;
+    }
+    if (isEmpty(password)) {
+      setPasswordError('Please fill out this field.');
+      return;
+    }
+    
     try {
       const credentials = {
         email,
@@ -62,14 +91,14 @@ function Login() {
       if (error.response && error.response.status === 401) {
         // Unauthorized (401) status code indicates incorrect password
         console.error('Incorrect password');
-        setErrorMessage('Incorrect password'); // Set error message for incorrect password
+        setPasswordError('Incorrect password'); // Set error message for incorrect password
       } else {
         // Handle other errors
         console.error('Login failed:', error.response ? error.response.data.message : error.message);
-        setErrorMessage('Invalid email or incorrect password.');
+        setPasswordError('Login failed. Please try again later.');
       }
     }
-  }
+  };
 
   useEffect(() => {
     console.log(email);
@@ -80,7 +109,7 @@ function Login() {
     <div className='flex flex-col items-center justify-center mt-32'>
       <div className='border-2 border-black rounded-lg shadow-lg w-full max-w-md p-8'>
         <div className='flex justify-end'>
-          <button onClick={() => navigate('/')} className='text-2xl'><HiOutlineXMark /></button>
+          <button onClick={handleClick2} className='text-2xl'><HiOutlineXMark /></button>
         </div>
         <h1 className='text-4xl font-black text-left'>Sign in</h1>
         <p className='font-normal text-left mt-1'>Stay updated on your bookings.</p>
@@ -91,8 +120,9 @@ function Login() {
             name='email'
             placeholder='Email Address:'
             value={email}
-            onChange={handleInputChange(setEmail)}
+            onChange={(e) => setEmail(e.target.value)}
             icon={null}
+            error={emailError}
           />
         </div>
 
@@ -102,7 +132,8 @@ function Login() {
             name='password'
             placeholder='Password:'
             value={password}
-            onChange={handleInputChange(setPassword)}
+            onChange={(e) => setPassword(e.target.value)}
+            error={passwordError}
             icon={{
               component: showPassword ? <BsEyeSlash /> : <BsEye />,
               onClick: togglePasswordVisibility,
@@ -110,7 +141,13 @@ function Login() {
           />
         </div>
 
-        <div className="text-red-500 mt-2">{errorMessage}</div>
+        <div className="flex items-left mt-4 mb-4">
+          <input type="checkbox" id="rememberMe" className="w-4 h-5 text-black bg-gray-100 border-black rounded hover:cursor-pointer" />
+          <label htmlFor="rememberMe" className="ms-2 text-sm font-medium text-black dark:text-black hover:cursor-pointer">Remember Me</label>
+          <div className="list-none ml-auto">
+            <li onClick={handleClick1} className="font-medium text-sm hover:underline cursor-pointer">Forgot password?</li>
+          </div>
+        </div>
 
         <div className='text-center mt-14 mb-5'>
           <button onClick={handleLogin} className='bg-white text-black font-semibold rounded-2xl border-2 border-black py-3 w-full hover:bg-black hover:text-white transition-colors duration-300'>Sign in</button>
