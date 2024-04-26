@@ -4,7 +4,7 @@ import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-const InputField = ({ type, name, placeholder, value, onChange, icon, error }) => {
+const InputField = ({ type, name, placeholder, value, onChange, icon }) => {
   return (
     <div className='relative'>
       <input
@@ -24,19 +24,13 @@ const InputField = ({ type, name, placeholder, value, onChange, icon, error }) =
           {icon.component}
         </button>
       )}
-      {error && <p className='text-red-500 text-sm'>{error}</p>}
     </div>
   );
 };
 
 function Login() {
-
-  // Email
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState('');
-  // Password
   const [password, setPassword] = useState("");
-  const [passwordError, setpasswordError] = useState('');
+  const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
@@ -50,16 +44,6 @@ function Login() {
   };
 
   const handleLogin = async () => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (isEmpty(email)) {
-      setEmailError('Please fill out this field.');
-    } else if (!emailRegex.test(email)) {
-      setEmailError('Please enter a valid email address.');
-    }
-    if (isEmpty(password)) {
-      setpasswordError('Please fill out this field.');
-    }
-
     try {
       const credentials = {
         email,
@@ -86,6 +70,7 @@ function Login() {
       }
     }
   }
+
   useEffect(() => {
     console.log(email);
     console.log(password);
@@ -108,7 +93,6 @@ function Login() {
             value={email}
             onChange={handleInputChange(setEmail)}
             icon={null}
-            error={emailError}
           />
         </div>
 
@@ -119,7 +103,6 @@ function Login() {
             placeholder='Password:'
             value={password}
             onChange={handleInputChange(setPassword)}
-            error={passwordError}
             icon={{
               component: showPassword ? <BsEyeSlash /> : <BsEye />,
               onClick: togglePasswordVisibility,
