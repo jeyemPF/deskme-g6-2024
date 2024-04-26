@@ -14,7 +14,7 @@ export const register = async (req, res, next) => {
         const hash = bcrypt.hashSync(req.body.password, salt)
 
 
-        const { username, email, password } = req.body;
+        const { username, email } = req.body;
 
         // Create a new user instance
         const newUser = new User({ username, email, password: hash});
@@ -46,10 +46,10 @@ export const register = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   try {
-    console.log('triggered');
     const user = await User.findOne({ email: req.body.email });
+
     if (!user) {
-      return next(createError(404, "Invalid email address or password"));
+      return next(createError(404, "User not found"));
     }
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -72,6 +72,7 @@ export const login = async (req, res, next) => {
     next(err);
   }
 };
+
 
 
 // forgot and reset password

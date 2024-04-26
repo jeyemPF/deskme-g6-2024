@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import { verifyAdminOrSuperAdmin } from "../utils/verifyToken.js";
 
 // UPDATE
 export const updateUser = async (req, res, next) => {
@@ -38,7 +39,7 @@ export const getUser = async (req, res, next) => {
 };
 
 // GET ALL
-export const getUsers = async (req, res, next) => {
+export const getUsers = async (_req, res, next) => {
     try {
         const users = await User.find();
         res.status(200).json(users);
@@ -46,7 +47,6 @@ export const getUsers = async (req, res, next) => {
         next(err);
     }
 };
-
 
 // CREATE
 export const createAdminUser = async (req, res, next) => {

@@ -30,24 +30,19 @@ const InputField = ({ type, name, placeholder, value, onChange, icon, error }) =
 };
 
 function Login() {
-
   // Email
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState('');
   // Password
   const [password, setPassword] = useState("");
-  const [passwordError, setpasswordError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  // Toggle Password
+
+  // Toggle Password Visibility
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  // Error Message
-  const [errorMessage, setErrorMessage] = useState('')
-  // 
-  const handleInputChange = (setValue) => (event) => {
-    setValue(event.target.value);
-  };
+
   // Navigation
   const navigate = useNavigate();
 
@@ -58,6 +53,7 @@ function Login() {
   const handleClick2 = () => {
     navigate('/');
   };
+
   // Validations
   const isEmpty = (str) => {
     return str.trim() === '';
@@ -67,18 +63,21 @@ function Login() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (isEmpty(email)) {
       setEmailError('Please fill out this field.');
+      return;
     } else if (!emailRegex.test(email)) {
       setEmailError('Please enter a valid email address.');
+      return;
     }
     if (isEmpty(password)) {
-      setpasswordError('Please fill out this field.');
+      setPasswordError('Please fill out this field.');
+      return;
     }
-
+    
     try {
       const credentials = {
         email,
         password
-      }
+      };
   
       const response = await axios.post('http://localhost:8800/api/auth/login', credentials);
   
@@ -92,14 +91,15 @@ function Login() {
       if (error.response && error.response.status === 401) {
         // Unauthorized (401) status code indicates incorrect password
         console.error('Incorrect password');
-        setErrorMessage('Incorrect password'); // Set error message for incorrect password
+        setPasswordError('Incorrect password'); // Set error message for incorrect password
       } else {
         // Handle other errors
         console.error('Login failed:', error.response ? error.response.data.message : error.message);
-        setErrorMessage('Login failed. Please try again later.');
+        setPasswordError('Login failed. Please try again later.');
       }
     }
-  }
+  };
+
   useEffect(() => {
     console.log(email);
     console.log(password);
@@ -120,7 +120,7 @@ function Login() {
             name='email'
             placeholder='Email Address:'
             value={email}
-            onChange={handleInputChange(setEmail)}
+            onChange={(e) => setEmail(e.target.value)}
             icon={null}
             error={emailError}
           />
@@ -132,7 +132,7 @@ function Login() {
             name='password'
             placeholder='Password:'
             value={password}
-            onChange={handleInputChange(setPassword)}
+            onChange={(e) => setPassword(e.target.value)}
             error={passwordError}
             icon={{
               component: showPassword ? <BsEyeSlash /> : <BsEye />,
@@ -141,11 +141,11 @@ function Login() {
           />
         </div>
 
-        <div class="flex items-left mt-4 mb-4">
-          <input type="checkbox" id="ce976249-77f6-469a-9301-40f1eec73660" class="w-4 h-5 text-black bg-gray-100 border-black rounded hover:cursor-pointer" />
-          <label for="ce976249-77f6-469a-9301-40f1eec73660" class="ms-2 text-sm font-medium text-black dark:text-black hover:cursor-pointer">Remember Me</label>
-          <div class="list-none ml-auto">
-            <li onClick={handleClick1} class="font-medium text-sm hover:underline cursor-pointer">Forgot password?</li>
+        <div className="flex items-left mt-4 mb-4">
+          <input type="checkbox" id="rememberMe" className="w-4 h-5 text-black bg-gray-100 border-black rounded hover:cursor-pointer" />
+          <label htmlFor="rememberMe" className="ms-2 text-sm font-medium text-black dark:text-black hover:cursor-pointer">Remember Me</label>
+          <div className="list-none ml-auto">
+            <li onClick={handleClick1} className="font-medium text-sm hover:underline cursor-pointer">Forgot password?</li>
           </div>
         </div>
 

@@ -5,6 +5,7 @@ import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
 import desksRoute from "./routes/desks.js";
 import reservationsRoute from "./routes/reservations.js";
+import switchsRoute from "./routes/switchs.js"
 import cookieParser from "cookie-parser";
 
 import cors from "cors";
@@ -53,6 +54,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/desks", desksRoute);
 app.use("/api/reservations", reservationsRoute);
+app.use("/api/switchs", switchsRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
