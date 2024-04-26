@@ -62,9 +62,10 @@ function Login() {
   const handleLogin = async () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (isEmpty(email)) {
+      if (isEmpty(password)) {
       setEmailError('Please fill out this field.');
       return;
-    } else if (!emailRegex.test(email)) {
+    }} else if (!emailRegex.test(email)) {
       setEmailError('Please enter a valid email address.');
       return;
     }
@@ -95,7 +96,7 @@ function Login() {
       } else {
         // Handle other errors
         console.error('Login failed:', error.response ? error.response.data.message : error.message);
-        setPasswordError('Login failed. Please try again later.');
+        setPasswordError('Incorrect password. Try again.');
       }
     }
   };
@@ -127,18 +128,28 @@ function Login() {
         </div>
 
         <div className='relative mt-4'>
-          <InputField
-            type={showPassword ? 'text' : 'password'}
-            name='password'
-            placeholder='Password:'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            error={passwordError}
-            icon={{
-              component: showPassword ? <BsEyeSlash /> : <BsEye />,
-              onClick: togglePasswordVisibility,
-            }}
-          />
+            <InputField
+              style={{ display: 'flex', alignItems: 'center' }}
+              type={showPassword ? 'text' : 'password'}
+              name='password'
+              placeholder='Password:'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              icon={{
+                component: showPassword ? <BsEyeSlash /> : <BsEye />,
+                onClick: togglePasswordVisibility,
+              }}
+            />
+            {passwordError && (
+              <div
+                style={{
+                  fontSize: '0.9rem',
+                  color: 'red',
+                }}
+              >
+                {passwordError}
+              </div>
+            )}
         </div>
 
         <div className="flex items-left mt-4 mb-4">
