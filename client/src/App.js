@@ -10,6 +10,7 @@ import Dashboard from '../src/user/Dashboard';
 import Booking from '../src/user/Booking';
 import ManageBooking from '../src/user/ManageBooking';
 import ResetPassword from './auth/ResetPassword';
+import NewPassword from './auth/NewPassword';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path='/booking' element={<Booking />} />
         <Route path='/managebooking' element={<ManageBooking />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
+        <Route path='/newpassword' element={<NewPassword />} />
    
       </Routes>
     </Router> 
