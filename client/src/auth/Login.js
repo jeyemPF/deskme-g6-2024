@@ -108,12 +108,12 @@ function Login() {
 
   return (
     <div className='flex flex-col items-center justify-center mt-32'>
-      <div className='border-2 border-black rounded-lg shadow-lg w-full max-w-md p-8'>
+      <div className='border-[1px] border-neutral-700 rounded-lg shadow-lg w-full max-w-md p-8'>
         <div className='flex justify-end'>
-          <button onClick={handleClick2} className='text-2xl'><HiOutlineXMark /></button>
+          <button onClick={handleClick2} className='text-2xl text-neutral-700'><HiOutlineXMark /></button>
         </div>
-        <h1 className='text-4xl font-black text-left'>Sign in</h1>
-        <p className='font-normal text-left mt-1'>Stay updated on your bookings.</p>
+        <h1 className='text-4xl font-black text-left text-neutral-700'>Sign in</h1>
+        <p className='font-normal text-left mt-1 text-neutral-700'>Stay updated on your bookings.</p>
 
         <div className='mt-12'>
           <InputField
@@ -153,18 +153,18 @@ function Login() {
         </div>
 
         <div className="flex items-left mt-4 mb-4">
-          <input type="checkbox" id="rememberMe" className="w-4 h-5 text-black bg-gray-100 border-black rounded hover:cursor-pointer" />
-          <label htmlFor="rememberMe" className="ms-2 text-sm font-medium text-black dark:text-black hover:cursor-pointer">Remember Me</label>
+          <input type="checkbox" id="rememberMe" className="w-4 h-5 text-neutral-700 bg-gray-100 border-black rounded hover:cursor-pointer" />
+          <label htmlFor="rememberMe" className="ms-2 text-sm font-medium text-neutral-700 hover:cursor-pointer">Remember Me</label>
           <div className="list-none ml-auto">
-            <li onClick={handleClick1} className="font-medium text-sm hover:underline cursor-pointer">Forgot password?</li>
+            <li onClick={handleClick1} className="font-medium text-sm hover:underline cursor-pointer text-neutral-700">Forgot password?</li>
           </div>
         </div>
 
         <div className='text-center mt-14 mb-5'>
-          <button onClick={handleLogin} className='bg-white text-black font-semibold rounded-2xl border-2 border-black py-3 w-full hover:bg-black hover:text-white transition-colors duration-300'>Sign in</button>
+          <button onClick={handleLogin} className='bg-white text-neutral-700 font-semibold rounded-2xl border-[1px] border-neutral-700 py-3 w-full hover:bg-neutral-700 hover:text-white transition-colors duration-300'>Sign in</button>
         </div>
       </div>
-      <div className='text-center text-base font-light mt-2'>
+      <div className='text-center text-base font-light mt-2 text-neutral-700'>
         <h1>
           <span>&#169;</span>2023 DeskMe, All right reserved. Privacy Policy <br /> and Terms & Conditions.
         </h1>

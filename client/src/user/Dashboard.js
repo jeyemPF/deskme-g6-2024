@@ -4,7 +4,7 @@ import Header from '../components/Header';
 function Dashboard() {
 
   return (
-      <div className="dark:bg-neutral-900 flex">
+      <div className="dark:bg-neutral-900 flex overflow-hidden">
         <Sidebar />
       </div>
   );

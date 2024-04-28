@@ -61,12 +61,12 @@ const ResetPassword = () => {
 
   return (
     <div className='flex flex-col items-center justify-center mt-32'>
-      <div className='border-2 border-black rounded-lg shadow-lg w-full max-w-md p-8'>
+      <div className='border-[1px] border-neutral-700 rounded-lg shadow-lg w-full max-w-md p-8'>
         <div className='flex justify-end'>
           <button onClick={handleClick1} className='text-2xl'><HiOutlineXMark /></button>
         </div>
-        <h1 className='text-4xl font-black text-left'>Reset Password</h1>
-        <p className='font-normal text-sm text-left mt-2'>Enter your email, and we'll send a code to your inbox.</p>
+        <h1 className='text-4xl font-black text-left text-neutral-700'>Reset Password</h1>
+        <p className='font-normal text-sm text-left mt-2 text-neutral-700'>Enter your email, and we'll send a code to your inbox.</p>
 
         <div className='mt-12'>
             <InputField
@@ -78,10 +78,10 @@ const ResetPassword = () => {
               icon={null}
               error={emailError}
             />
-            <button className='bg-white text-black font-semibold rounded-2xl mt-12 mb-4 border-2 border-black py-3 w-full hover:bg-black hover:text-white transition-colors duration-300' onClick={handleConfirm}>Confirm</button>
+            <button className='bg-white text-neutral-700 font-semibold rounded-2xl mt-12 mb-4 border-[1px] border-neutral-700 py-3 w-full hover:bg-neutral-700 hover:text-white transition-colors duration-300' onClick={handleConfirm}>Confirm</button>
         </div>
       </div>
-      <div className='text-center text-base font-light mt-2'>
+      <div className='text-center text-base font-light mt-2 text-neutral-700'>
         <h1>
           <span>&#169;</span>2023 DeskMe, All right reserved. Privacy Policy <br /> and Terms & Conditions.
         </h1>
