@@ -1,6 +1,6 @@
 import express from "express"
 import { deleteUser, getUser, getUsers, updateUser, createAdminUser } from "../controllers/user.js";
-import { verifySuperAdmin, verifyAdminOrSuperAdmin } from "../utils/verifyToken.js";
+import { verifySuperAdmin, verifyAdminOrSuperAdmin, verifyAdmin, verifyToken } from "../utils/verifyToken.js";
 
 
 const router = express.Router()
@@ -17,6 +17,13 @@ const router = express.Router()
 //     res.send("Hello admin, you are logged in and you can delete all accounts");
 // });
 
+// router.get("/checkadmin/:id", verifyAdmin, (req, res, next) => {
+//     res.send("Hello admin, you are logged in and you can delete all accounts");
+// });
+
+// router.get('/admin/test', verifyAdmin, (req, res) => {
+//     res.status(200).json({ message: 'User is an admin' });
+// });
 // UPDATE
 router.put("/:id", verifyAdminOrSuperAdmin, updateUser);
 
@@ -26,7 +33,7 @@ router.delete("/:id", verifySuperAdmin, deleteUser);
 
 // GET
 // Both admins and super admins can get a single user
-router.get("/:id", getUser);
+router.get("/:id", verifyAdminOrSuperAdmin, getUser);
 
 // GET ALL
 // Both admins and super admins can get all users
