@@ -1,9 +1,9 @@
 import User from "../models/User.js";
-import { getEmailContent, emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail ,sendPasswordResetEmail } from '../utils/emailService.js';
+import { sendMagicLink, emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail ,sendPasswordResetEmail } from '../utils/emailService.js';
 import bcrypt from "bcryptjs"
 import { createError } from "../utils/error.js";
 import  jwt  from "jsonwebtoken";
-import crypto from 'crypto';
+import crypto from "crypto"
 
 
 // REGISTER 
@@ -77,64 +77,134 @@ const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT);
 
 // forgot and reset password
 
-// Forgot Password
-export const forgotPassword = async (req, res, next) => {
-    const mailGenerator = generateMailGenerator();
-    
-    try {
-        const { email } = req.body;
+// Forgot Password Functionality
+// Forgot Password Functionality
+// Forgot Password Functionality
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
 
-        // Find user by email
-        const user = await User.findOne({ email });
-        if (!user) return next(createError(404, "Email not found in our system!"));
+  try {
+    const user = await User.findOne({ email });
 
-        // Generate reset token
-        const resetToken = crypto.randomBytes(20).toString('hex');
-        user.resetPasswordToken = resetToken;
-        user.resetPasswordExpires = Date.now() + 3600000; // Token expires in 1 hour
-        await user.save();
-
-        // Generate reset password email content
-        const resetUrl = `http://yourwebsite.com/reset-password/${resetToken}`;
-        // Inside your function where you need email content
-        
-        const emailContent = getEmailContent(user.username, resetUrl);
-        // Use transporter to send email
-
-
-        // Send reset password email
-        await sendPasswordResetEmail(email, 'Reset Password', mailGenerator.generate(emailContent), mailGenerator.generatePlaintext(emailContent));
-        res.status(200).send("Password reset email sent successfully");
-    } catch (err) {
-        next(err);
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
     }
+
+    // Generate a unique token without "/"
+    const token = generateRandomToken(32);
+
+    // Calculate token expiration (e.g., 10 minutes from now)
+    const expiration = Date.now() + 10 * 60 * 1000;
+
+    // Save token and expiration in user document
+    user.passwordResetToken = {
+      token,
+      expiresAt: expiration,
+    };
+    await user.save();
+
+    // Using sendMagicLink function to send a magic link for password reset
+    sendMagicLink(user, res);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
+  }
 };
-// Reset Password
-export const resetPassword = async (req, res, next) => {
-    try {
-        const { currentPassword, newPassword } = req.body;
-        const userId = req.user.id; // Assuming you have authenticated the user and have access to their ID
 
-        // Retrieve the user from the database
-        const user = await User.findById(userId);
 
-        // Verify the user's current password
-        const isPasswordCorrect = await bcrypt.compare(currentPassword, user.password);
-        if (!isPasswordCorrect) {
-            return next(createError(401, "Current password is incorrect"));
-        }
 
-        // Hash the new password
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(newPassword, salt);
+// Reset Password Functionality
+export const resetPassword = async (req, res) => {
+  const { token, id } = req.params;
+  const { password, confirmPassword } = req.body;
 
-        // Update the user's password
-        user.password = hash;
-        await user.save();
+  try {
+      const user = await User.findById(id);
 
-        // Send success response
-        res.status(200).send("Password reset successfully");
-    } catch (err) {
-        next(err);
-    }
+      if (!user) {
+          return res.status(400).json({
+              success: false,
+              error: "User not found",
+          });
+      }
+
+      const { passwordResetToken } = user;
+      const tokenValid = await bcrypt.compare(token, passwordResetToken.token);
+      const tokenExpired = passwordResetToken.expiresAt < Date.now();
+
+      if (!tokenValid) {
+          return res.status(400).json({
+              success: false,
+              error: "Invalid reset token",
+          });
+      }
+
+      if (tokenExpired) {
+          return res.status(400).json({
+              success: false,
+              error: "Reset token expired",
+          });
+      }
+
+      if (password !== confirmPassword) {
+          return res.status(400).json({
+              success: false,
+              error: "Passwords did not match",
+          });
+      }
+
+      // Add additional password validation logic here if needed
+
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      user.password = hashedPassword;
+      user.passwordChangedAt = Date.now();
+      user.passwordResetToken = undefined;
+
+      // Assuming sendPasswordResetSuccess function sends a success message
+      sendPasswordResetSuccess(user, res);
+  } catch (error) {
+      return res.status(400).json({
+          success: false,
+          error: "An error occurred.",
+      });
+  }
+};
+
+// Validate Reset Token Functionality
+export const validateResetToken = async (req, res) => {
+  const { token, id } = req.params;
+
+  try {
+      const user = await User.findById(id);
+
+      if (!user || !user.passwordResetToken) {
+          return res.status(400).json({
+              success: false,
+              error: "User or reset token not found",
+          });
+      }
+
+      const { passwordResetToken } = user;
+      const tokenValid = await bcrypt.compare(token, passwordResetToken.token);
+      const tokenExpired = passwordResetToken.expiresAt < Date.now();
+
+      if (!tokenValid || tokenExpired) {
+          return res.status(400).json({
+              success: false,
+              error: "Invalid or expired reset token",
+          });
+      }
+
+      return res.status(200).json({ success: true, message: "Reset token is valid" });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+          success: false,
+          error: "An error occurred.",
+      });
+  }
 };

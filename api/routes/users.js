@@ -43,7 +43,7 @@ router.get("/:id", verifyAdmin, getUser);
 
 // GET ALL
 // Both admins and super admins can get all users
-router.get("/", verifyAdminOrSuperAdmin, getUsers);
+router.get("/", verifySuperAdmin, getUsers);
 
 // CREATE ADMIN
 // Only super admins can create admin users
