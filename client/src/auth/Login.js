@@ -37,7 +37,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
+  const [passwordFilled, setPasswordFilled] = useState('');
   // Toggle Password Visibility
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -69,7 +69,7 @@ function Login() {
       return;
     }
     if (isEmpty(password)) {
-      setPasswordError('Please fill out this field.');
+      setPasswordErrorFilled('Please fill out this field.');
       return;
     }
     

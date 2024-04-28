@@ -18,12 +18,13 @@ export const verifyToken = (req, _res, next) => {
 };
 
 // Middleware to check if user is authorized
-export const verifyUserAuthorization = (req, _res, next) => {
+export const verifyUserAuthorization = (req, res, next) => {
     if (!req.user || req.user.id !== req.params.id) {
         return next(createError(403, "You are not authorized!"));
     }
     next();
 };
+
 
 // Middleware to check if user is an admin
 export const verifyAdmin = (req, _res, next) => {
