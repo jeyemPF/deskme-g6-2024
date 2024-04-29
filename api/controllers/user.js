@@ -1,6 +1,5 @@
 import User from "../models/User.js";
-import { verifyAdminOrSuperAdmin } from "../utils/verifyToken.js";
-
+import bcrypt from "bcryptjs"
 // UPDATE
 export const updateUser = async (req, res, next) => {
     try {
@@ -48,6 +47,26 @@ export const getUsers = async (_req, res, next) => {
     }
 };
 
+
+// DELETE ALL USERS EXCEPT SUPERADMIN
+
+export const deleteAllUser = async (req, res, next) => {
+    try {
+        // Step 1: Find the super admin user
+        const superAdmin = await User.findOne({ role: 'superadmin' });
+        if (!superAdmin) {
+            return res.status(404).json({ message: "Super admin not found" });
+        }
+
+        // Step 2: Delete all users except the super admin
+        await User.deleteMany({ _id: { $ne: superAdmin._id } });
+
+        res.status(200).json({ message: "All users (except super admin) have been deleted" });
+    } catch (err) {
+        next(err);
+    }
+};
+
 // CREATE
 export const createAdminUser = async (req, res, next) => {
     try {
@@ -79,6 +98,43 @@ export const createAdminUser = async (req, res, next) => {
         await newAdmin.save();
 
         res.status(201).json({ message: "Admin user created successfully" });
+    } catch (err) {
+        // Handle errors
+        next(err);
+    }
+};
+
+
+export const createOfficeManager = async (req, res, next) => {
+    try {
+        const { username, email, password } = req.body;
+
+        // Validate input data
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: "Username, email, and password are required" });
+        }
+
+        // Check if the user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: "User with this email already exists" });
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create a new office manager user
+        const newOfficeManager = new User({
+            username,
+            email,
+            password: hashedPassword,
+            role: 'officemanager' 
+        });
+
+        // Save the new office manager user to the database
+        await newOfficeManager.save();
+
+        res.status(201).json({ message: "Office Manager user created successfully" });
     } catch (err) {
         // Handle errors
         next(err);

@@ -1,6 +1,6 @@
 import express from "express"
-import { deleteUser, getUser, getUsers, updateUser, createAdminUser } from "../controllers/user.js";
-import { verifySuperAdmin, verifyAdminOrSuperAdmin, verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js";
+import { deleteUser, getUser, getUsers, updateUser, createAdminUser, deleteAllUser, createOfficeManager } from "../controllers/user.js";
+import { verifySuperAdmin, verifyAdmin, } from "../utils/verifyToken.js";
 
 
 const router = express.Router()
@@ -29,9 +29,13 @@ const router = express.Router()
 //     res.send("Hello super admin and super, you are logged in ");
 // });
 
+// router.get("/checkofficemanager/:id", verifyOfficeManager, (req, res,  ) => {
+//     res.send("Hello Office Manager, you are logged in you can manage all bookings operations");
+// });
 
-//UPDATE 
-router.put("/:id", updateUser);
+
+//UPDATE the user information
+router.put("/:id", verifyAdmin, updateUser);
 
 // DELETE
 // Only super admins can delete users
@@ -41,13 +45,19 @@ router.delete("/:id", verifySuperAdmin, deleteUser);
 // Both admins and super admins can get a single user
 router.get("/:id", verifyAdmin, getUser);
 
-// GET ALL
+
 // Both admins and super admins can get all users
 router.get("/", verifySuperAdmin, getUsers);
 
-// CREATE ADMIN
+
 // Only super admins can create admin users
-router.post("/", verifySuperAdmin, createAdminUser);
+router.post("/admin", verifySuperAdmin, createAdminUser);
+
+// Only super admins can create Office Manager users
+router.post("/office-manager", verifySuperAdmin, createOfficeManager);
+
+// DELETE ALL USERS EXCEPT SUPER ADMIN
+router.delete("/", verifySuperAdmin, deleteAllUser);
 
 
 export default router
