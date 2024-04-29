@@ -1,67 +1,27 @@
-import React, { useState } from 'react';
-import { BellIcon, MagnifyingGlassIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+import React from 'react'
+import { BellIcon } from '@heroicons/react/24/solid';
 
 const Header = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleProfileToggle = () => {
-    setIsProfileOpen(!isProfileOpen);
-  };
-
-  const handleNotificationsToggle = () => {
-    setIsNotificationsOpen(!isNotificationsOpen);
-  };
 
   return (
-    <header className="bg-gray-200">
-      <div className="container mx-auto px-4 py-2 flex justify-between items-center">
-        <div className="flex items-center">
-          <button className="text-gray-600 focus:outline-none">
-            <MagnifyingGlassIcon className="h-5 w-5" />
-          </button>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={handleSearch}
-            placeholder="Search..."
-            className="bg-gray-100 ml-2 px-2 py-1 rounded-md focus:ring-0 focus:border-0 focus:bg-white"
-          />
+    <header className="dark:bg-neutral-900 w-screen bg-white p-4 border-b-[1px] border-black dark:border-neutral-500 dark:shadow-neutral-800">
+    <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+        <button className="relative">
+            <BellIcon className="h-8 w-8 text-neutral-700 rounded-full p-1 hover:bg-neutral-700 hover:text-white dark:text-neutral-300 dark:hover:bg-white dark:hover:text-neutral-700" />
+        </button>
+        <button className="focus:outline-none">
+            <img src="https://scontent.fcrk1-3.fna.fbcdn.net/v/t39.30808-6/432775149_3747249338844359_5265507157405488405_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFTzw_9uAbJZ1jiEvCoRKokHlc2p5Q5ZnoeVzanlDlmeg_e-61fWkdDRrXsqzBmzOE7dT5kO24p5m6BHllytThw&_nc_ohc=E-bqFrkZISUQ7kNvgF3vbJr&_nc_ht=scontent.fcrk1-3.fna&oh=00_AfB3IoWBYmAHRjMwlex_UZH8F0E8KCp_Fv2n9Xi9Vd6Upw&oe=6634341D"
+            className="h-9 w-9 rounded-full border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-110" />
+        </button>
+        <div className="flex flex-col">
+            <span className="text-sm font-medium text-gray-800 dark:text-neutral-300 -ml-2">John Carlo</span>
+            <span className="text-xs text-gray-500 dark:text-neutral-400 -ml-2">Employee</span>
         </div>
-        <div className="flex items-center">
-          <button onClick={handleProfileToggle} className="text-gray-600 focus:outline-none">
-            <UserCircleIcon className="h-5 w-5" />
-          </button>
-          {isProfileOpen && (
-            <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-              <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Profile</a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Settings</a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Sign out</a>
-              </div>
-            </div>
-          )}
-          <button onClick={handleNotificationsToggle} className="text-gray-600 focus:outline-none">
-            <BellIcon className="h-5 w-5" />
-          </button>
-          {isNotificationsOpen && (
-            <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-              <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Notification 1</a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Notification 2</a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Notification 3</a>
-              </div>
-            </div>
-          )}
         </div>
-      </div>
+    </div>
     </header>
-  );
-};
+  )
+}   
 
-export default Header;
+export default Header
