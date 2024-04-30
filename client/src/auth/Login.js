@@ -154,7 +154,7 @@ function Login() {
 
         <div className="flex items-left mt-4 mb-4">
           <input type="checkbox" id="rememberMe" className="w-4 h-5 text-neutral-700 bg-gray-100 border-black rounded hover:cursor-pointer" />
-          <label htmlFor="rememberMe" className="ms-2 text-sm font-medium text-neutral-700 hover:cursor-pointer">R</label>
+          <label htmlFor="rememberMe" className="ms-2 text-sm font-medium text-neutral-700 hover:cursor-pointer">Remember Me</label>
           <div className="list-none ml-auto">
             <li onClick={handleClick1} className="font-medium text-sm hover:underline cursor-pointer text-neutral-700">Forgot password?</li>
           </div>
