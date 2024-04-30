@@ -6,10 +6,6 @@ const DeskSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Desk",
     },
-    name: {
-        type: String,
-        required: true,
-    },
     type: {
         type: String,
         required: true,
