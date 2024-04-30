@@ -59,7 +59,7 @@ const Navbar = () => {
               </button>
               <button className="text-neutral-700 text-2xl"><Switcher /></button>
               <p></p>
-              <button onClick={handleClick} className="hidden md:block text-neutral-700 bg-white font-bold rounded-lg border-2 border-neutral-700 shadow-lg text-sm px-6 py-2.5 hover:bg-neutral-700 hover:text-white transition-colors duration-300 dark:text-neutral-700 dark:bg-neutral-300 dark:border-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:transition-colors dark:duration-300">Login</button>
+              <button onClick={handleClick} className="hidden md:block text-neutral-700 bg-white font-bold rounded-lg border-2 border-neutral-700 shadow-lg text-sm px-6 py-2.5 hover:bg-neutral-700 hover:text-white transition-colors duration-300 dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-300 dark:hover:bg-neutral-300 dark:hover:text-neutral-700 dark:transition-colors dark:duration-300">Login</button>
             </div>
           </div>
         </div>

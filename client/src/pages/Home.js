@@ -42,21 +42,21 @@ return (
           <div className=' flex flex-col xl:flex-row items-center'>
             <div className='w-full md:w-2/4y'>
               <h1 className='text-2xl xl:ml-32 xl:text-left sm:text-center sm:text-base sm:pt-12 sm:ml-0'>
-                <span className='text-5xl text-neutral-700 font-extrabold leading-8 lg:text-5xl md:text-4xl sm:text-2xl dark:text-white'>Make every <i><span className='font-black dark:text-white'>click count.</span></i></span>
+                <span className='text-5xl text-neutral-700 font-extrabold leading-8 lg:text-5xl md:text-4xl sm:text-2xl dark:text-white'>Make every <i><span className='font-black text-black dark:text-white'>click count.</span></i></span>
                 <p className='font-normal text-neutral-700 text-lg pt-1 leading-5 lg:text-lg md:text-base sm:text-xs dark:text-white'>
                 DeskMe is built to elevate individuals, providing a seamless <br /> intersection where booking meets brilliance,  empowering <br /> users to thrive through the power of connection <br /> and convenience.
                 </p>
-                <button onClick={handleClick} className='text-neutral-700 bg-white font-semibold text-lg rounded-lg border-2 border-neutral-700 shadow-lg hover:bg-neutral-700 hover:text-white transition-colors duration-300 mt-3 md:mx-auto md:px-7 md:py-3 sm:px-5 sm:py-2 dark:text-neutral-700 dark:bg-neutral-300 dark:border-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:transition-colors dark:duration-300'>Book Now</button>
+                <button onClick={handleClick} className='text-neutral-700 bg-white font-semibold text-lg rounded-lg border-2 border-neutral-700 shadow-lg hover:bg-neutral-700 hover:text-white transition-colors duration-300 mt-3 md:mx-auto md:px-7 md:py-3 sm:px-5 sm:py-2 dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-300 dark:hover:bg-neutral-300 dark:hover:text-neutral-700 dark:transition-colors dark:duration-300'>Book Now</button>
               </h1>
             </div>
 
             <div className='flex items-center justify-center'>
               <div className='flex gap-4 mr-28'>
                 <div className='pt-28'>
-                  <img className='hidden xl:block lg:h-80 lg:w-96 rounded-xl border-[1.5px] border-neutral-700 shadow-xl transition duration-300 transform hover:scale-105 dark:border-neutral-300' src={desk1} alt="Desk 1"/>
+                  <img className='hidden xl:block lg:h-80 lg:w-96 rounded-xl border-2 border-neutral-700 shadow-xl transition duration-300 transform hover:scale-105 dark:border-neutral-300' src={desk1} alt="Desk 1"/>
                 </div>
                 <div className='pt-16'>
-                  <img className='hidden xl:block lg:h-80 lg:w-96 rounded-xl border-[1.5px] border-neutral-700 shadow-xl transition duration-300 transform hover:scale-105 dark:border-neutral-300' src={desk2} alt="Desk 2"/>
+                  <img className='hidden xl:block lg:h-80 lg:w-96 rounded-xl border-2 border-neutral-700 shadow-xl transition duration-300 transform hover:scale-105 dark:border-neutral-300' src={desk2} alt="Desk 2"/>
                 </div>
               </div>
             </div>
