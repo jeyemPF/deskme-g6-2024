@@ -1,7 +1,6 @@
     import User from "../models/User.js";
     import bcrypt from "bcryptjs"
-    import cloudinary from "../utils/cloudinary.js";
-    import upload from "../middleware/multer.js";
+    import cloudinary from "../config/cloudinary.js";
   
 
 
@@ -161,6 +160,8 @@
 
 
     export const uploadAvatar = async function (req, res, next) {
+
+          
         try {
             // Retrieve the user ID from the authenticated user's token or session
             const userId = req.user.id;
@@ -174,7 +175,7 @@
             }
     
             // Upload the avatar to Cloudinary
-            const result = await cloudinary.uploader.upload(req.file.path);
+            const result = await cloudinary.uploader.upload((req.file.path));
     
             // Update the user's avatar URL in the database
             user.avatar = result.url;

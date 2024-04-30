@@ -7,13 +7,19 @@ import desksRoute from "./routes/desks.js";
 import reservationsRoute from "./routes/reservations.js";
 import switchsRoute from "./routes/switchs.js"
 import cookieParser from "cookie-parser";
-
 import cors from "cors";
+import cloudinary from "./config/cloudinary.js";
+
 
 const app = express();
 
 dotenv.config();
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 // Dito 'yung mga p'wedeng mag-access ng backend
 // URL ng frontend
 const allowedOrigins = ["http://localhost:3000"];
