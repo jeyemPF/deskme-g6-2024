@@ -1,6 +1,7 @@
 import express from "express"
-import { deleteUser, getUser, getUsers, updateUser, createAdminUser, deleteAllUser, createOfficeManager } from "../controllers/user.js";
-import { verifySuperAdmin, verifyAdmin, } from "../utils/verifyToken.js";
+import { deleteUser, getUser, getUsers, updateUser, createAdminUser, deleteAllUser, createOfficeManager, uploadAvatar, updateProfile, getSelf } from "../controllers/user.js";
+import { verifySuperAdmin, verifyAdmin, verifyToken, } from "../utils/verifyToken.js";
+import upload from "../middleware/multer.js";
 
 
 const router = express.Router()
@@ -37,18 +38,19 @@ const router = express.Router()
 //UPDATE the user information
 router.put("/:id", verifyAdmin, updateUser);
 
-// DELETE
+
 // Only super admins can delete users
 router.delete("/:id", verifySuperAdmin, deleteUser);
 
-// GET
+
 // Both admins and super admins can get a single user
 router.get("/:id", verifyAdmin, getUser);
 
+// getself
+router.get ('/self', verifyToken, getSelf);
 
-// Both admins and super admins can get all users
+// get all users by superadmin
 router.get("/", verifySuperAdmin, getUsers);
-
 
 // Only super admins can create admin users
 router.post("/admin", verifySuperAdmin, createAdminUser);
@@ -58,6 +60,13 @@ router.post("/office-manager", verifySuperAdmin, createOfficeManager);
 
 // DELETE ALL USERS EXCEPT SUPER ADMIN
 router.delete("/", verifySuperAdmin, deleteAllUser);
+
+// Upload avatars
+router.patch("/self/avatar", verifyToken, upload.single("avatar"), uploadAvatar,);
+
+// updating profile
+router.put("/profile", updateProfile);
+
 
 
 export default router
