@@ -65,9 +65,7 @@ export const getUsers = async (_req, res, next) => {
     }
 };
 
-
 // DELETE ALL USERS EXCEPT SUPERADMIN
-
 export const deleteAllUser = async (req, res, next) => {
     try {
         // Step 1: Find the super admin user
@@ -85,7 +83,7 @@ export const deleteAllUser = async (req, res, next) => {
     }
 };
 
-// CREATE
+// CREATING A ADMIN USER
 export const createAdminUser = async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
@@ -122,7 +120,7 @@ export const createAdminUser = async (req, res, next) => {
     }
 };
 
-
+// CREATING OFFICER MANAGERS
 export const createOfficeManager = async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
@@ -158,7 +156,7 @@ export const createOfficeManager = async (req, res, next) => {
     }
 };
 
-
+// UPLOAD AVATARS FOR USER
 export const uploadAvatar = async function (req, res, next) {
 
       
@@ -188,7 +186,7 @@ export const uploadAvatar = async function (req, res, next) {
     }
 };
 
-
+// UPDATE PROFILE FOR ALL USERS
 export const updateProfile = async (req, res) => {
     const { username } = req.body;
     const user = await User.findById(req.user.id).select("-password");

@@ -28,6 +28,7 @@ export const updateDesk = async (req, res, next) => {
     }
 };
 
+
 export const deleteDesk = async (req, res, next) => {
     const floorId = req.params.floorId;
     try {
@@ -54,6 +55,7 @@ export const getDeskById = async (req, res, next) => {
         next(err);
     }
 };
+
 
 export const getAllDesks = async (req, res, next) => {
     try {
