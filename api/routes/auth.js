@@ -1,23 +1,23 @@
-import express from "express"
-import { login, register, forgotPassword, resetPassword, validateResetToken } from "../controllers/auth.js"
+    import express from "express"
+    import { login, register, forgotPassword, resetPassword, validateResetToken } from "../controllers/auth.js"
+    import { verifyToken } from "../utils/verifyToken.js"
 
-const router = express.Router()
+    const router = express.Router()
 
-router.post("/register", register )
-router.post("/login", login)
+    router.post("/register", register )
+    router.post("/login", login)
 
+    // Forgot Password Route
+    router.post('/forgot-password', verifyToken, forgotPassword);
 
-// Forgot Password Route
-router.post('/forgot-password', forgotPassword);
+    // Reset Password Route
+    router.patch('/reset-password/:token/:id', resetPassword);
 
-// Reset Password Route
-router.post('/reset-password/:token/:id', resetPassword);
-
-// Validate Reset Token Route
-router.get('/validate-reset-token/:token/:id', validateResetToken);
-
-
+    // Validate Reset Token Route
+    router.get('/reset-password/validate/:token/:id', validateResetToken);
 
 
 
-export default router   
+
+
+    export default router   

@@ -35,9 +35,6 @@ const UserSchema = new Schema({
       default:
         "http://res.cloudinary.com/drlztlr1m/image/upload/v1706979188/oxbsppubd3rsabqwfxsr.jpg",
     },
-    banner: {
-      type: String,
-    },
     isDisabled: {
       type: Number,
       default: 0,
