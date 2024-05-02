@@ -1,48 +1,25 @@
 import mongoose from 'mongoose';
+import { officeEquipmentEnum } from '../utils/officeEquipment.js'
 const { Schema } = mongoose;
 
 const DeskSchema = new Schema({
-    desk: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Desk",
-    },
-    type: {
+    title: {
         type: String,
         required: true,
+        unique: true,
     },
     status: {
         type: String,
         enum: ['available', 'reserved', 'unavailable'],
         default: 'available'
     },
-    features: {
+    officeEquipment: {
         type: [String],
-        required: false
+        enum: officeEquipmentEnum, 
     },
-    assignedUser: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: false
-    },
-    reservation: {
-        type: Schema.Types.ObjectId,
-        ref: 'Reservation',
-        required: false
-    },
-    maintenance: {
-        lastServicedDate: {
-            type: Date,
-            required: false
-        },
-        maintenanceSchedule: {
-            type: String,
-            required: false
-        }
-    },
-    deskIds: [{
-        number: Number,
-        unavailableDates: [{ type: Date }]
-    }]
+    area: {
+        type: Number,
+    }
 }, { timestamps: true });
 
 export default mongoose.model('Desk', DeskSchema);
