@@ -1,9 +1,8 @@
 import User from "../models/User.js";
-import { emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail, transporter, sendMagicLink  } from '../utils/emailService.js';
+import { emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail, sendMagicLink  } from '../utils/emailService.js';
 import bcrypt from "bcryptjs"
 import { createError } from "../utils/error.js";
 import  jwt  from "jsonwebtoken";
-import crypto from "crypto"
 
 
 // Register user
@@ -105,7 +104,6 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-
 // Reset Password Functionality
 export const resetPassword = async (req, res) => {
   const { token, id } = req.params;
@@ -153,8 +151,9 @@ export const resetPassword = async (req, res) => {
       user.password = hashedPassword;
       user.passwordChangedAt = Date.now();
       user.passwordResetToken = undefined;
+     
 
-      // Assuming sendPasswordResetSuccess function sends a success message
+      
       await user.save();
       return res.status(200).json({success: true, message: "successfully"} )
   } catch (error) {
