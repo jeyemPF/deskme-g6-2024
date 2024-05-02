@@ -29,7 +29,6 @@ function App() {
         <Route path='/managebooking' element={<ManageBooking />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
         <Route path='/newpassword' element={<NewPassword />} />
-   
       </Routes>
     </Router> 
   </div>

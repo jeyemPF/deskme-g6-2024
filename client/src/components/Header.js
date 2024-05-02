@@ -14,7 +14,7 @@ const Header = () => {
           <div className="flex items-center space-x-4 flex-row-reverse">
             <div className="flex flex-col mr-2">
               <span className="text-sm font-medium text-gray-800 dark:text-neutral-300 ml-3">John Carlo</span>
-              <span className="text-xs text-gray-500 dark:text-neutral-400 ml-3">Employee</span>
+              <span className="text-xs text-gray-500 dark:text-neutral-400 ml-3">Superadmin</span>
             </div>
             <Dropdown>
               {[
@@ -26,12 +26,11 @@ const Header = () => {
                 </button>,
                 [
                   'Customize Profile',
-                  'Help Support',
                 ].map((item, index) => (
                   <a
                     key={index}
                     href="#"
-                    className="block px-2 text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:text-gray-900 dark:text-neutral-300"
+                    className="block text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:text-gray-900 dark:text-neutral-300"
                   >
                     {item}
                   </a>
