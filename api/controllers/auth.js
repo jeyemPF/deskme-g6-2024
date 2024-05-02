@@ -6,7 +6,7 @@ import  jwt  from "jsonwebtoken";
 import crypto from "crypto"
 
 
-// REGISTER 
+// Register user
 export const register = async (req, res, next) => {
     try {
 
@@ -41,9 +41,8 @@ export const register = async (req, res, next) => {
         next(err);
     }
 };
-// LOGIN
 
-
+// Login user
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -78,12 +77,6 @@ export const login = async (req, res, next) => {
   }
 };
 
-
-
-// forgot and reset password
-
-// Forgot Password Functionality
-// Forgot Password Functionality
 // Forgot Password Functionality
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;
@@ -162,11 +155,13 @@ export const resetPassword = async (req, res) => {
       user.passwordResetToken = undefined;
 
       // Assuming sendPasswordResetSuccess function sends a success message
-      sendPasswordResetSuccess(user, res);
+      await user.save();
+      return res.status(200).json({success: true, message: "successfully"} )
   } catch (error) {
+    console.log(error)
       return res.status(400).json({
           success: false,
-          error: "An error occurred.",
+          error: "error message.",
       });
   }
 };
