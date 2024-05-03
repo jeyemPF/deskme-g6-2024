@@ -9,11 +9,11 @@ const Header = () => {
   const [username, setUsername] = useState(null);
   const [role, setRole] = useState(null);
   const [credentialsChanged, setCredentialsChanged] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   useEffect(() => {
     // Function to fetch user credentials from sessionStorage
     const fetchUserCredentials = () => {
-
       const storedCredentials = sessionStorage.getItem('userCredentials');
       if (storedCredentials) {
         const credentials = JSON.parse(storedCredentials);
@@ -25,9 +25,6 @@ const Header = () => {
     };
 
     fetchUserCredentials(); // Fetch user credentials initially
-
-    
-
 
     // Listen for changes in sessionStorage
     const handleStorageChange = (event) => {
@@ -44,8 +41,20 @@ const Header = () => {
   }, [credentialsChanged]); // Trigger effect when credentialsChanged flag changes
 
   // Function to set avatar
-  const setAvatarImage = () => {;
+  const setAvatarImage = () => {
     setAvatar(avatar);
+  };
+
+  // Function to handle customize profile click
+  const handleCustomizeProfileClick = () => {
+    // Add your logic for handling customize profile click here
+    // For example, you can set a state to open the profile modal
+    setIsProfileModalOpen(true);
+  };
+
+  // Function to close profile modal
+  const closeProfileModal = () => {
+    setIsProfileModalOpen(false);
   };
 
   return (
@@ -58,7 +67,7 @@ const Header = () => {
           <div className="flex items-center space-x-4 flex-row-reverse">
             <div className="flex flex-col mr-2">
               <span className="text-sm font-medium text-gray-800 dark:text-neutral-300 ml-3">{username}</span>
-              <span className="text-xs text-gray-500 dark:text-neutral-400 ml-3">{role}</span>
+              <span className="text-xs text-gray-500 dark:text-neutral-400 ml-3">{role && role.charAt(0).toUpperCase() + role.slice(1)}</span>
             </div>
             <Dropdown>
               {[
@@ -74,7 +83,7 @@ const Header = () => {
                 ].map((item, index) => (
                   <a
                     key={index}
-                    onClick={handleCustomizeProfileClick}
+                    onClick={handleCustomizeProfileClick} // Add onClick event here
                     className="block text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:text-gray-900 dark:text-neutral-300 cursor-pointer"
                   >
                     {item}
@@ -86,12 +95,10 @@ const Header = () => {
           </div>
         </div>
       </header>
+      
+      {isProfileModalOpen && <ModalAvatar avatar={avatar} onClose={closeProfileModal} />}
 
-      {isProfileModalOpen && (
-        <ModalAvatar onClose={closeProfileModal}>
-          {/* Add the content you want to show in the modal here */}
-        </ModalAvatar>
-      )}
+
 
     </div>
   );
