@@ -8,41 +8,39 @@ const ReservationHistorySchema = new Schema(
           ref: "Reservation",
           required: true,
         },
+        
         desk: {
           type: Number,
           required: true
         },
+
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
         },
+
         date: {
             type: Date,
             required: true,
           },
-        
         type: {
             type: String,
             enum: ["REJECTED", "CANCELED", "COMPLETED", "EXPIRED", "ABORTED"],
             required: true,
           },
+
         startTime: {
           type: Date,
           required: true,
         },
+
         endTime: {
           type: Date,
           required: true,
         },
 
-        status: {
-          type: String,
-          required: true,
-          enum: ["PENDING", "APPROVED", "REJECTED", "STARTED", "ABORTED"],
-          default: "PENDING",
-        },
-        deskNumber : {
+        deskId : {
             type: Number, 
             required: true
           },
