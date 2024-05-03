@@ -1,16 +1,12 @@
-import mongoose from 'mongoose'
-const { Schema } = mongoose
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
 const ReservationHistorySchema = new Schema(
     {
         reservation: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Reservation",
-          required: true,
-        },
-        desk: {
-          type: Number,
-          required: true
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Reservation",
+            required: true,
         },
         user: {
             type: mongoose.Schema.Types.ObjectId,
@@ -20,35 +16,22 @@ const ReservationHistorySchema = new Schema(
         date: {
             type: Date,
             required: true,
-          },
-        
+        },
         type: {
             type: String,
             enum: ["REJECTED", "CANCELED", "COMPLETED", "EXPIRED", "ABORTED"],
             required: true,
-          },
+        },
         startTime: {
-          type: Date,
-          required: true,
+            type: Date,
+            required: true,
         },
         endTime: {
-          type: Date,
-          required: true,
+            type: Date,
+            required: true,
         },
+    },
+    { timestamps: true }
+);
 
-        status: {
-          type: String,
-          required: true,
-          enum: ["PENDING", "APPROVED", "REJECTED", "STARTED", "ABORTED"],
-          default: "PENDING",
-        },
-        deskNumber : {
-            type: Number, 
-            required: true
-          },
-
-      },
-      { timestamps: true }
-    );
-
-export default mongoose.model('ReservationHistory', ReservationHistorySchema)
+export default mongoose.model('ReservationHistory', ReservationHistorySchema);

@@ -1,6 +1,8 @@
 import Desk from "../models/Desk.js";
 import Reservation from "../models/Reservation.js";
 
+
+
 export const createDesk = async (req, res, next) => {
     const reservationId = req.params.reservationId;
     const newDesk = new Desk(req.body);
@@ -28,6 +30,7 @@ export const updateDesk = async (req, res, next) => {
     }
 };
 
+
 export const deleteDesk = async (req, res, next) => {
     const floorId = req.params.floorId;
     try {
@@ -54,6 +57,7 @@ export const getDeskById = async (req, res, next) => {
         next(err);
     }
 };
+
 
 export const getAllDesks = async (req, res, next) => {
     try {

@@ -4,6 +4,7 @@ import { verifySuperAdmin, verifyAdmin, verifyToken, } from "../utils/verifyToke
 import upload from "../middleware/multer.js";
 
 
+
 const router = express.Router()
 
 // router.get("/checkAuthentication", verifyToken, (req, res, next) =>{
@@ -38,10 +39,8 @@ const router = express.Router()
 //UPDATE the user information
 router.put("/:id", verifyAdmin, updateUser);
 
-
 // Only super admins can delete users
 router.delete("/:id", verifySuperAdmin, deleteUser);
-
 
 // Both admins and super admins can get a single user
 router.get("/:id", verifyAdmin, getUser);
