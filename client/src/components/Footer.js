@@ -51,8 +51,8 @@ const Footer = () => {
                 {/* <!-- DeskMe section --> */}
                 <div className="">
                     <h6
-                    className="mb-4 text-2xl flex items-center justify-center font-bold md:justify-start text-neutral-700 dark:text-neutral-300">
-                    DeskMe
+                    className="mb-4 text-2xl flex items-center justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
+                    DESKME
                     </h6>
                     <p className='text-neutral-700 dark:text-neutral-300'>
                     Streamline your workspace experience with our intuitive booking system. 
@@ -62,7 +62,7 @@ const Footer = () => {
                 {/* <!-- Useful links section --> */}
                 <div className="">
                     <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-neutral-300">
+                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
                     Quick links
                     </h6>
                     <p className="mb-4">
@@ -85,7 +85,7 @@ const Footer = () => {
                 {/* <!-- Company section --> */}
                 <div className="">
                     <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-neutral-300">
+                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
                     Company
                     </h6>
                     <p className="mb-4">
@@ -104,7 +104,7 @@ const Footer = () => {
                 {/* <!-- Contact section --> */}
                 <div>
                     <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-neutral-300">
+                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
                     Contact
                     </h6>
                     <p className="mb-4 flex items-center justify-center md:justify-start text-neutral-700 dark:text-neutral-300">
@@ -150,7 +150,7 @@ const Footer = () => {
                 {/* <!-- Special thanks section --> */}
                 <div className="">
                     <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-neutral-300">
+                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
                     Help
                     </h6>
                     <p className="mb-4">
