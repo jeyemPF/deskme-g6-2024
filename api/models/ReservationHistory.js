@@ -14,7 +14,7 @@ const ReservationHistorySchema = new Schema({
       required: true,
   },
   desk: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: 'Desk',
       required: true,
   },
@@ -32,7 +32,7 @@ const ReservationHistorySchema = new Schema({
   },
   type: {
       type: String,
-      enum: ["PENDING", "REJECTED", "CANCELED", "COMPLETED", "EXPIRED", "ABORTED"],
+      enum: ["REJECTED", "CANCELED", "COMPLETED", "EXPIRED", "ABORTED"],
       required: true,
   },
 }, { timestamps: true });
