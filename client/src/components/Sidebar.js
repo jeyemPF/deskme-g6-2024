@@ -11,7 +11,7 @@ import { FaHandsHelping } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [activeMenuItem, setActiveMenuItem] = useState("Dashboard"); // Add a state to track the active menu item
 
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ function Dashboard() {
         <div
           className={`${
             open? "w-60" : "w-20"
-          } bg-white dark:bg-neutral-900 h-screen p-5 pt-5 relative duration-500 border-r-[1px] border-black dark:border-neutral-500`}
+          } bg-white dark:bg-neutral-900 h-screen p-5 pt-5 fixed duration-500 border-r-[1px] border-black dark:border-neutral-500`}
         >
           <div className="flex items-center gap-x-4 mb-8 ml-2 mt-6">
           <span className={`text-black font-bold origin-left duration-200 dark:text-white ${!open && ""}`}>
@@ -56,7 +56,7 @@ function Dashboard() {
             {firstMenuItems.map((Menu, index) => (
               <li
                 key={index}
-                className={`text-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-300  dark:hover:text-neutral-900 text-sm font-medium flex items-center gap-x-4 p-2 hover:bg-neutral-700 hover:text-white rounded-md cursor-pointer  ${
+                className={`text-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-400  dark:hover:text-neutral-900 text-sm font-medium flex items-center gap-x-4 p-2 hover:bg-neutral-600 hover:text-white rounded-md cursor-pointer  ${
                   Menu.gap && "mt-9"
                 } ${activeMenuItem === Menu.title? "bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-900" : ""}`}
                 onClick={() => setActiveMenuItem(Menu.title)} // Add an onClick handler to update the active menu item
@@ -93,11 +93,6 @@ function Dashboard() {
               </span>
             </li>
           </ul>
-        </div>
-        <div>
-          <main className="flex-grow p-5 dark:bg-neutral-900 dark:text-white">
-              <p className="font-light text-sm">Dashboard / Employee</p>
-          </main>
         </div>
       </div>
     </div>

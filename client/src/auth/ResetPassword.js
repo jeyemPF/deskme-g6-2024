@@ -66,7 +66,7 @@ const ResetPassword = () => {
           <button onClick={handleClick1} className='text-2xl'><HiOutlineXMark /></button>
         </div>
         <h1 className='text-4xl font-black text-left text-neutral-700'>Reset Password</h1>
-        <p className='font-normal text-sm text-left mt-2 text-neutral-700'>Enter your email, and we'll send a code to your inbox.</p>
+        <p className='font-normal text-left mt-1 text-neutral-700'>We'll send a code to your email inbox.</p>
 
         <div className='mt-12'>
             <InputField

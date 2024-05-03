@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BellIcon } from '@heroicons/react/24/solid';
 import Dropdown from './Dropdown';
 import Switcher from '../components/Switcher';
+import ModalAvatar from '../components/ModalAvatar';
 
 const Header = () => {
   const [avatar, setAvatar] = useState(null);
@@ -70,12 +71,11 @@ const Header = () => {
                 </button>,
                 [
                   'Customize Profile',
-                  'Help Support',
                 ].map((item, index) => (
                   <a
                     key={index}
-                    href="#"
-                    className="block px-2 text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:text-gray-900 dark:text-neutral-300"
+                    onClick={handleCustomizeProfileClick}
+                    className="block text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:text-gray-900 dark:text-neutral-300 cursor-pointer"
                   >
                     {item}
                   </a>
@@ -86,6 +86,13 @@ const Header = () => {
           </div>
         </div>
       </header>
+
+      {isProfileModalOpen && (
+        <ModalAvatar onClose={closeProfileModal}>
+          {/* Add the content you want to show in the modal here */}
+        </ModalAvatar>
+      )}
+
     </div>
   );
 };

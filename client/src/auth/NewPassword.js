@@ -72,7 +72,7 @@ const NewPassword = () => {
           <button onClick={handleClick1} className='text-2xl'><HiOutlineXMark /></button>
         </div>
         <h1 className='text-4xl font-black text-left text-neutral-700'>New Password</h1>
-        <p className='font-normal text-sm text-left mt-2 text-neutral-700'>Setup your new password. Always remember.</p>
+        <p className='font-normal text-left mt-1 text-neutral-700'>Setup your new password.</p>
 
         <div className='relative mt-12'>
             <InputField

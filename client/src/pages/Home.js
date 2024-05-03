@@ -42,8 +42,8 @@ return (
           <div className=' flex flex-col xl:flex-row items-center'>
             <div className='w-full md:w-2/4y'>
               <h1 className='text-2xl xl:ml-32 xl:text-left sm:text-center sm:text-base sm:pt-12 sm:ml-0'>
-                <span className='text-5xl text-neutral-700 font-extrabold leading-8 lg:text-5xl md:text-4xl sm:text-2xl dark:text-white'>Make every <i><span className='font-black text-black dark:text-white'>click count.</span></i></span>
-                <p className='font-normal text-neutral-700 text-lg pt-1 leading-5 lg:text-lg md:text-base sm:text-xs dark:text-white'>
+                <span className='text-5xl text-neutral-700 font-extrabold leading-8 lg:text-5xl md:text-4xl sm:text-2xl dark:text-white'>Make every <i><span className='font-black text-neutral-700 dark:text-white'>click count.</span></i></span>
+                <p className='font-normal text-neutral-700 text-lg pt-1 leading-5 lg:text-lg md:text-base sm:text-xs dark:text-neutral-300'>
                 DeskMe is built to elevate individuals, providing a seamless <br /> intersection where booking meets brilliance,  empowering <br /> users to thrive through the power of connection <br /> and convenience.
                 </p>
                 <button onClick={handleClick} className='text-neutral-700 bg-white font-semibold text-lg rounded-lg border-2 border-neutral-700 shadow-lg hover:bg-neutral-700 hover:text-white transition-colors duration-300 mt-3 md:mx-auto md:px-7 md:py-3 sm:px-5 sm:py-2 dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-300 dark:hover:bg-neutral-300 dark:hover:text-neutral-700 dark:transition-colors dark:duration-300'>Book Now</button>
@@ -89,7 +89,7 @@ return (
           <div className='container '>
             <div className='text-center'>
               <div className='text-4xl font-black pt-12 pb-5'>
-                <h1 className='text-neutral-700 dark:text-neutral-300'>Reasons to choose DeskMe</h1>
+                <h1 className='text-neutral-700 dark:text-white'>Reasons to choose DeskMe</h1>
               </div>
 
               <div className='text-xl pb-12 font-normal text-neutral-700 dark:text-neutral-300'>
@@ -99,7 +99,7 @@ return (
               <div className='flex justify-center pb-10 md:flex-row sm:flex-col sm:items-center md:space-y-0 sm:space-y-4 xl:gap-28 lg:gap-10 md:gap-5'>
                 <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-2 rounded-xl text-neutral-700 border-neutral-700 shadow-lg dark:text-neutral-300 dark:border-neutral-300'>
                   <div className='text-7xl transition duration-300 transform hover:scale-105'><PiRocketFill /></div>
-                  <div className='text-xl font-extrabold p-3 text-black-700'>24/7 Online</div>
+                  <div className='text-xl font-extrabold p-3 text-black-700 dark:text-white'>24/7 Online</div>
                   <div className='text-sm font-medium text-black-500'>
                     Round-the-clock excellence! We're here 24/7, because needs never sleep.
                   </div>
@@ -107,13 +107,13 @@ return (
 
                 <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-2 rounded-xl text-neutral-700 border-neutral-700 shadow-lg dark:text-neutral-300 dark:border-neutral-300'>
                   <div className='text-7xl transition duration-300 transform hover:scale-105'><PiBookBookmarkFill /></div>
-                  <div className='text-xl font-extrabold p-3 text-black-700'>Fast Booking</div>
+                  <div className='text-xl font-extrabold p-3 text-black-700 dark:text-white'>Fast Booking</div>
                   <div className='text-sm font-medium text-black-500'>"Quick and easy! Fast booking, because your time matters."</div>
                 </div>
 
                 <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-2 rounded-xl text-neutral-700 border-neutral-700 shadow-lg dark:text-neutral-300 dark:border-neutral-300'>
                   <div className='text-7xl transition duration-300 transform hover:scale-105'><PiCloudArrowUpFill /></div>
-                  <div className='text-xl font-extrabold p-3 text-black-700'>Cloud Storage</div>
+                  <div className='text-xl font-extrabold p-3 text-black-700 dark:text-white'>Cloud Storage</div>
                   <div className='text-sm font-medium text-black-500'>"Sky high storage, lightning-fast access your data's new home in the cloud!"</div>
                 </div>
               </div>
@@ -127,7 +127,7 @@ return (
               </div>
 
               <div className='w-1/3'>
-                  <h1 className='text-4xl font-black lg:pt-8 lg:pb-6 lg:text-left sm:text-center sm:pt-5 text-neutral-700 dark:text-neutral-300'>We Offer</h1>
+                  <h1 className='text-4xl font-black lg:pt-8 lg:pb-6 lg:text-left sm:text-center sm:pt-5 text-neutral-700 dark:text-white'>We Offer</h1>
                   <p className='text-xl lg:text-left lg:pt-0 sm:text-center sm:pt-5 text-neutral-700 dark:text-neutral-300'>Book with ease, experience with delight! Elevate your journey with our seamless booking where every click sparks satisfaction.Your great adventure starts here!</p>
               </div>
             </div>
@@ -135,7 +135,7 @@ return (
             <div className='flex lg:flex-row lg:justify-center lg:gap-16 pb-12 sm:items-center sm:flex-col-reverse'>
               <div className='w-1/3'>
               <div className='flex items-center lg:justify-end justify-center w-full  '>  
-                <h1 className='text-4xl font-black lg:pb-6 sm:text-center lg:pt-5 sm:pt-5 text-neutral-700 dark:text-neutral-300'>Innovative</h1></div>
+                <h1 className='text-4xl font-black lg:pb-6 sm:text-center lg:pt-5 sm:pt-5 text-neutral-700 dark:text-white'>Innovative</h1></div>
                     <p className='text-xl lg:pt-0 lg:text-right sm:text-center sm:pt-5 text-neutral-700 dark:text-neutral-300'>Experience the future with our innovative system where simplicity meets sophistication. Redefining possibilities, one breakthrough at a time.</p>
               </div>
 
