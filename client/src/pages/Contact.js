@@ -13,8 +13,8 @@ function Contact() {
             <p className="text-lg mt-4 mb-8">
                 Questions, bug reports, feedback — we're here for it all.
             </p>
-            <div className="flex justify-center items-center flex-col md:flex-row lg:ml-56 md:ml-60">
-                <div className="box-border justify-center border-black rounded-2xl h-[500px] w-[700px] border sm:w-[500px] sm:flex-col lg:w-[700px] md:w-[700px]">
+            <div className="flex justify-center items-center flex-col md:flex-row lg:ml-56 md:ml-12">
+                <div className="box-border justify-center border-black rounded-2xl h-[500px] w-[700px] border xs:w-[350px] sm:w-[500px] sm:h-[600px] sm:flex-col lg:w-[700px] md:w-[700px]">
                     <h1 className="font-bold text-xl mt-10 ml-8">Select a topic:</h1>
                     <div className='flex gap-5 mt-5 ml-8'>
                       <button className='border border-black h-[20%] w-[25%] rounded-full py-2 hover:bg-neutral-700 hover:text-white transition-colors duration-300 dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-300 dark:hover:bg-neutral-300 dark:hover:text-neutral-700 dark:transition-colors dark:duration-300'>Booking</button>
