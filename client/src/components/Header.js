@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { BellIcon } from '@heroicons/react/24/solid';
 import Dropdown from './Dropdown';
 import Switcher from '../components/Switcher';
+import ModalAvatar from '../components/ModalAvatar';
 
 const Header = () => {
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // Add state for modal visibility
+
+  const handleCustomizeProfileClick = () => {
+    setIsProfileModalOpen(true);
+  };
+
+  const closeProfileModal = () => {
+    setIsProfileModalOpen(false);
+  };
+
   return (
     <div className="overflow-hidden">
       <header className="dark:bg-neutral-900 w-screen bg-white p-3 border-b-[1px] border-black dark:border-neutral-500 dark:shadow-neutral-800">
@@ -29,8 +40,8 @@ const Header = () => {
                 ].map((item, index) => (
                   <a
                     key={index}
-                    href="#"
-                    className="block text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:text-gray-900 dark:text-neutral-300"
+                    onClick={handleCustomizeProfileClick}
+                    className="block text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:text-gray-900 dark:text-neutral-300 cursor-pointer"
                   >
                     {item}
                   </a>
@@ -41,6 +52,13 @@ const Header = () => {
           </div>
         </div>
       </header>
+
+      {isProfileModalOpen && (
+        <ModalAvatar onClose={closeProfileModal}>
+          {/* Add the content you want to show in the modal here */}
+        </ModalAvatar>
+      )}
+
     </div>
   );
 };
