@@ -4,25 +4,29 @@ import Dropdown from './Dropdown';
 import Switcher from '../components/Switcher';
 
 const Header = () => {
-  const [avatar, setAvatar] = useState("");
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("");
+  const [avatar, setAvatar] = useState(null);
+  const [username, setUsername] = useState(null);
+  const [role, setRole] = useState(null);
   const [credentialsChanged, setCredentialsChanged] = useState(false);
 
   useEffect(() => {
     // Function to fetch user credentials from sessionStorage
     const fetchUserCredentials = () => {
+
       const storedCredentials = sessionStorage.getItem('userCredentials');
       if (storedCredentials) {
         const credentials = JSON.parse(storedCredentials);
-        setRole(credentials.role);
-        setAvatar(credentials.avatar);
-        setUsername(credentials.username);
+        setRole(credentials.user.role);
+        setAvatar(credentials.user.avatar);
+        setUsername(credentials.user.username);
         setCredentialsChanged(false); // Reset credentialsChanged flag
       }
     };
 
     fetchUserCredentials(); // Fetch user credentials initially
+
+    
+
 
     // Listen for changes in sessionStorage
     const handleStorageChange = (event) => {
@@ -39,8 +43,8 @@ const Header = () => {
   }, [credentialsChanged]); // Trigger effect when credentialsChanged flag changes
 
   // Function to set avatar
-  const setAvatarImage = () => {
-    setAvatar(credentials.avatar);
+  const setAvatarImage = () => {;
+    setAvatar(avatar);
   };
 
   return (
@@ -57,7 +61,7 @@ const Header = () => {
             </div>
             <Dropdown>
               {[
-                <button className="focus:outline-none" onClick={setAvatarImage}>
+                <button className="focus:outline-none" onClick={() => setAvatarImage(avatar)}>
                   <img
                     src={avatar}
                     alt="Avatar"
