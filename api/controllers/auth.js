@@ -42,7 +42,6 @@ export const register = async (req, res, next) => {
 };
 
 // Login user
-// Login user
 export const login = async (req, res, next) => {
   try {
     const { email, password, rememberMe } = req.body; // Add rememberMe field in the request body
