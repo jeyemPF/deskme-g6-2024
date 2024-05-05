@@ -1,6 +1,7 @@
 import express from 'express';
 
-import { createReservation, updateReservation, deleteReservation, getReservationById, getAllReservations } from '../controllers/reservation.js';
+import { createReservation, updateReservation, deleteReservation, getReservationById, getAllReservations, approveReservations } from '../controllers/reservation.js';
+import {verifyOfficeManager } from '../utils/verifyToken.js'
 
 const router = express.Router();
 
@@ -18,5 +19,8 @@ router.get('/:id', getReservationById);
 
 // Get all reservation
 router.get('/', getAllReservations);
+
+
+router.put('/reservations/approve', verifyOfficeManager , approveReservations);
 
 export default router;

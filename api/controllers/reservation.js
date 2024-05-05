@@ -36,7 +36,7 @@ export const createReservation = async (req, res, next) => {
             date,
             startTime,
             endTime,
-            type: 'PENDING', 
+            type: 'COMPLETED', 
         });
         await reservationHistory.save();
 
@@ -95,3 +95,29 @@ export const getAllReservations = async (req, res, next) => {
 };
 
 
+
+export const approveReservations = async () => {
+    try {
+        // Update the status of all pending reservations to "APPROVED"
+        await Reservation.updateMany(
+            { status: 'PENDING' },
+            { $set: { status: 'APPROVED' } }
+        );
+        return { success: true, message: 'All pending reservations approved successfully' };
+    } catch (error) {
+        throw new Error('Failed to approve pending reservations');
+    }
+};
+
+// Function to set all approved reservations back to "PENDING" status
+export const resetApprovedReservations = async () => {
+    try {
+        // Update the status of all approved reservations to "PENDING"
+        await Reservation.updateMany(
+            { status: 'APPROVED' },
+            { $set: { status: 'PENDING' } }
+        );
+    } catch (error) {
+        throw new Error('Failed to reset approved reservations');
+    }
+};

@@ -9,7 +9,7 @@ export const createDesk = async (req, res, next) => {
 
     try {
         const savedDesk = await newDesk.save();
-        await Reservation.findByIdAndUpdate(reservationId, { $push: { desk: savedDesk._id } });
+        await Reservation.findByIdAndUpdate(reservationId, { desk: savedDesk._id  });
         res.status(201).json(savedDesk);
     } catch (err) {
         next(err);
