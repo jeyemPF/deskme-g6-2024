@@ -42,10 +42,10 @@ export const register = async (req, res, next) => {
 };
 
 // Login user
+// Login user
 export const login = async (req, res, next) => {
   try {
-    const { email, password, rememberMe } = req.body; // Add rememberMe field in the request body
-
+    const { email, password } = req.body;
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -66,17 +66,12 @@ export const login = async (req, res, next) => {
       // Add other user details here
     };
 
+   
     const token = jwt.sign(tokenPayload, process.env.JWT);
 
-    // Set cookie for "Remember me" if enabled
-    if (rememberMe) {
-      res.cookie('access_token', token, {
-        httpOnly: true,
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
-      });
-    }
-
-    res.status(200).json({ user: user.toObject(), token });
+    res.cookie('access_token', token, {
+      httpOnly: true,
+    }).status(200).json({ user: user.toObject(), token });
 
   } catch (err) {
     next(err);

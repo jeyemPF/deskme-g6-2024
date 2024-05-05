@@ -56,11 +56,13 @@ mongoose.connection.on("connected", () => {
 app.use(cookieParser());
 app.use(express.json());
 
+
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/desks", desksRoute);
 app.use("/api/reservations", reservationsRoute);
 app.use("/api/switchs", switchsRoute);
+
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

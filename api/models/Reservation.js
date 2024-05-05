@@ -8,7 +8,7 @@ const ReservationSchema = new Schema({
         ref: 'User',
         required: true,
     },
-    deskId: {
+    desk: {
         type: Schema.Types.ObjectId,
         ref: 'Desk',
         required: true,

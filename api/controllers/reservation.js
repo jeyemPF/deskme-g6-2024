@@ -1,19 +1,15 @@
 import Reservation from "../models/Reservation.js";
 import Desk from "../models/Desk.js";
 import User from "../models/User.js";
+import ReservationHistory from "../models/ReservationHistory.js";
 
 
 
-// Controller function to create a new reservation
 export const createReservation = async (req, res, next) => {
     try {
-        // Extract userId and deskId from URL params
         const { userId, deskId } = req.params;
-
-        // Extract reservation details from request body
         const { date, startTime, endTime } = req.body;
 
-        // Check if the user and desk exist
         const user = await User.findById(userId);
         const desk = await Desk.findById(deskId);
 
@@ -21,23 +17,31 @@ export const createReservation = async (req, res, next) => {
             return res.status(404).json({ message: "User or desk not found" });
         }
 
-        // Create a new reservation object
         const newReservation = new Reservation({
             user: userId,
             desk: deskId,
             date,
             startTime,
             endTime,
-            status: 'PENDING', // Default status
+            status: 'PENDING',
         });
 
-        // Save the reservation to the database
         const savedReservation = await newReservation.save();
 
-        // Return a success response
+        // Create a reservation history entry
+        const reservationHistory = new ReservationHistory({
+            reservation: savedReservation._id,
+            user: userId,
+            desk: deskId,
+            date,
+            startTime,
+            endTime,
+            type: 'PENDING', 
+        });
+        await reservationHistory.save();
+
         res.status(201).json(savedReservation);
     } catch (err) {
-        // Handle errors
         next(err);
     }
 };
@@ -89,3 +93,5 @@ export const getAllReservations = async (req, res, next) => {
         next(error);
     }
 };
+
+
