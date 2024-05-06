@@ -56,7 +56,7 @@ function Dashboard() {
             {firstMenuItems.map((Menu, index) => (
               <li
                 key={index}
-                className={`text-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-400  dark:hover:text-neutral-900 text-sm font-medium flex items-center gap-x-4 p-2 hover:bg-neutral-600 hover:text-white rounded-md cursor-pointer  ${
+                className={`text-neutral-700 dark:text-neutral-300 dark:hover:border-neutral-300 text-sm font-medium flex items-center gap-x-4 p-2 hover:border-neutral-600 hover:border-[1px] rounded-md cursor-pointer  ${
                   Menu.gap && "mt-9"
                 } ${activeMenuItem === Menu.title? "bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-900" : ""}`}
                 onClick={() => setActiveMenuItem(Menu.title)} // Add an onClick handler to update the active menu item
@@ -69,10 +69,10 @@ function Dashboard() {
             ))}
           </ul>
 
-          <ul className="flex flex-col lg:mt-48 sm:mt-36">
+          <ul className="flex flex-col xl:mt-48 sm:mt-32">
             {/* Render settings and logout items */}
             <li
-              className={`text-neutral-700 text-sm font-medium flex items-center gap-x-4 p-2 hover:bg-neutral-700 hover:text-white rounded-md mt-9 cursor-pointer dark:text-neutral-300 dark:hover:bg-neutral-300 dark:hover:text-neutral-900 ${activeMenuItem === "Settings"? "bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-900" : ""}`}
+              className={`text-neutral-700 text-sm font-medium flex items-center gap-x-4 p-2 hover:border-neutral-700 hover:border-[1px] rounded-md mt-9 cursor-pointer dark:text-neutral-300 dark:hover:border-neutral-300 ${activeMenuItem === "Settings"? "bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-900" : ""}`}
               onClick={() => setActiveMenuItem("Settings")}
             >
               <MdSettings className="text-2xl" />
