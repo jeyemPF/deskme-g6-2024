@@ -33,7 +33,7 @@ export const verifyUser = (req, res, next) => {
 export const verifyAdmin = (req, res, next ) => {
     verifyToken(req, res, () => {
         // Check if the user is authenticated and has the "admin" role
-        if (req.user && req.user.role === 'Admin') {
+        if (req.user && req.user.role === 'admin') {
             next(); // User is authorized as admin, proceed to the next middleware
         } else {
             // User is not authorized as admin, return a 403 Forbidden error
@@ -46,7 +46,7 @@ export const verifyAdmin = (req, res, next ) => {
 export const verifySuperAdmin = (req, res, next ) => {
     verifyToken(req, res, () => {
         // Check if the user is authenticated and has the "superadmin" role
-        if (req.user && req.user.role === 'Superadmin') {
+        if (req.user && req.user.role === 'superadmin') {
             next(); // User is authorized as superadmin, proceed to the next middleware
         } else {
             // User is not authorized as superadmin, return a 403 Forbidden error
@@ -59,7 +59,7 @@ export const verifySuperAdmin = (req, res, next ) => {
 export const verifyAdminOrSuperAdmin = (req, res, next ) => {
     verifyToken(req, res, () => {
         // Check if the user is authenticated and has either "admin" or "superadmin" role
-        if (req.user && (req.user.role === 'Admin' || req.user.role === 'Superadmin')) {
+        if (req.user && (req.user.role === 'admin' || req.user.role === 'superadmin')) {
             next(); // User is authorized as admin or superadmin, proceed to the next middleware
         } else {
             // User is not authorized as admin or superadmin, return a 403 Forbidden error
@@ -71,7 +71,7 @@ export const verifyAdminOrSuperAdmin = (req, res, next ) => {
 export const verifyOfficeManager = (req, res, next) => {
     verifyToken(req, res, () => {
         // Check if the user is authenticated and has the "superadmin" role
-        if (req.user && req.user.role === 'Office Manager') {
+        if (req.user && req.user.role === 'officemanager') {
             next(); // User is authorized as superadmin, proceed to the next middleware
         } else {
             // User is not authorized as superadmin, return a 403 Forbidden error

@@ -64,7 +64,7 @@ router.delete("/", verifySuperAdmin, deleteAllUser);
 router.patch("/self/avatar", verifyToken, upload.single("avatar"), uploadAvatar,);
 
 // updating profile
-router.put("/profile", updateProfile);
+router.put("/", verifyToken, updateProfile);
 
 
 
