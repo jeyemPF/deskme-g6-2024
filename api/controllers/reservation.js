@@ -2,7 +2,8 @@ import Reservation from "../models/Reservation.js";
 import Desk from "../models/Desk.js";
 import User from "../models/User.js";
 import ReservationHistory from "../models/ReservationHistory.js";
-import { scheduleJob } from 'node-schedule'; // Import the node-schedule library
+import { scheduleJob } from 'node-schedule';
+import { sendReservationConfirmationEmail, getEmailContentReservation } from "../utils/emailService.js";
 
 export const createReservation = async (req, res, next) => {
     try {
@@ -60,6 +61,10 @@ export const createReservation = async (req, res, next) => {
             desk.status = 'available';
             await desk.save();
         });
+
+        // Send reservation confirmation email
+        const emailBody = getEmailContentReservation(user.username, savedReservation);
+        await sendReservationConfirmationEmail(user.email, emailBody);
 
         res.status(201).json(savedReservation);
     } catch (err) {
