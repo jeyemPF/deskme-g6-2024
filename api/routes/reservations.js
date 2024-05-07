@@ -17,8 +17,7 @@ router.delete('/:id', deleteReservation);
 // Get id of reservation
 router.get('/:id', getReservationById);
 
-// Get all reservation
-router.get('/', getAllReservations);
+router.get("/reservation-history", verifyOfficeManager, getAllReservations)
 
 
 router.put('/reservations/approve', verifyOfficeManager , approveReservations);

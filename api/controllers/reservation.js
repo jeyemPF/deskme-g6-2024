@@ -10,6 +10,7 @@ export const createReservation = async (req, res, next) => {
         const { userId, deskId } = req.params;
         const { date, startTime, endTime } = req.body;
 
+        // Fetch the user and desk objects from the database
         const user = await User.findById(userId);
         const desk = await Desk.findById(deskId);
 
@@ -17,6 +18,7 @@ export const createReservation = async (req, res, next) => {
             return res.status(404).json({ message: "User or desk not found" });
         }
 
+        // Create a new reservation
         const newReservation = new Reservation({
             user: userId,
             desk: deskId,
@@ -26,6 +28,7 @@ export const createReservation = async (req, res, next) => {
             status: 'PENDING',
         });
 
+        // Save the new reservation to the database
         const savedReservation = await newReservation.save();
 
         // Create a reservation history entry
@@ -38,6 +41,8 @@ export const createReservation = async (req, res, next) => {
             endTime,
             type: 'COMPLETED', 
         });
+
+        // Save the reservation history entry to the database
         await reservationHistory.save();
 
         res.status(201).json(savedReservation);
@@ -45,6 +50,7 @@ export const createReservation = async (req, res, next) => {
         next(err);
     }
 };
+
 
 // Controller function to update an existing reservation
 export const updateReservation = async (req, res, next) => {
@@ -119,5 +125,19 @@ export const resetApprovedReservations = async () => {
         );
     } catch (error) {
         throw new Error('Failed to reset approved reservations');
+    }
+};
+
+
+export const getReservationHistory = async (req, res, next) => {
+    try {
+        const { reservationId } = req.params;
+
+        // Fetch reservation history from the database based on reservation ID
+        const history = await ReservationHistory.find({ reservation: reservationId });
+
+        res.status(200).json(history);
+    } catch (err) {
+        next(err);
     }
 };
