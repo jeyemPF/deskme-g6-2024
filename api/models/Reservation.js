@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { officeEquipmentEnum } from '../utils/officeEquipment.js';
 
 const { Schema } = mongoose;
 
@@ -30,6 +31,14 @@ const ReservationSchema = new Schema({
         enum: ['PENDING', 'APPROVED', 'REJECTED', 'STARTED', 'ABORTED'],
         default: 'PENDING',
     },
+    // Additional information from the Desk schema
+    deskTitle: String,
+    deskArea: String,
+    officeEquipment: [{
+        type: String,
+        enum: officeEquipmentEnum,
+    }],
+    
 }, { timestamps: true });
 
 export default mongoose.model('Reservation', ReservationSchema);

@@ -2,48 +2,66 @@ import Reservation from "../models/Reservation.js";
 import Desk from "../models/Desk.js";
 import User from "../models/User.js";
 import ReservationHistory from "../models/ReservationHistory.js";
-
-
+import { sendReservationConfirmationEmail, getEmailContentReservation } from "../utils/emailService.js";
+import { officeEquipmentEnum } from "../utils/officeEquipment.js";
+import { scheduleJob } from 'node-schedule'; // Import the node-schedule library
 
 export const createReservation = async (req, res, next) => {
     try {
         const { userId, deskId } = req.params;
         const { date, startTime, endTime } = req.body;
 
-        // Fetch the user and desk objects from the database
+        // Find the user and desk based on their IDs
         const user = await User.findById(userId);
         const desk = await Desk.findById(deskId);
 
+        // Check if user and desk exist
         if (!user || !desk) {
             return res.status(404).json({ message: "User or desk not found" });
         }
 
-        // Create a new reservation
+        // Check if the desk is already reserved during the requested time slot
+        const existingReservation = await Reservation.findOne({
+            desk: desk,
+            date,
+            $or: [
+                { startTime: { $lt: endTime }, endTime: { $gt: startTime } }, // Overlapping time slot
+                { startTime: { $gte: startTime, $lt: endTime } }, // Start time within the requested time slot
+                { endTime: { $gt: startTime, $lte: endTime } } // End time within the requested time slot
+            ]
+        });
+
+        if (existingReservation) {
+            return res.status(400).json({ message: "The desk is already reserved for the requested time slot" });
+        }
+
+        // Check if the desk's status is 'reserved'
+        if (desk.status === 'reserved') {
+            return res.status(400).json({ message: "The desk is currently reserved" });
+        }
+
+        // Update the desk's status to 'reserved'
+        desk.status = 'reserved';
+        await desk.save();
+
+        // Create a new reservation instance with status 'APPROVED'
         const newReservation = new Reservation({
-            user: userId,
-            desk: deskId,
+            user: user,
+            desk: desk,
             date,
             startTime,
             endTime,
-            status: 'PENDING',
+            status: 'APPROVED',
+            officeEquipment: desk.officeEquipment
         });
 
-        // Save the new reservation to the database
         const savedReservation = await newReservation.save();
 
-        // Create a reservation history entry
-        const reservationHistory = new ReservationHistory({
-            reservation: savedReservation._id,
-            user: userId,
-            desk: deskId,
-            date,
-            startTime,
-            endTime,
-            type: 'COMPLETED', 
+        // Schedule a job to update the desk status when the reservation end time has passed
+        scheduleJob('updateDeskStatus', endTime, async () => {
+            desk.status = 'available';
+            await desk.save();
         });
-
-        // Save the reservation history entry to the database
-        await reservationHistory.save();
 
         res.status(201).json(savedReservation);
     } catch (err) {
@@ -71,6 +89,16 @@ export const deleteReservation = async (req, res, next) => {
     try {
         await Reservation.findByIdAndDelete(req.params.id);
         res.json({ message: 'Reservation deleted successfully' });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const deleteAllReservations = async (req, res, next) => {
+    try {
+        await Reservation.deleteMany({});
+        res.json({ message: 'All reservations deleted successfully' });
     } catch (error) {
         next(error);
     }

@@ -1,5 +1,7 @@
 import Desk from "../models/Desk.js";
 import Reservation from "../models/Reservation.js";
+import cron from 'node-cron';
+
 
 
 
@@ -17,53 +19,30 @@ export const createDesk = async (req, res, next) => {
 };
 
 
-export const updateDesk = async (req, res, next) => {
+const updateDeskStatus = async (reservationId) => {
     try {
-        const updatedDesk = await Desk.findByIdAndUpdate(
-            req.params.id,
-            { $set: req.body },
-            { new: true }
-        );
-        res.status(200).json(updatedDesk);
-    } catch (err) {
-        next(err);
-    }
-};
-
-
-export const deleteDesk = async (req, res, next) => {
-    const floorId = req.params.floorId;
-    try {
-        await Desk.findByIdAndDelete(req.params.id);
-        try {
-            await Floor.findByIdAndUpdate(floorId, { $pull: { rooms: req.params.id } });
-        } catch (err) {
-           
-            next(err);
+        const reservation = await Reservation.findById(reservationId);
+        if (reservation && reservation.endTime <= new Date()) {
+            const desk = await Desk.findById(reservation.desk);
+            if (desk) {
+                desk.status = 'available';
+                await desk.save();
+            }
         }
-        res.status(200).json({ message: "Desk has been deleted" });
-    } catch (err) {
-    
-        next(err);
+    } catch (error) {
+        console.error('Error updating desk status:', error);
     }
 };
 
+// Schedule the task to run every minute to check for expired reservations
+// Schedule the task to run every minute to check for expired reservations
+cron.schedule('* * * * *', async () => {
+    console.log('Checking for expired reservations...');
+    // Get all reservations that have passed their end time
+    const expiredReservations = await Reservation.find({ endTime: { $lte: new Date() } });
 
-export const getDeskById = async (req, res, next) => {
-    try {
-        const desk = await Desk.findById(req.params.id);
-        res.status(200).json(desk);
-    } catch (err) {
-        next(err);
-    }
-};
-
-
-export const getAllDesks = async (req, res, next) => {
-    try {
-        const desks = await Desk.find();
-        res.status(200).json(desks);
-    } catch (err) {
-        next(err);
-    }
-};
+    // Update the status of the desks for the expired reservations
+    expiredReservations.forEach(async (reservation) => {
+        await updateDeskStatus(reservation._id);
+    });
+});
