@@ -61,7 +61,7 @@ function ASidebar() {
         <div
           className={`${
             open? "w-60" : "w-20"
-          } bg-white dark:bg-neutral-900 h-full p-5 pt-5 fixed duration-500 border-r-[1px] border-black dark:border-neutral-500`}
+          } bg-white dark:bg-neutral-900 h-screen fixed top-[66px] p-5 pt-5 duration-500 border-r-[1px] border-black dark:border-neutral-500`}
         >
           <div className="flex items-center gap-x-4 mb-8 ml-2 mt-6">
           <span className={`text-black font-bold origin-left duration-200 dark:text-white ${!open && ""}`}>

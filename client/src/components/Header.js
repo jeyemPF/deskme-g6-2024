@@ -17,7 +17,7 @@ const Header = () => {
 
   return (
     <div>
-      <header className="dark:bg-neutral-900 w-screen bg-white p-3 border-b-[1px] border-black dark:border-neutral-500 dark:shadow-neutral-800">
+      <header className="dark:bg-neutral-900 w-screen fixed bg-white p-3 border-b-[1px] border-black dark:border-neutral-500 dark:shadow-neutral-800">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <h1 className='pl-4 font-extrabold text-2xl cursor-pointer dark:text-neutral-300'>DESKME</h1>
