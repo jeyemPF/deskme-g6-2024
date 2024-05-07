@@ -2,8 +2,6 @@ import Reservation from "../models/Reservation.js";
 import Desk from "../models/Desk.js";
 import User from "../models/User.js";
 import ReservationHistory from "../models/ReservationHistory.js";
-import { sendReservationConfirmationEmail, getEmailContentReservation } from "../utils/emailService.js";
-import { officeEquipmentEnum } from "../utils/officeEquipment.js";
 import { scheduleJob } from 'node-schedule'; // Import the node-schedule library
 
 export const createReservation = async (req, res, next) => {
