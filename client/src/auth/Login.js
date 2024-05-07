@@ -136,7 +136,7 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               icon={{
-                component: showPassword ? <BsEyeSlash /> : <BsEye />,
+                component: showPassword ? <BsEye /> : <BsEyeSlash />,
                 onClick: togglePasswordVisibility,
               }}
             />

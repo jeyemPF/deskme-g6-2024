@@ -16,16 +16,16 @@ const Header = () => {
   };
 
   return (
-    <div className="overflow-hidden">
+    <div>
       <header className="dark:bg-neutral-900 w-screen bg-white p-3 border-b-[1px] border-black dark:border-neutral-500 dark:shadow-neutral-800">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <button className="text-black pt-1 ml-5"><Switcher /></button>
+            <h1 className='pl-4 font-extrabold text-2xl cursor-pointer dark:text-neutral-300'>DESKME</h1>
           </div>
           <div className="flex items-center space-x-4 flex-row-reverse">
             <div className="flex flex-col mr-2">
               <span className="text-sm font-medium text-gray-800 dark:text-neutral-300 ml-3">John Carlo</span>
-              <span className="text-xs text-gray-500 dark:text-neutral-400 ml-3">Superadmin</span>
+              <span className="text-xs text-gray-500 dark:text-neutral-400 ml-3">Admin</span>
             </div>
             <Dropdown>
               {[
@@ -49,6 +49,7 @@ const Header = () => {
               ]}
             </Dropdown>
             <BellIcon className="h-8 w-8 text-neutral-700 rounded-full p-1 hover:bg-neutral-700 hover:text-white dark:text-neutral-300 dark:hover:bg-white dark:hover:text-neutral-700 cursor-pointer" />
+            <button className="text-neutral-700"><Switcher /></button>
           </div>
         </div>
       </header>
