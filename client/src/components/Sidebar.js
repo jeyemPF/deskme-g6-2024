@@ -20,9 +20,17 @@ function Dashboard() {
     navigate('/Login');
   };
 
+  const handleDashboard = () => {
+    navigate('/dashboard')
+  };
+
+  const handleBooking = () => {
+    navigate('/booking')
+  };
+
   const firstMenuItems = [
-    { title: "Dashboard", icon: <MdDashboard className="text-2xl" /> },
-    { title: "Booking", icon: <PiBookBookmarkFill className="text-2xl " />, gap: true },
+    { title: "Dashboard", icon: <MdDashboard className="text-2xl" onClick={handleDashboard} /> },
+    { title: "Booking", icon: <PiBookBookmarkFill className="text-2xl " onClick={handleBooking} />, gap: true },
     { title: "Manage Booking", icon: <PiBooksFill className="text-2xl" /> },
     { title: "Customer Support", icon: <FaHandsHelping className="text-2xl" /> },
   ];
