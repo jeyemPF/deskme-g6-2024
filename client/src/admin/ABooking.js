@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ASidebar from './ASidebar';
+import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import { Link } from 'react-router-dom';
 import { FaTruckLoading } from "react-icons/fa";
@@ -22,7 +22,7 @@ const ABooking = () => {
   return (
     <div className="dark:bg-neutral-900">
     <Header />
-    <ASidebar />
+    <Sidebar />
     <div>
         <main className="container 2xl:pl-12 sm:pl-24 pt-24 dark:bg-neutral-900 dark:text-white">
           <a className="text-sm font-light dark:text-white" href="#">

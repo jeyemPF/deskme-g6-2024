@@ -17,13 +17,13 @@ const Header = () => {
 
   return (
     <div>
-      <header className="dark:bg-neutral-900 w-screen fixed bg-white p-3 border-b-[1px] border-black dark:border-neutral-500 dark:shadow-neutral-800">
+      <header className="dark:bg-neutral-900 w-screen fixed bg-white p-2 border-b-[1px] border-black dark:border-neutral-500 dark:shadow-neutral-800">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <h1 className='pl-4 font-extrabold text-2xl cursor-pointer dark:text-neutral-300'>DESKME</h1>
           </div>
           <div className="flex items-center space-x-4 flex-row-reverse">
-            <div className="flex flex-col mr-2">
+            <div className="flex flex-col mr-5">
               <span className="text-sm font-medium text-gray-800 dark:text-neutral-300 ml-3">John Carlo</span>
               <span className="text-xs text-gray-500 dark:text-neutral-400 ml-3">Admin</span>
             </div>
