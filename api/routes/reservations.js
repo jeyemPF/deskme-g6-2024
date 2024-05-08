@@ -2,6 +2,7 @@ import express from 'express';
 
 import {deleteAllReservations, createReservation, updateReservation, deleteReservation, getReservationById, getAllReservations, approveReservations } from '../controllers/reservation.js';
 import {verifyOfficeManager } from '../utils/verifyToken.js'
+import { getSelf } from '../controllers/user.js';
 
 const router = express.Router();
 
