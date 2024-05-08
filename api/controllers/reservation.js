@@ -3,7 +3,7 @@ import Desk from "../models/Desk.js";
 import User from "../models/User.js";
 import ReservationHistory from "../models/ReservationHistory.js";
 import { scheduleJob } from 'node-schedule';
-import { sendReservationConfirmationEmail, getEmailContentReservation } from "../utils/emailService.js";
+import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation } from "../utils/emailService.js";
 
 export const createReservation = async (req, res, next) => {
     try {
@@ -24,9 +24,9 @@ export const createReservation = async (req, res, next) => {
             desk: desk,
             date,
             $or: [
-                { startTime: { $lt: endTime }, endTime: { $gt: startTime } }, // Overlapping time slot
-                { startTime: { $gte: startTime, $lt: endTime } }, // Start time within the requested time slot
-                { endTime: { $gt: startTime, $lte: endTime } } // End time within the requested time slot
+                { startTime: { $lt: endTime }, endTime: { $gt: startTime } }, 
+                { startTime: { $gte: startTime, $lt: endTime } }, 
+                { endTime: { $gt: startTime, $lte: endTime } } 
             ]
         });
 
@@ -73,30 +73,46 @@ export const createReservation = async (req, res, next) => {
 };
 
 
-// Controller function to update an existing reservation
-export const updateReservation = async (req, res, next) => {
+
+export const cancelReservation = async (req, res, next) => {
     try {
-        const updatedReservation = await Reservation.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        );
-        res.json(updatedReservation);
+        const reservationId = req.params.reservationId;
+
+        // Find the reservation to be ABORTED
+        const reservation = await Reservation.findById(reservationId);
+        if (!reservation) {
+            return res.status(404).json({ message: "Reservation not found" });
+        }
+
+        // Check if the reservation is already ABORTED
+        if (reservation.status === 'ABORTED') {
+            return res.status(400).json({ message: "The reservation is already ABORTED" });
+        }
+
+        // Update the reservation status to 'ABORTED'
+        reservation.status = 'ABORTED';
+        await reservation.save();
+
+        // Update the desk status to 'available' immediately
+        const desk = await Desk.findById(reservation.desk);
+        if (desk) {
+            desk.status = 'available';
+            await desk.save();
+        }
+
+      
+        const cancellationTime = new Date(Date.now() + 1 * 60 * 60 * 1000); // 1 hour from now
+        scheduleJob('sendCancellationEmail', cancellationTime, async () => {
+            // Send cancellation confirmation email
+            const emailBody = getEmailContentCancellation(reservation.user.username, reservation);
+            await sendCancellationConfirmationEmail(reservation.user.email, emailBody);
+        });
+
+        res.json({ message: 'Reservation ABORTED successfully' });
     } catch (error) {
         next(error);
     }
 };
-
-// Controller function to delete an existing reservation
-export const deleteReservation = async (req, res, next) => {
-    try {
-        await Reservation.findByIdAndDelete(req.params.id);
-        res.json({ message: 'Reservation deleted successfully' });
-    } catch (error) {
-        next(error);
-    }
-};
-
 
 export const deleteAllReservations = async (req, res, next) => {
     try {
@@ -107,19 +123,6 @@ export const deleteAllReservations = async (req, res, next) => {
     }
 };
 
-// Controller function to fetch a single reservation by its ID
-export const getReservationById = async (req, res, next) => {
-    try {
-        const reservation = await Reservation.findById(req.params.id);
-        if (!reservation) {
-            res.status(404).json({ message: 'Reservation not found' });
-            return;
-        }
-        res.json(reservation);
-    } catch (error) {
-        next(error);
-    }
-};
 
 // Controller function to fetch all reservations
 export const getAllReservations = async (req, res, next) => {

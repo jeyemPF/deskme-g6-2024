@@ -1,25 +1,18 @@
 import express from 'express';
 
-import {deleteAllReservations, createReservation, updateReservation, deleteReservation, getReservationById, getAllReservations, approveReservations } from '../controllers/reservation.js';
+import {deleteAllReservations, createReservation, getAllReservations, approveReservations, cancelReservation } from '../controllers/reservation.js';
 import {verifyOfficeManager } from '../utils/verifyToken.js'
-import { getSelf } from '../controllers/user.js';
 
 const router = express.Router();
 
 // Routes for reservations
 router.post('/:userId/:deskId', createReservation);
 
-// Update reservation
-router.put('/:id', updateReservation);
-
-// Delete reservation
-router.delete('/:id', deleteReservation);
+// cancel reservation
+router.delete('/cancel-reservation/:reservationId' , cancelReservation);
 
 // Delete all reservation
 router.delete('/', verifyOfficeManager, deleteAllReservations);
-
-// Get id of reservation
-router.get('/:id', getReservationById);
 
 // get the all reservation History
 router.get("/reservation-history", verifyOfficeManager, getAllReservations)
