@@ -236,3 +236,17 @@ export const updateProfile = async (req, res) => {
       });
     }
 };
+
+
+export const updateUserEmailPreference = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { receivingEmail } = req.body;
+  
+      const updatedUser = await User.findByIdAndUpdate(id, { receivingEmail }, { new: true });
+  
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+  };

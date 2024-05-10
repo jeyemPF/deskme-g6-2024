@@ -1,5 +1,5 @@
     import express from "express";
-    import { createDesk  } from "../controllers/desk.js";
+    import { createDesk, deleteDesk  } from "../controllers/desk.js";
     import { verifyAdmin } from "../utils/verifyToken.js";
 
     const router = express.Router();
@@ -9,6 +9,9 @@
 
     // UPDATE
     router.put("/:id", verifyAdmin,);
+
+    // DELETE
+    router.delete("/:id", verifyAdmin, deleteDesk);
 
     // // DELETE
     // router.delete("/:id/:reservation", verifyAdmin,);

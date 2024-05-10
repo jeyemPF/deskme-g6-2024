@@ -1,6 +1,6 @@
 import express from "express"
-import { deleteUser, getUser, getUsers, updateUser, createAdminUser, deleteAllUser, createOfficeManager, uploadAvatar, updateProfile, getSelf } from "../controllers/user.js";
-import { verifySuperAdmin, verifyAdmin, verifyToken, } from "../utils/verifyToken.js";
+import { deleteUser, getUser, getUsers, updateUser, createAdminUser, deleteAllUser, createOfficeManager, uploadAvatar, updateProfile, getSelf, updateUserEmailPreference } from "../controllers/user.js";
+import { verifySuperAdmin, verifyAdmin, verifyToken, verifyOfficeManager, } from "../utils/verifyToken.js";
 import upload from "../middleware/multer.js";
 
 
@@ -65,6 +65,8 @@ router.patch("/self/avatar", verifyToken, upload.single("avatar"), uploadAvatar,
 
 // updating profile
 router.put("/", verifyToken, updateProfile);
+
+router.put("/:id/email-preference", verifyOfficeManager, updateUserEmailPreference);
 
 
 

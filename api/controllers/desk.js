@@ -18,4 +18,27 @@ export const createDesk = async (req, res, next) => {
     }
 };
 
+export const deleteDesk = async (req, res, next) => {
+    const deskId = req.params.deskId; // Assuming deskId is passed as a parameter in the request URL
+    
+    try {
+        // Find the desk by ID and delete it
+        const deletedDesk = await Desk.findByIdAndDelete(deskId);
+
+        // If the desk is found and deleted successfully
+        if (deletedDesk) {
+            // Remove the desk reference from any associated reservations
+            await Reservation.updateMany({ desk: deskId }, { $unset: { desk: 1 } });
+
+            res.status(200).json({ message: 'Desk deleted successfully.' });
+        } else {
+            // If the desk is not found
+            res.status(404).json({ message: 'Desk not found.' });
+        }
+    } catch (err) {
+        // If an error occurs during the deletion process
+        next(err);
+    }
+};
+
 
