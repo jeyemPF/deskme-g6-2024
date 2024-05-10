@@ -1,5 +1,17 @@
 import express from "express"
-import { deleteUser, getUser, getUsers, updateUser, createAdminUser, deleteAllUser, createOfficeManager, uploadAvatar, updateProfile, getSelf, updateUserEmailPreference } from "../controllers/user.js";
+import { deleteUser,
+        getUser,
+        getUsers,
+        updateUser,
+        createAdminUser,
+        deleteAllUser,
+        createOfficeManager,
+        uploadAvatar,
+        updateProfile,
+        getSelf,
+        toggleReservationEmailNotifications,
+        toggleReservationEmailNotificationsForAllUsers,
+         } from "../controllers/user.js";
 import { verifySuperAdmin, verifyAdmin, verifyToken, verifyOfficeManager, } from "../utils/verifyToken.js";
 import upload from "../middleware/multer.js";
 
@@ -36,8 +48,8 @@ const router = express.Router()
 // });
 
 
-//UPDATE the user information
-router.put("/:id", verifyAdmin, updateUser);
+// //UPDATE the user information
+// router.put("/:id", verifyAdmin, updateUser);
 
 // Only super admins can delete users
 router.delete("/:id", verifySuperAdmin, deleteUser);
@@ -66,7 +78,13 @@ router.patch("/self/avatar", verifyToken, upload.single("avatar"), uploadAvatar,
 // updating profile
 router.put("/", verifyToken, updateProfile);
 
-router.put("/:id/email-preference", verifyOfficeManager, updateUserEmailPreference);
+// router.put("/email-preference",verifyOfficeManager, updateAllUsersEmailPreference);
+router.put("/:userId/toggle-reservation-emails", toggleReservationEmailNotifications);
+
+router.put("/toggle-reservation-emails-for-all-users",verifyOfficeManager, toggleReservationEmailNotificationsForAllUsers);
+
+
+
 
 
 

@@ -48,7 +48,11 @@ const UserSchema = new Schema({
     passwordChangedAt:{
       type: Date, 
       default: null
-    }
+    },
+    receiveReservationEmails: {
+      type: Boolean,
+      default: true, 
+    },
   },
   { timestamps: true }
 )

@@ -238,15 +238,70 @@ export const updateProfile = async (req, res) => {
 };
 
 
-export const updateUserEmailPreference = async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const { receivingEmail } = req.body;
-  
-      const updatedUser = await User.findByIdAndUpdate(id, { receivingEmail }, { new: true });
-  
-      res.status(200).json(updatedUser);
-    } catch (error) {
-      next(error);
-    }
-  };
+    // export const updateUserEmailPreference = async (req, res, next) => {
+    //     try {
+    //     const { id } = req.params;
+    //     const { receivingEmail } = req.body;
+    
+    //     const updatedUser = await User.findByIdAndUpdate(id, { receivingEmail }, { new: false });
+    
+    //     res.status(200).json(updatedUser);
+    //     } catch (error) {
+    //     next(error);
+    //     }
+    // };
+
+    // export const updateAllUsersEmailPreference = async (req, res, next) => {
+    //     try {
+    //       const { receivingEmail } = req.body;
+      
+    //       // Update all users' email preference
+    //       await User.updateMany({}, { receivingEmail });
+      
+    //       res.status(200).json({ message: "Email preference updated for all users" });
+    //     } catch (error) {
+    //       next(error);
+    //     }
+    //   };
+
+
+    export const toggleReservationEmailNotifications = async (req, res, next) => {
+        try {
+          const { userId } = req.params;
+      
+          // Find the user by ID
+          const user = await User.findById(userId);
+          if (!user) {
+            return res.status(404).json({ message: "User not found" });
+          }
+      
+          // Toggle the user's receiveReservationEmails field
+          user.receiveReservationEmails = !user.receiveReservationEmails;
+          await user.save();
+      
+          const status = user.receiveReservationEmails ? "enabled" : "disabled";
+          res.status(200).json({ message: `Email notifications for reservations ${status}` });
+        } catch (error) {
+          next(error);
+        }
+      };
+
+
+      export const toggleReservationEmailNotificationsForAllUsers = async (req, res, next) => {
+        try {
+          // Find all users
+          const users = await User.find();
+      
+          // Toggle the receiveReservationEmails field for each user
+          await Promise.all(users.map(async (user) => {
+            user.receiveReservationEmails = !user.receiveReservationEmails;
+            await user.save();
+          }));
+      
+          const status = users[0].receiveReservationEmails ? "enabled" : "disabled";
+          res.status(200).json({ message: `Email notifications for reservations for all users ${status}` });
+        } catch (error) {
+          next(error);
+        }
+      };
+      

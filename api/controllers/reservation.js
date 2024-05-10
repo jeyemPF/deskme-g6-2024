@@ -62,9 +62,11 @@ export const createReservation = async (req, res, next) => {
             await desk.save();
         });
 
-        // Send reservation confirmation email
-        const emailBody = getEmailContentReservation(user.username, savedReservation);
-        await sendReservationConfirmationEmail(user.email, emailBody);
+        // Send reservation confirmation email if the user wants to receive emails
+        if (user.receiveReservationEmails) {
+            const emailBody = getEmailContentReservation(user.username, savedReservation);
+            await sendReservationConfirmationEmail(user.email, emailBody);
+        }
 
         res.status(201).json(savedReservation);
     } catch (err) {
