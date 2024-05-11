@@ -1,8 +1,10 @@
 import User from "../models/User.js";
+import AuditTrail from "../models/AuditTrail.js";
 import { emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail, sendMagicLink  } from '../utils/emailService.js';
 import bcrypt from "bcryptjs"
 import { createError } from "../utils/error.js";
 import  jwt  from "jsonwebtoken";
+
 
 
 // Register user
@@ -66,17 +68,33 @@ export const login = async (req, res, next) => {
       // Add other user details here
     };
 
-   
     const token = jwt.sign(tokenPayload, process.env.JWT);
+
+    // Log the login action
+    const auditTrail = await AuditTrail.create({
+      actionType: 'login',
+      userId: user._id,
+      ipAddress: req.ip
+    });
+
+    // Console log the audit trail along with IP address and other details
+    console.log('Audit Trail:', {
+      auditTrail,
+      ipAddress: req.ip,
+      userId: user._id,
+      email: user.email,
+      // Add other relevant details here
+    });
 
     res.cookie('access_token', token, {
       httpOnly: true,
     }).status(200).json({ user: user.toObject(), token });
-
   } catch (err) {
+    // Handle errors
     next(err);
   }
 };
+
 
 
 // Forgot Password Functionality

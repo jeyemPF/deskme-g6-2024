@@ -1,36 +1,21 @@
-import AuditTrail from '../models/AuditTrail.js'; 
-import { createError } from '../utils/error.js';
+import AuditTrail from '../models/AuditTrail.js';
 
-// Function to create an audit trail record
-export const createAuditTrail = async (userId, email, eventType, eventDescription, status, additionalContext, clientLocation, userAgent) => {
-  try {
-    const auditTrail = new AuditTrail({
-      user: userId,
-      email,
-      eventType,
-      eventDescription,
-      status,
-      additionalContext,
-      clientLocation,
-      userAgent
-    });
-    await auditTrail.save();
-    console.log('Audit trail created successfully:', auditTrail);
-    return auditTrail;
-  } catch (err) {
-    console.error('Error creating audit trail record:', err);
-    throw createError(500, 'Error creating audit trail record');
-  }
-};
+export const login = async (req, res, next) => {
+    try {
+        // Your existing login code here...
 
-// Function to get all audit trail records
-export const getAllAuditTrails = async () => {
-  try {
-    const auditTrails = await AuditTrail.find();
-    console.log('Audit trails retrieved successfully:', auditTrails);
-    return auditTrails;
-  } catch (err) {
-    console.error('Error retrieving audit trail records:', err);
-    throw createError(500, 'Error retrieving audit trail records');
-  }
+        // Log the login action
+        await AuditTrail.create({
+            actionType: 'login',
+            userId: user._id,
+            ipAddress: req.ip
+        });
+
+        res.cookie('access_token', token, {
+            httpOnly: true,
+        }).status(200).json({ user: user.toObject(), token });
+
+    } catch (err) {
+        next(err);
+    }
 };

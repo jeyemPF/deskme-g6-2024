@@ -1,27 +1,22 @@
 import mongoose from 'mongoose';
 
-const auditTrailSchema = new mongoose.Schema({
-    user: {
+const AuditTrailSchema = new mongoose.Schema({
+    actionType: {
+        type: String,
+        required: true
+    },
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'User'
     },
-    email: String,
-    eventType: {
-        type: String,
-        required: true
+    timestamp: {
+        type: Date,
+        default: Date.now
     },
-    eventDescription: {
-        type: String,
-        required: true
-    },
-    status: {
-        type: String,
-        required: true,
-        enum: ["success", "failed"]
-    },
-    additionalContext: String,
-    clientLocation: String,
-    userAgent: String
-}, { timestamps: true });
+    ipAddress: String,
+    details: Object  // Any additional details you want to log
+});
 
-export default mongoose.model('AuditTrail', auditTrailSchema);
+const AuditTrail = mongoose.model('AuditTrail', AuditTrailSchema);
+
+export default AuditTrail;
