@@ -3,22 +3,6 @@ import bcrypt from "bcryptjs"
 import cloudinary from "../config/cloudinary.js";
 
 
-
-
-// UPDATE
-export const updateUser = async (req, res, next) => {
-    try {
-        const updatedUser = await User.findByIdAndUpdate(
-            req.params.id,
-            { $set: req.body },
-            { new: true }
-        );
-        res.status(200).json(updatedUser);
-    } catch (err) {
-        next(err);
-    }
-};
-
 // DELETE
 export const deleteUser = async (req, res, next) => {
     try {
@@ -251,18 +235,18 @@ export const updateProfile = async (req, res) => {
     //     }
     // };
 
-    // export const updateAllUsersEmailPreference = async (req, res, next) => {
-    //     try {
-    //       const { receivingEmail } = req.body;
+    export const updateAllUsersEmailPreference = async (req, res, next) => {
+        try {
+          const { receivingEmail } = req.body;
       
-    //       // Update all users' email preference
-    //       await User.updateMany({}, { receivingEmail });
+          // Update all users' email preference
+          await User.updateMany({}, { receivingEmail });
       
-    //       res.status(200).json({ message: "Email preference updated for all users" });
-    //     } catch (error) {
-    //       next(error);
-    //     }
-    //   };
+          res.status(200).json({ message: "Email preference updated for all users" });
+        } catch (error) {
+          next(error);
+        }
+      };
 
 
     export const toggleReservationEmailNotifications = async (req, res, next) => {
@@ -287,21 +271,23 @@ export const updateProfile = async (req, res) => {
       };
 
 
-      export const toggleReservationEmailNotificationsForAllUsers = async (req, res, next) => {
+    // Toggle email notifications for reservations for all users
+    export const toggleReservationEmailNotificationsForAllUsers = async (req, res, next) => {
         try {
           // Find all users
           const users = await User.find();
       
-          // Toggle the receiveReservationEmails field for each user
-          await Promise.all(users.map(async (user) => {
-            user.receiveReservationEmails = !user.receiveReservationEmails;
-            await user.save();
-          }));
+          // Get the current status of email notifications
+          const currentStatus = users[0].receiveReservationEmails;
       
-          const status = users[0].receiveReservationEmails ? "enabled" : "disabled";
-          res.status(200).json({ message: `Email notifications for reservations for all users ${status}` });
+          // Determine the new status by toggling the current status
+          const newStatus = !currentStatus;
+      
+          // Update the receiveReservationEmails field for all users
+          await User.updateMany({}, { receiveReservationEmails: newStatus });
+      
+          res.status(200).json({ message: `Email notifications for reservations for all users ${newStatus ? 'enabled' : 'disabled'}` });
         } catch (error) {
           next(error);
         }
       };
-      

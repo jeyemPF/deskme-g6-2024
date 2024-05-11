@@ -2,7 +2,6 @@ import express from "express"
 import { deleteUser,
         getUser,
         getUsers,
-        updateUser,
         createAdminUser,
         deleteAllUser,
         createOfficeManager,
@@ -11,6 +10,7 @@ import { deleteUser,
         getSelf,
         toggleReservationEmailNotifications,
         toggleReservationEmailNotificationsForAllUsers,
+        updateAllUsersEmailPreference
          } from "../controllers/user.js";
 import { verifySuperAdmin, verifyAdmin, verifyToken, verifyOfficeManager, } from "../utils/verifyToken.js";
 import upload from "../middleware/multer.js";
@@ -69,7 +69,7 @@ router.post("/admin", verifySuperAdmin, createAdminUser);
 // Only super admins can create Office Manager users
 router.post("/office-manager", verifySuperAdmin, createOfficeManager);
 
-// DELETE ALL USERS EXCEPT SUPER ADMIN
+// Bulk delete for all users 
 router.delete("/", verifySuperAdmin, deleteAllUser);
 
 // Upload avatars
@@ -78,9 +78,13 @@ router.patch("/self/avatar", verifyToken, upload.single("avatar"), uploadAvatar,
 // updating profile
 router.put("/", verifyToken, updateProfile);
 
-// router.put("/email-preference",verifyOfficeManager, updateAllUsersEmailPreference);
+// Update the receiving email of users
+router.put("/email-preference",verifyOfficeManager, updateAllUsersEmailPreference);
+
+// Update the user receiving email for reservation by id 
 router.put("/:userId/toggle-reservation-emails", toggleReservationEmailNotifications);
 
+// Update the all users email preferences
 router.put("/toggle-reservation-emails-for-all-users",verifyOfficeManager, toggleReservationEmailNotificationsForAllUsers);
 
 
