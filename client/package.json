@@ -24,6 +24,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "react-img-mapper": "^1.5.1",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
     "react-toggle-dark-mode": "^1.1.1",

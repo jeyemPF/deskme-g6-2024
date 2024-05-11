@@ -21,11 +21,13 @@ function Dashboard() {
   };
 
   const handleDashboard = () => {
-    navigate('/dashboard')
+    navigate('/dashboard');
+    setActiveMenuItem("Dashboard"); // Update active menu item immediately
   };
 
   const handleBooking = () => {
-    navigate('/booking')
+    navigate('/booking');
+    setActiveMenuItem("Booking"); // Update active menu item immediately
   };
 
   const firstMenuItems = [
@@ -67,7 +69,8 @@ function Dashboard() {
                 className={`text-neutral-700 dark:text-neutral-300 dark:hover:border-neutral-300 text-sm font-medium flex items-center gap-x-4 p-2 hover:border-neutral-600 hover:border-[1px] rounded-md cursor-pointer  ${
                   Menu.gap && "mt-9"
                 } ${activeMenuItem === Menu.title? "bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-900" : ""}`}
-                onClick={() => setActiveMenuItem(Menu.title)} // Add an onClick handler to update the active menu item
+                onClick={() => setActiveMenuItem(Menu.title)} // Update active menu item immediately on click
+                onMouseEnter={() => setActiveMenuItem(Menu.title)} // Update active menu item immediately on hover
               >
                 {Menu.icon}
                 <span className={`${!open && "hidden"} origin-left duration-200`}>
@@ -91,7 +94,7 @@ function Dashboard() {
             <li
               onClick={() => {
                 handleClick();
-                setActiveMenuItem("Logout"); // Update the active menu item when logging out
+                setActiveMenuItem("Logout"); // Update active menu item immediately when logging out
               }}
               className={`text-neutral-700 text-sm font-medium flex items-center gap-x-4 p-2 mt-1 hover:bg-neutral-700 hover:text-white border-2 border-neutral-700 rounded-md cursor-pointer dark:text-neutral-300 dark:border-neutral-300 dark:hover:bg-neutral-300 dark:hover:text-black ${activeMenuItem === "Logout"? "bg-neutral-700 text-white" : ""}`}
             >
