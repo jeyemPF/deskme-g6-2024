@@ -9,12 +9,16 @@ const AuditTrailSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
+    deskId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Desk'
+    },
     timestamp: {
         type: Date,
         default: Date.now
     },
     ipAddress: String,
-    details: Object  // Any additional details you want to log
+    details: Object  
 });
 
 const AuditTrail = mongoose.model('AuditTrail', AuditTrailSchema);

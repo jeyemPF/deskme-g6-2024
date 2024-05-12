@@ -4,6 +4,7 @@ import User from "../models/User.js";
 import ReservationHistory from "../models/ReservationHistory.js";
 import { scheduleJob } from 'node-schedule';
 import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation } from "../utils/emailService.js";
+import AuditTrail from "../models/AuditTrail.js";
 
 export const createReservation = async (req, res, next) => {
     try {
@@ -68,11 +69,29 @@ export const createReservation = async (req, res, next) => {
             await sendReservationConfirmationEmail(user.email, emailBody);
         }
 
-        res.status(201).json(savedReservation);
+        // Log the audit trail
+        await AuditTrail.create({
+            actionType: 'reservation',
+            userId: userId,
+            deskId: deskId,
+            ipAddress: req.ip
+        });
+
+        // Log the details to the console
+        console.log("Audit trail created for reservation:", {
+            userId: userId,
+            deskId: deskId,
+            ipAddress: req.ip
+        });
+
+        // Send response back to the client
+        res.status(200).json({ message: 'Reservation successful' });
     } catch (err) {
         next(err);
     }
 };
+
+
 
 
 

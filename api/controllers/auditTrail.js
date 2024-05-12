@@ -1,21 +1,25 @@
 import AuditTrail from '../models/AuditTrail.js';
 
-export const login = async (req, res, next) => {
+export const getAuditTrails = async (req, res, next) => {
     try {
-        // Your existing login code here...
+        // You can define criteria to filter the audit trails, such as userId, actionType, etc.
+        const { userId, actionType, startDate, endDate } = req.query;
 
-        // Log the login action
-        await AuditTrail.create({
-            actionType: 'login',
-            userId: user._id,
-            ipAddress: req.ip
-        });
+        // Construct a filter object based on the provided query parameters
+        const filter = {};
+        if (userId) filter.userId = userId;
+        if (actionType) filter.actionType = actionType;
+        if (startDate && endDate) {
+            filter.timestamp = { $gte: new Date(startDate), $lte: new Date(endDate) };
+        }
 
-        res.cookie('access_token', token, {
-            httpOnly: true,
-        }).status(200).json({ user: user.toObject(), token });
+        // Query the database for audit trails based on the filter
+        const auditTrails = await AuditTrail.find(filter);
 
+        // Return the audit trails to the client
+        res.status(200).json(auditTrails);
     } catch (err) {
+        // Handle errors
         next(err);
     }
 };

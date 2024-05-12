@@ -1,13 +1,10 @@
 
 import express from "express";
-
-
-import { verifyToken } from "../utils/verifyToken.js";
+import { getAuditTrails } from "../controllers/auditTrail.js";
 
 const router = express.Router()
 
-// router.post('/audit-trails', verifyToken, createAuditTrail);
-// router.get('/audit-trails', getAllAuditTrails);
+router.get('/audit-trails', getAuditTrails);
 
 
 export default router;  
