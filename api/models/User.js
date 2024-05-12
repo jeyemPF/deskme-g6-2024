@@ -15,9 +15,6 @@ const UserSchema = new Schema({
       required: true,
       unique: true,
     },
-    description: {
-      type: String,
-    },
     receivingEmail: {
       type: Boolean,
       default: true,
