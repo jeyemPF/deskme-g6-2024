@@ -12,6 +12,7 @@ import ManageBooking from '../src/user/ManageBooking';
 import ResetPassword from './auth/ResetPassword';
 import NewPassword from './auth/NewPassword';
 import ADashboard from './admin/ADashboard';
+import ABooking from './admin/ABooking';
 
 function App() {
   return (
@@ -30,7 +31,8 @@ function App() {
         <Route path='/managebooking' element={<ManageBooking />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
         <Route path='/newpassword' element={<NewPassword />} />
-        <Route path='/sadmindashboard' element={<ADashboard />} />
+        <Route path='/admindashboard' element={<ADashboard />} />
+        <Route path='/adminbooking' element={<ABooking />} />
       </Routes>
     </Router> 
   </div>

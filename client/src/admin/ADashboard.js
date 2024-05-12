@@ -1,52 +1,64 @@
 import * as React from 'react';
-import { Calendar } from 'antd';
-import { FaUserTie, FaHouseUser, FaUser, FaLaptopCode } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaExclamationCircle, FaBookmark } from 'react-icons/fa';
+import { FaDesktop, FaBorderAll  } from "react-icons/fa6";
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 
-  const Card = ({ icon, title, description }) => {
-    return (
-      <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-md p-4 w-72 h-32 flex items-center space-x-2">
-        <div className="text-3xl mr-8 ml-8">
-            {icon === 'admin' && <FaUserTie   />}
-            {icon === 'office manager' && <FaHouseUser   />}
-            {icon === 'users' && <FaUser  />}
-            {icon === 'desks' && <FaLaptopCode   />}
+const Card = ({ icon, title, description }) => {
+  return (
+    <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-md p-4 xl:w-80 sm:w-64 xl:h-32 sm:h-28 flex items-center space-x-3 border-[1px] border-neutral-200">
+      <div className="xl:text-3xl mr-8 ml-8 sm:text-xl">
+        {icon === 'all bookings' && <FaBookmark  />}
+        {icon === 'adesks' && <FaDesktop />}
+        {icon === 'udesks' && <FaExclamationCircle  />}
+        {icon === 'desks' && <FaBorderAll    />}
+      </div>
+      <div>
+        <h5 className="xl:text-lg sm:text-base">{title}</h5>
+        <p className="xl:text-sm sm:text-xs text-gray-600 dark:text-gray-400">{description}</p>
+      </div>
+    </div>
+  );
+};
+
+const palette = ['skyblue', 'grey', 'black', 'papayawhip'];
+
+function ADashboard() {
+  return (
+    <div className="dark:bg-neutral-900">
+      <Header />
+      <Sidebar />
+      <div>
+        <main className="container 2xl:pl-12 sm:pl-24 pt-24 dark:bg-neutral-900 dark:text-white pb-4">
+          <a className="text-sm font-light dark:text-white" href="#">
+            Admin
+            <span className="mx-1 text-sm text-navy-700 hover:text-navy-700 dark:text-white">
+              {" "}
+              /{" "}
+            </span>
+          </a>
+          <Link className="text-sm font-normal capitalize text-navy-700 hover:underline dark:text-white dark:hover:text-white" to="#">
+            Dashboard
+          </Link>
+          <div className='flex xl:flex-row pt-5 sm:flex-col sm:gap-y-4 sm:items-center gap-x-3'>
+            <div className="xl:w-1/2">
+              <Card icon="all bookings" title="All Bookings" description="Total: 3" />
+            </div>
+            <div className="xl:w-1/2">
+              <Card icon="adesks" title="Available Desks" description="Total: 6" />
+            </div>
+            <div className="xl:w-1/2">
+              <Card icon="udesks" title="Unavailable Desks" description="Total: 10" />
+            </div>
+            <div className="xl:w-1/2">
+              <Card icon="desks" title="All Desks" description="Total: 16" />
+            </div>
           </div>
-        <div>
-          <h5 className="text-lg">{title}</h5>
-          <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
-        </div>
+        </main>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
-  const onPanelChange = (value, mode) => {
-    console.log(value.format('YYYY-MM-DD'), mode);
-  };
-
-  function ADashboard() {
-
-    return (
-      <div className="dark:bg-neutral-900" style={{ height: '100vh', overflowY: 'hidden' }}>
-        <Header />
-        <Sidebar />
-        <div>
-            <main className="container h-screen 2xl:pl-12 sm:pl-24 pt-5  dark:bg-neutral-900 dark:text-white overflow-y-scroll">
-                <p className="font-light text-sm">Dashboard / Superadmin</p>
-                <div className="flex flex-wrap justify-center pt-6 mt-6 border-[1px] border-neutral-300 shadow-md rounded-md space-x-8 md:flex-nowrap bg-neutral-100 h-screen">
-                  <Card icon="admin" title="Admins" description="No. of admins: 3" />
-                  <Card icon="office manager" title="Office Managers" description="No. of managers: 6" />
-                  <Card icon="users" title=" Users" description="No. of users: 10" />
-                  <Card icon="desks" title="All Desks" description="No. of desks: 20" />
-                </div>
-                <div>
-                  <Calendar onPanelChange={onPanelChange} />
-                  </div>
-            </main>
-        </div>
-      </div>
-    );
-  };
-
-  export default ADashboard;
+export default ADashboard;

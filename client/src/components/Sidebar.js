@@ -20,19 +20,19 @@ function Dashboard() {
     navigate('/Login');
   };
 
-  const handleDashboard = () => {
-    navigate('/dashboard');
-    setActiveMenuItem("Dashboard"); // Update active menu item immediately
+  const handleClick1 = () => {
+    navigate('/admindashboard');
+    setActiveMenuItem("Dashboard");
   };
 
-  const handleBooking = () => {
-    navigate('/booking');
-    setActiveMenuItem("Booking"); // Update active menu item immediately
+  const handleClick2 = () => {
+    navigate('/adminbooking');  
+    setActiveMenuItem("Booking");
   };
 
   const firstMenuItems = [
-    { title: "Dashboard", icon: <MdDashboard className="text-2xl" onClick={handleDashboard} /> },
-    { title: "Booking", icon: <PiBookBookmarkFill className="text-2xl " onClick={handleBooking} />, gap: true },
+    { title: "Dashboard", icon: <MdDashboard className="text-2xl" onClick={handleClick1} /> },
+    { title: "Booking", icon: <PiBookBookmarkFill className="text-2xl " onClick={handleClick2} />, gap: true },
     { title: "Manage Booking", icon: <PiBooksFill className="text-2xl" /> },
     { title: "Customer Support", icon: <FaHandsHelping className="text-2xl" /> },
   ];
@@ -48,17 +48,17 @@ function Dashboard() {
       <div className="flex">
         <div
           className={`${
-            open? "w-60" : "w-20"
-          } bg-white dark:bg-neutral-900 h-screen p-5 pt-5 fixed duration-500 border-r-[1px] border-black dark:border-neutral-500`}
+            open? "w-56" : "w-16"
+          } bg-white dark:bg-neutral-900 h-full p-3 pt-5 fixed top-[58px] duration-500 border-r-[1px] border-neutral-400 dark:border-neutral-500`}
         >
-          <div className="flex items-center gap-x-4 mb-8 ml-2 mt-6">
-          <span className={`text-black font-bold origin-left duration-200 dark:text-white ${!open && ""}`}>
-            {open ? "DESKME" : "DM"}
+          <div className="flex items-center gap-x-4 mb-8 ml-2 mt-2">
+          <span className={`text-black font-bold text-xs origin-left duration-200 dark:text-white ${!open && ""}`}>
+            {open ? "HI, ME!" : "HM"}
           </span>
           </div>
           <PiArrowCircleLeft
             onClick={() => setOpen(!open)}
-            className={`text-black bg-white dark:bg-neutral-900 dark:text-neutral-300 absolute cursor-pointer -right-3 top-10 w-6 border-[1px] border-black rounded-full dark:border-neutral-300 ${
+            className={`text-neutral-600 bg-white dark:bg-neutral-900 dark:text-neutral-300 absolute cursor-pointer -right-3 top-5 w-6 h-7 border-[1px] border-neutral-400 rounded-md dark:border-neutral-300 ${
              !open && "rotate-180"
             } text-4xl`}
           />
@@ -66,11 +66,11 @@ function Dashboard() {
             {firstMenuItems.map((Menu, index) => (
               <li
                 key={index}
-                className={`text-neutral-700 dark:text-neutral-300 dark:hover:border-neutral-300 text-sm font-medium flex items-center gap-x-4 p-2 hover:border-neutral-600 hover:border-[1px] rounded-md cursor-pointer  ${
+                className={`text-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-500 dark:hover:text-neutral-300 text-sm font-medium flex items-center gap-x-4 p-2 hover:bg-neutral-300 rounded-md cursor-pointer  ${
                   Menu.gap && "mt-9"
                 } ${activeMenuItem === Menu.title? "bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-900" : ""}`}
-                onClick={() => setActiveMenuItem(Menu.title)} // Update active menu item immediately on click
-                onMouseEnter={() => setActiveMenuItem(Menu.title)} // Update active menu item immediately on hover
+                onClick={() => setActiveMenuItem(Menu.title)}
+                onMouseEnter={() => setActiveMenuItem(Menu.title)}
               >
                 {Menu.icon}
                 <span className={`${!open && "hidden"} origin-left duration-200`}>
@@ -80,10 +80,10 @@ function Dashboard() {
             ))}
           </ul>
 
-          <ul className="flex flex-col xl:mt-48 sm:mt-32">
+          <ul className="flex flex-col xl:mt-56 sm:mt-36">
             {/* Render settings and logout items */}
             <li
-              className={`text-neutral-700 text-sm font-medium flex items-center gap-x-4 p-2 hover:border-neutral-700 hover:border-[1px] rounded-md mt-9 cursor-pointer dark:text-neutral-300 dark:hover:border-neutral-300 ${activeMenuItem === "Settings"? "bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-900" : ""}`}
+              className={`text-neutral-700 text-sm font-medium flex items-center gap-x-4 p-2 hover:bg-neutral-300 rounded-md mt-9 cursor-pointer dark:text-neutral-300 dark:hover:text-neutral-700 ${activeMenuItem === "Settings"? "bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-900" : ""}`}
               onClick={() => setActiveMenuItem("Settings")}
             >
               <MdSettings className="text-2xl" />
