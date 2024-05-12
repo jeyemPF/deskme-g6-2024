@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import Logo from '../assets/Logo.png';
 import { IoMenuSharp } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
-import { PiLockSimpleBold } from "react-icons/pi";
 import Switcher from '../components/Switcher';
 
 const Navbar = () => {
@@ -25,8 +23,8 @@ const Navbar = () => {
   
 
   return (
-    <div className="bg-white">
-      <nav className="bg-white w-full start-0 dark:bg-neutral-900">
+    <div className="bg-neutral-100">
+      <nav className="bg-neutral-100 w-full start-0 dark:bg-neutral-900">
         <div className="flex flex-col-reverse items-center justify-between max-w-screen-navbar mx-auto">
 
           <div className="flex justify-end md:items-center sm:justify-between w-full navbar:w-auto gap-48">
@@ -66,7 +64,7 @@ const Navbar = () => {
       </nav>
 
       {isOpen && (
-        <div className="navbar:hidden sm:bg-white sm:w-full sm:h-full sm:justify-center sm:items-center sm:pt-3 sm:pb-5 sm:border-b sm:border-black dark:bg-neutral-900 dark:border-white">
+        <div className="navbar:hidden sm:bg-neutral-100 sm:w-full sm:h-full sm:justify-center sm:items-center sm:pt-3 sm:pb-5 sm:border-b sm:border-black dark:bg-neutral-900 dark:border-white">
           <ul className="flex flex-col items-center">
             <li className="my-2 mx-4 font-bold">
               <a href="/" className="relative text-black hover:text-black transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-black after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-50 dark:text-white dark:transition-colors dark:duration-300 dark:after:absolute dark:after:bottom-0 dark:after:left-0 dark:after:w-full dark:after:h-0.5 dark:after:bg-white dark:after:origin-left dark:after:scale-x-0 dark:after:transition-transform dark:after:duration-300 dark:hover:after:scale-x-50">Home</a>

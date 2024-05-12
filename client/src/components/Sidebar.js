@@ -48,17 +48,17 @@ function Dashboard() {
       <div className="flex">
         <div
           className={`${
-            open? "w-60" : "w-20"
-          } bg-white dark:bg-neutral-900 h-full p-5 pt-5 fixed top-[58px] duration-500 border-r-[1px] border-black dark:border-neutral-500`}
+            open? "w-56" : "w-16"
+          } bg-white dark:bg-neutral-900 h-full p-3 pt-5 fixed top-[58px] duration-500 border-r-[1px] border-neutral-400 dark:border-neutral-500`}
         >
-          <div className="flex items-center gap-x-4 mb-8 ml-2 mt-6">
-          <span className={`text-black font-bold origin-left duration-200 dark:text-white ${!open && ""}`}>
+          <div className="flex items-center gap-x-4 mb-8 ml-2 mt-2">
+          <span className={`text-black font-bold text-xs origin-left duration-200 dark:text-white ${!open && ""}`}>
             {open ? "HI, ME!" : "HM"}
           </span>
           </div>
           <PiArrowCircleLeft
             onClick={() => setOpen(!open)}
-            className={`text-black bg-white dark:bg-neutral-900 dark:text-neutral-300 absolute cursor-pointer -right-3 top-10 w-6 border-[1px] border-black rounded-full dark:border-neutral-300 ${
+            className={`text-neutral-600 bg-white dark:bg-neutral-900 dark:text-neutral-300 absolute cursor-pointer -right-3 top-5 w-6 h-7 border-[1px] border-neutral-400 rounded-md dark:border-neutral-300 ${
              !open && "rotate-180"
             } text-4xl`}
           />
@@ -80,7 +80,7 @@ function Dashboard() {
             ))}
           </ul>
 
-          <ul className="flex flex-col xl:mt-48 sm:mt-32">
+          <ul className="flex flex-col xl:mt-56 sm:mt-36">
             {/* Render settings and logout items */}
             <li
               className={`text-neutral-700 text-sm font-medium flex items-center gap-x-4 p-2 hover:bg-neutral-300 rounded-md mt-9 cursor-pointer dark:text-neutral-300 dark:hover:text-neutral-700 ${activeMenuItem === "Settings"? "bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-900" : ""}`}
