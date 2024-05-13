@@ -196,3 +196,22 @@ export const getReservationHistory = async (req, res, next) => {
         next(err);
     }
 };
+
+
+export const getReservationCount = async (req, res, next) => {
+    try {
+        const count = await Reservation.countDocuments();
+        res.json({ count });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getAvailableDeskCount = async (req, res, next) => {
+    try {
+        const count = await Desk.countDocuments({ status: 'available' });
+        res.json({ count });
+    } catch (error) {
+        next(error);
+    }
+};

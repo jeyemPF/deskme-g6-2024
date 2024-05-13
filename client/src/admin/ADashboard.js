@@ -26,10 +26,13 @@ const Card = ({ icon, title, description }) => {
 };
 
 function ADashboard() {
-  const { data: deskCountData, loading, error } = useFetch("http://localhost:8800/api/desks/count");
+  const { data: deskCountData, loading: deskLoading, error: deskError } = useFetch("http://localhost:8800/api/desks/count");
+  const { data: reservationCountData, loading: reservationLoading, error: reservationError } = useFetch("http://localhost:8800/api/reservations/count-reservation");
+  const { data: reservationAvailableDeskCount, loading: reservationAvailableDeskCountLoading, error: reservationAvailableDeskCountError } = useFetch("http://localhost:8800/api/reservations/available-desk");
 
-  // Assuming the deskCountData is an object with a property like 'count'
   const deskCount = deskCountData && deskCountData.count;
+  const reservationCount = reservationCountData && reservationCountData.count;
+  const reservationDeskCount = reservationAvailableDeskCount && reservationAvailableDeskCount.count;
 
   return (
     <div className="dark:bg-neutral-900">
@@ -49,20 +52,20 @@ function ADashboard() {
               Dashboard
             </Link>
           </div>
-          {loading ? (
+          {(deskLoading || reservationLoading || reservationAvailableDeskCountLoading) ? (
             "Loading Please Wait..."
           ) : (
             <div className='flex xl:flex-row pt-5 sm:flex-col sm:gap-y-4 sm:items-center gap-x-3'>
               <div className="xl:w-1/2">
-                <Card key="deskCount" icon="all bookings" title="All Bookings" description= "Total: 20" />
+                <Card key="deskCount" icon="all bookings" title="All Bookings" description= {`Total: ${reservationCount}`} />
               </div>
               <div className="xl:w-1/2">
                 {/* Add key prop for Card component */}
-                <Card key="availableDesks" icon="adesks" title="Available Desks" description="Total: 6" />
+                <Card key="availableDesks" icon="adesks" title="Available Desks" description={`Total: ${reservationDeskCount}`} />
               </div>
               <div className="xl:w-1/2">
                 {/* Add key prop for Card component */}
-                <Card key="unavailableDesks" icon="udesks" title="Unavailable Desks" description="Total: 10" />
+                <Card key="unavailableDesks" icon="udesks" title="Unavailable Desks" description="Total: 5" />
               </div>
               <div className="xl:w-1/2">
                 {/* Add key prop for Card component */}
@@ -75,5 +78,4 @@ function ADashboard() {
     </div>
   );
 }
-
 export default ADashboard;

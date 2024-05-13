@@ -1,6 +1,6 @@
 import express from 'express';
 
-import {deleteAllReservations, createReservation, getAllReservations, approveReservations, cancelReservation } from '../controllers/reservation.js';
+import {deleteAllReservations, createReservation, getAllReservations, approveReservations, cancelReservation, getReservationCount, getAvailableDeskCount } from '../controllers/reservation.js';
 import {verifyOfficeManager } from '../utils/verifyToken.js'
 
 const router = express.Router();
@@ -19,5 +19,11 @@ router.get("/reservation-history", verifyOfficeManager, getAllReservations)
 
 // toggle the reservation approved 
 router.put('/reservations/approve', verifyOfficeManager , approveReservations);
+
+// get the count of reservations
+router.get("/count-reservation", getReservationCount);
+
+// get the count of desk who status of available
+router.get("/available-desk", getAvailableDeskCount)
 
 export default router;
