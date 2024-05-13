@@ -42,3 +42,11 @@ export const deleteDesk = async (req, res, next) => {
 };
 
 
+export const getDeskCount = async (req, res, next) => {
+    try {
+        const deskCount = await Desk.countDocuments();
+        res.status(200).json({ count: deskCount });
+    } catch (err) {
+        next(err);
+    }
+};

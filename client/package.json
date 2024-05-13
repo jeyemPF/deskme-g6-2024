@@ -30,7 +30,8 @@
     "react-scripts": "5.0.1",
     "react-toggle-dark-mode": "^1.1.1",
     "tw-elements-react": "^1.0.0-alpha2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "proxy": "localhost:8800/api/"
   },
   "scripts": {
     "start": "react-scripts start",

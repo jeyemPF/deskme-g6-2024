@@ -63,7 +63,7 @@ app.use("/api/users", usersRoute);
 app.use("/api/desks", desksRoute);
 app.use("/api/reservations", reservationsRoute);
 app.use("/api/switchs", switchsRoute);
-app.use("api/auditTrails", auditTrailsRoute);
+app.use("/api/auditTrails", auditTrailsRoute);
 
 
 app.use((err, req, res, next) => {

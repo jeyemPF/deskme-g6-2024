@@ -23,3 +23,17 @@ export const getAuditTrails = async (req, res, next) => {
         next(err);
     }
 };
+
+
+// export const getAuditTrails = async (req, res, next) => {
+//     try {
+//         // Query the database for all audit trails
+//         const auditTrails = await AuditTrail.find();
+
+//         // Return the audit trails to the client
+//         res.status(200).json(auditTrails);
+//     } catch (err) {
+//         // Handle errors
+//         next(err);
+//     }
+// };

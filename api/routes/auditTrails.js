@@ -4,7 +4,7 @@ import { getAuditTrails } from "../controllers/auditTrail.js";
 
 const router = express.Router()
 
-router.get('/audit-trails', getAuditTrails);
+router.get('/', getAuditTrails);
 
 
 export default router;  

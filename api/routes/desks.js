@@ -1,5 +1,5 @@
     import express from "express";
-    import { createDesk, deleteDesk  } from "../controllers/desk.js";
+    import { createDesk, deleteDesk, getDeskCount  } from "../controllers/desk.js";
     import { verifyAdmin } from "../utils/verifyToken.js";
 
     const router = express.Router();
@@ -12,6 +12,10 @@
 
     // DELETE
     router.delete("/:id", verifyAdmin, deleteDesk);
+
+    // Counting desk
+
+    router.get('/count', getDeskCount);
 
     // // DELETE
     // router.delete("/:id/:reservation", verifyAdmin,);
