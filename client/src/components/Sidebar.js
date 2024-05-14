@@ -94,7 +94,7 @@ function Dashboard() {
             <li
               onClick={() => {
                 handleClick();
-                setActiveMenuItem("Logout"); // Update the active menu item when logging out
+                setActiveMenuItem("Logout"); // Update active menu item immediately when logging out
               }}
               className={`text-neutral-700 text-sm font-medium flex items-center gap-x-4 p-2 mt-1 hover:bg-neutral-700 hover:text-white border-2 border-neutral-700 rounded-md cursor-pointer dark:text-neutral-300 dark:border-neutral-300 dark:hover:bg-neutral-300 dark:hover:text-black ${activeMenuItem === "Logout"? "bg-neutral-700 text-white" : ""}`}
             >

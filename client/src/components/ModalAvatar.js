@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ModalAvatar = ({ onClose }) => {
+const ModalAvatar = ({ onClose, avatar }) => {
   const handleAvatarChange = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();

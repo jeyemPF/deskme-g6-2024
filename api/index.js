@@ -6,6 +6,7 @@ import usersRoute from "./routes/users.js";
 import desksRoute from "./routes/desks.js";
 import reservationsRoute from "./routes/reservations.js";
 import switchsRoute from "./routes/switchs.js"
+import auditTrailsRoute from "./routes/auditTrails.js"
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import cloudinary from "./config/cloudinary.js";
@@ -56,11 +57,14 @@ mongoose.connection.on("connected", () => {
 app.use(cookieParser());
 app.use(express.json());
 
+
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/desks", desksRoute);
 app.use("/api/reservations", reservationsRoute);
 app.use("/api/switchs", switchsRoute);
+app.use("/api/auditTrails", auditTrailsRoute);
+
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

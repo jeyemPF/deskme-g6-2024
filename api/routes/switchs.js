@@ -1,10 +1,13 @@
 import express from 'express';
-import { toggleAutoAccepting, getSwitchState } from '../controllers/switch.js'; 
+import { toggleAutoAccepting, getSwitchState } from '../controllers/switch.js';
+import { verifyOfficeManager } from '../utils/verifyToken.js';
 
 const router = express.Router();
 
-router.post('/toggleAutoAccepting', toggleAutoAccepting);
+// Route for toggling auto-accepting and approving reservations if enabled
+router.put('/',verifyOfficeManager, toggleAutoAccepting);
 
-router.get('/getSwitchState', getSwitchState);
+// Route for getting the current state of the auto-accepting switch
+router.get('/switch/state', getSwitchState);
 
 export default router;

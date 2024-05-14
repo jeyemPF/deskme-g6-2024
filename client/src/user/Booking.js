@@ -1,5 +1,6 @@
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
+import Deskmap from '../components/Deskmap';
 
 function Booking() {
 
@@ -8,6 +9,9 @@ function Booking() {
       <Header />
       <div>
         <Sidebar />
+      </div>
+      <div className='text-center'>
+        <Deskmap/>
       </div>
     </div>
   );

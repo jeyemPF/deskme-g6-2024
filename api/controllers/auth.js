@@ -1,12 +1,13 @@
 import User from "../models/User.js";
-import { sendMagicLink, emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail ,sendPasswordResetEmail } from '../utils/emailService.js';
+import AuditTrail from "../models/AuditTrail.js";
+import { emailContents, generateMailGenerator ,sendRegistrationConfirmationEmail, sendMagicLink  } from '../utils/emailService.js';
 import bcrypt from "bcryptjs"
 import { createError } from "../utils/error.js";
 import  jwt  from "jsonwebtoken";
-import crypto from "crypto"
 
 
-// REGISTER 
+
+// Register user
 export const register = async (req, res, next) => {
     try {
 
@@ -41,44 +42,61 @@ export const register = async (req, res, next) => {
         next(err);
     }
 };
-// LOGIN
 
-
+// Login user
+// Login user
 export const login = async (req, res, next) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
 
     if (!user) {
-      return next(createError(404, "User not found"));
+      return next(createError(404, 'User not found'));
     }
 
-    const isPasswordCorrect = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return next(createError(400, "Wrong password or email!"));
+      return next(createError(400, 'Wrong password or email!'));
     }
 
-const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT);
-    
-    const { password, ...otherDetails } = user._doc;
-    res.cookie("access_token", token, {
-      httpOnly: true,
-    }).status(200).json(otherDetails);
+    // Include more user details in the token payload if needed
+    const tokenPayload = {
+      id: user._id,
+      role: user.role,
+      username: user.username,
+      // Add other user details here
+    };
 
+    const token = jwt.sign(tokenPayload, process.env.JWT);
+
+    // Log the login action
+    const auditTrail = await AuditTrail.create({
+      actionType: 'login',
+      userId: user._id,
+      ipAddress: req.ip
+    });
+
+    // Console log the audit trail along with IP address and other details
+    console.log('Audit Trail:', {
+      auditTrail,
+      ipAddress: req.ip,
+      userId: user._id,
+      email: user.email,
+      // Add other relevant details here
+    });
+
+    res.cookie('access_token', token, {
+      httpOnly: true,
+    }).status(200).json({ user: user.toObject(), token });
   } catch (err) {
+    // Handle errors
     next(err);
   }
 };
 
 
 
-// forgot and reset password
-
-// Forgot Password Functionality
-// Forgot Password Functionality
 // Forgot Password Functionality
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;
@@ -90,18 +108,11 @@ export const forgotPassword = async (req, res) => {
       return res.status(404).json({ success: false, error: "User not found" });
     }
 
-    // Generate a unique token without "/"
-    const token = generateRandomToken(32);
-
-    // Calculate token expiration (e.g., 10 minutes from now)
-    const expiration = Date.now() + 10 * 60 * 1000;
-
-    // Save token and expiration in user document
-    user.passwordResetToken = {
-      token,
-      expiresAt: expiration,
-    };
-    await user.save();
+    if (!email) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Missing required fields" });
+    }
 
     // Using sendMagicLink function to send a magic link for password reset
     sendMagicLink(user, res);
@@ -113,8 +124,6 @@ export const forgotPassword = async (req, res) => {
     });
   }
 };
-
-
 
 // Reset Password Functionality
 export const resetPassword = async (req, res) => {
@@ -163,48 +172,51 @@ export const resetPassword = async (req, res) => {
       user.password = hashedPassword;
       user.passwordChangedAt = Date.now();
       user.passwordResetToken = undefined;
+     
 
-      // Assuming sendPasswordResetSuccess function sends a success message
-      sendPasswordResetSuccess(user, res);
+      
+      await user.save();
+      return res.status(200).json({success: true, message: "successfully"} )
   } catch (error) {
+    console.log(error)
       return res.status(400).json({
           success: false,
-          error: "An error occurred.",
+          error: "error message.",
       });
   }
 };
 
 // Validate Reset Token Functionality
 export const validateResetToken = async (req, res) => {
-  const { token, id } = req.params;
+  const { token, id } = req.params
 
   try {
-      const user = await User.findById(id);
+    const user = await User.findById(id);
 
-      if (!user || !user.passwordResetToken) {
-          return res.status(400).json({
-              success: false,
-              error: "User or reset token not found",
-          });
-      }
-
-      const { passwordResetToken } = user;
-      const tokenValid = await bcrypt.compare(token, passwordResetToken.token);
-      const tokenExpired = passwordResetToken.expiresAt < Date.now();
-
-      if (!tokenValid || tokenExpired) {
-          return res.status(400).json({
-              success: false,
-              error: "Invalid or expired reset token",
-          });
-      }
-
-      return res.status(200).json({ success: true, message: "Reset token is valid" });
-  } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-          success: false,
-          error: "An error occurred.",
+    if (!user || !user.passwordResetToken) {
+      return res.status(400).json({
+        success: false,
+        error: "User or reset token not found",
       });
+    }
+
+    const { passwordResetToken } = user;
+    const tokenValid = await bcrypt.compare(token, passwordResetToken.token);
+    const tokenExpired = passwordResetToken.expiresAt < Date.now();
+
+    if (!passwordResetToken || !user || !tokenValid || tokenExpired) {
+      return res.status(400).json({
+        success: false,
+        error: "It appears that the password reset link you clicked on is invalid. Please try again.",
+      });
+    }
+
+    return res.status(200).json({ success: true, message: "Reset token is valid" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      error: "An error occurred.",
+    });
   }
 };

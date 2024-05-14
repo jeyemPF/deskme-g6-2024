@@ -1,22 +1,29 @@
-import express from "express";
-import { createDesk, deleteDesk, getAllDesks, getDeskById, updateDesk } from "../controllers/desk.js";
-import { verifyAdmin } from "../utils/verifyToken.js";
+    import express from "express";
+    import { createDesk, deleteDesk, getDeskCount  } from "../controllers/desk.js";
+    import { verifyAdmin } from "../utils/verifyToken.js";
 
-const router = express.Router();
+    const router = express.Router();
 
-// CREATE
-router.post("/", createDesk);   
+    // CREATE
+    router.post("/", createDesk);   
 
-// UPDATE
-router.put("/:id", verifyAdmin, updateDesk);
+    // UPDATE
+    router.put("/:id", verifyAdmin,);
 
-// DELETE
-router.delete("/:id/:reservation", verifyAdmin, deleteDesk);
+    // DELETE
+    router.delete("/:id", verifyAdmin, deleteDesk);
 
-// GET
-router.get("/:id", verifyAdmin, getDeskById);
+    // Counting desk
 
-// GET ALL
-router.get("/", getAllDesks);
+    router.get('/count', getDeskCount);
 
-export default router;
+    // // DELETE
+    // router.delete("/:id/:reservation", verifyAdmin,);
+
+    // // GET
+    // router.get("/:id", verifyAdmin, getDeskById);
+
+    // // GET ALL
+    // router.get("/", getAllDesks);
+
+    export default router;

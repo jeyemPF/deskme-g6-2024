@@ -84,6 +84,8 @@ function Login() {
   
       console.log('Login successful');
       console.log('Response:', response.data);
+
+      sessionStorage.setItem('userCredentials', JSON.stringify(response.data));
   
       // Redirect to the dashboard route after successful login
       navigate("/dashboard");
