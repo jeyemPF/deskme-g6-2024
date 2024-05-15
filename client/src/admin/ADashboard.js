@@ -1,6 +1,6 @@
 import React from 'react'
 import { LayoutDashboard, Layers, Flag, Calendar, LifeBuoy, Settings, LogOut } from "lucide-react";
-import Sidebar, { SidebarItem } from '../components/Sidebar'
+import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
 import Header from '../components/Header'
 import { useNavigate } from 'react-router-dom';
 
@@ -16,6 +16,7 @@ const ADashboard = () => {
     <>
       <Header />
       <div className="flex">
+      <SidebarProvider>
         <Sidebar>
           <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
           <SidebarItem icon={<Calendar size={20} />} text="Booking" />
@@ -27,6 +28,11 @@ const ADashboard = () => {
           <hr className="my-3" />
           <SidebarItem icon={<LogOut size={20} onClick={handleSignOutClick} />} text="Sign Out"/>
         </Sidebar>
+        <Content>
+                <h1>Your main content here</h1>
+                <p>This is the content area that will be pushed when the sidebar is expanded.</p>
+        </Content>
+      </SidebarProvider>
       </div>
     </>
   )

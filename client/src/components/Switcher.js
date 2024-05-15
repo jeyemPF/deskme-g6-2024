@@ -19,7 +19,7 @@ export default function Switcher() {
                 checked={darkSide}
                 onChange={toggleDarkMode}
                 size={18}
-                color="black"
+                color="grey"
             />
         </>
     );
