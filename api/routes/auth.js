@@ -1,5 +1,5 @@
 import express from "express"
-import { login, register, forgotPassword, resetPassword, validateResetToken } from "../controllers/auth.js"
+import { login, register, forgotPassword, resetPassword, validateResetToken, registerOrSignup } from "../controllers/auth.js"
 import { verifyToken } from "../utils/verifyToken.js"
 
 const router = express.Router()
@@ -18,6 +18,8 @@ router.patch('/reset-password/:token/:id', resetPassword);
 
 // Validate Reset Token Route
 router.get('/reset-password/validate/:token/:id', validateResetToken);
+
+router.post('/signup', registerOrSignup)
 
 
 
