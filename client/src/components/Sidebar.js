@@ -1,113 +1,69 @@
-import { useState } from "react";
-import {
-  MdDashboard,
-  MdSettings,
-  MdLogout,
-} from "react-icons/md";
-import { PiArrowCircleLeft } from "react-icons/pi";
-import { PiBookBookmarkFill } from "react-icons/pi";
-import { PiBooksFill } from "react-icons/pi";
-import { FaHandsHelping } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
+import { ChevronFirst, ChevronLast } from "lucide-react";
+import { createContext, useContext, useState } from "react";
 
-function Dashboard() {
-  const [open, setOpen] = useState(false);
-  const [activeMenuItem, setActiveMenuItem] = useState("Dashboard"); // Add a state to track the active menu item
+// Create a context for managing the sidebar state
+const SidebarContext = createContext();
 
-  const navigate = useNavigate();
+export function SidebarProvider({ children }) {
+    const [expanded, setExpanded] = useState(false);
+    return (
+        <SidebarContext.Provider value={{ expanded, setExpanded }}>
+            {children}
+        </SidebarContext.Provider>
+    );
+}
 
-  const handleClick = () => {
-    navigate('/Login');
-  };
+export default function Sidebar({ children }) {
+    const { expanded, setExpanded } = useContext(SidebarContext);
 
-  const handleClick1 = () => {
-    navigate('/admindashboard');
-    setActiveMenuItem("Dashboard");
-  };
+    return (
+        <aside className={`h-screen fixed top-[58px] ${expanded ? "w-64" : "w-16"} transition-all duration-500`}>
+            <nav className="h-full flex flex-col bg-white dark:bg-neutral-900 border-r">
+                <div className="p-4 pb-2 flex justify-end items-center">
+                    <button
+                        onClick={() => setExpanded((curr) => !curr)}
+                        className="p-1.5 rounded-lg bg-gray-50 dark:bg-neutral-700 dark:text-neutral-50 hover:bg-gray-100"
+                    >
+                        {expanded ? <ChevronFirst /> : <ChevronLast />}
+                    </button>
+                </div>
+                <ul className="flex-1 px-3">{children}</ul>
+            </nav>
+        </aside>
+    );
+}
 
-  const handleClick2 = () => {
-    navigate('/adminbooking');  
-    setActiveMenuItem("Booking");
-  };
-
-  const firstMenuItems = [
-    { title: "Dashboard", icon: <MdDashboard className="text-2xl" onClick={handleClick1} /> },
-    { title: "Booking", icon: <PiBookBookmarkFill className="text-2xl " onClick={handleClick2} />, gap: true },
-    { title: "Manage Booking", icon: <PiBooksFill className="text-2xl" /> },
-    { title: "Customer Support", icon: <FaHandsHelping className="text-2xl" /> },
-  ];
-
-  const Menus = [
-   ...firstMenuItems,
-    { title: "Settings", icon: <MdSettings className="text-2xl" />, gap: true },
-    { title: "Logout", icon: <MdLogout className="text-2xl" /> },
-  ];
-
-  return (
-    <div className="dark:bg-neutral-900">
-      <div className="flex">
-        <div
-          className={`${
-            open? "w-56" : "w-16"
-          } bg-white dark:bg-neutral-900 h-full p-3 pt-5 fixed top-[58px] duration-500 border-r-[1px] border-neutral-400 dark:border-neutral-500`}
-        >
-          <div className="flex items-center gap-x-4 mb-8 ml-2 mt-2">
-          <span className={`text-black font-bold text-xs origin-left duration-200 dark:text-white ${!open && ""}`}>
-            {open ? "HI, ME!" : "HM"}
-          </span>
-          </div>
-          <PiArrowCircleLeft
-            onClick={() => setOpen(!open)}
-            className={`text-neutral-600 bg-white dark:bg-neutral-900 dark:text-neutral-300 absolute cursor-pointer -right-3 top-5 w-6 h-7 border-[1px] border-neutral-400 rounded-md dark:border-neutral-300 ${
-             !open && "rotate-180"
-            } text-4xl`}
-          />
-          <ul className="pt-2">
-            {firstMenuItems.map((Menu, index) => (
-              <li
-                key={index}
-                className={`text-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-500 dark:hover:text-neutral-300 text-sm font-medium flex items-center gap-x-4 p-2 hover:bg-neutral-300 rounded-md cursor-pointer  ${
-                  Menu.gap && "mt-9"
-                } ${activeMenuItem === Menu.title? "bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-900" : ""}`}
-                onClick={() => setActiveMenuItem(Menu.title)}
-                onMouseEnter={() => setActiveMenuItem(Menu.title)}
-              >
-                {Menu.icon}
-                <span className={`${!open && "hidden"} origin-left duration-200`}>
-                  {Menu.title}
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          <ul className="flex flex-col xl:mt-56 sm:mt-36">
-            {/* Render settings and logout items */}
-            <li
-              className={`text-neutral-700 text-sm font-medium flex items-center gap-x-4 p-2 hover:bg-neutral-300 rounded-md mt-9 cursor-pointer dark:text-neutral-300 dark:hover:text-neutral-700 ${activeMenuItem === "Settings"? "bg-neutral-700 text-white dark:bg-neutral-300 dark:text-neutral-900" : ""}`}
-              onClick={() => setActiveMenuItem("Settings")}
-            >
-              <MdSettings className="text-2xl" />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
-                Settings
-              </span>
-            </li>
-            <li
-              onClick={() => {
-                handleClick();
-                setActiveMenuItem("Logout"); // Update active menu item immediately when logging out
-              }}
-              className={`text-neutral-700 text-sm font-medium flex items-center gap-x-4 p-2 mt-1 hover:bg-neutral-700 hover:text-white border-2 border-neutral-700 rounded-md cursor-pointer dark:text-neutral-300 dark:border-neutral-300 dark:hover:bg-neutral-300 dark:hover:text-black ${activeMenuItem === "Logout"? "bg-neutral-700 text-white" : ""}`}
-            >
-              <MdLogout className="text-2xl" />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
-                Logout
-              </span>
-            </li>
-          </ul>
+export function Content({ children }) {
+    const { expanded } = useContext(SidebarContext);
+    return (
+        <div className={`content-container transition-all duration-500 pt-20 pl-10 ml-${expanded ? "64" : "16"}`}>
+            {children}
         </div>
-      </div>
-    </div>
-  );
-};
+    );
+}
 
-export default Dashboard;
+export function SidebarItem({ icon, text, active, alert }) {
+    const { expanded } = useContext(SidebarContext);
+    return (
+        <li
+            className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${
+                active
+                    ? "bg-gradient-to-tr from-gray-300 to-gray-200 text-gray-900"
+                    : "hover:bg-gray-200 text-gray-700 dark:text-neutral-200 dark:hover:text-neutral-800"
+            }`}
+        >
+            {icon}
+            <span className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>{text}</span>
+            {alert && (
+                <div className={`absolute right-2 w-2 h-2 rounded bg-gray-400 ${expanded ? "" : "top-2"}`}></div>
+            )}
+            {!expanded && (
+                <div
+                    className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-gray-100 text-gray-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+                >
+                    {text}
+                </div>
+            )}
+        </li>
+    );
+}

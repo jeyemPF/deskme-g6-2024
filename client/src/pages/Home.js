@@ -33,29 +33,6 @@ function Home() {
     navigate('/Login');
   };
 
-  const testimonials = [
-    {
-        avatar: "https://scontent.fcrk1-4.fna.fbcdn.net/v/t39.30808-6/435971998_3698455447148819_7204040902680069698_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHTZcIrrwIrE_dPpWcpjV_i5goISCQGJUfmCghIJAYlRzohQZHvuVkC4BnUO6dhhMihnI8G6WqQf2Uec5kyNf2n&_nc_ohc=heVJV0hPj88Q7kNvgE1z3pW&_nc_ht=scontent.fcrk1-4.fna&oh=00_AYDfDZfpHp5kczM7sjFmCc8FJzkw_ZPJEEE5D5DCJCte0w&oe=664665F6",
-        name: "Peter Sthanlie Rayos",
-        title: "Project Manager",
-        quote: "Deskme has truly transformed the way we work! From streamlining tasks to boosting productivity, it's been a game-changer for our team. From scheduling meetings to tracking resources, Deskme has streamlined our operations and increased overall efficiency. "
-    },
-    {
-        avatar: "https://scontent.fcrk1-3.fna.fbcdn.net/v/t39.30808-6/432775149_3747249338844359_5265507157405488405_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFTzw_9uAbJZ1jiEvCoRKokHlc2p5Q5ZnoeVzanlDlmeg_e-61fWkdDRrXsqzBmzOE7dT5kO24p5m6BHllytThw&_nc_ohc=vFNyiOyeb74Q7kNvgGLPCkf&_nc_ht=scontent.fcrk1-3.fna&oh=00_AYBYLj9SvqDlm3OPMZVAKr0vqIhwbnV3kmxRoQ_S4I6glw&oe=664670DD",
-        name: "John Carlo Diga",
-        title: "UI/UX Designer",
-        quote: "The intuitive interface and robust features make managing our workspace a breeze. Kudos to the Deskme team for creating such an invaluable tool!"
-    },
-    {
-        avatar: "https://scontent.fcrk1-3.fna.fbcdn.net/v/t39.30808-6/345622499_953833602735280_4965740129042559509_n.jpg?stp=cp6_dst-jpg&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFXNpFDdYonU-2UEukHyQi7ZHSnQj4cV5tkdKdCPhxXm4QJGG25ghvJixgZvfV2XAoHivO9F9xcg37t-KSQwQMM&_nc_ohc=SeNaeM7HLNQQ7kNvgGCJFZj&_nc_ht=scontent.fcrk1-3.fna&oh=00_AYAVdgMzp-XjPhNGlQdg0xMmGtjPfTctn3tITIvUVHoLgg&oe=664695EC",
-        name: "Johnmack Faeldonia",
-        title: "Developer",
-        quote: "Using Deskme has been a revelation for our team! The system's user-friendly interface and comprehensive features have significantly enhanced our workspace management."
-    },
-]
-
-const [currentTestimonial, setCurrentTestimonial] = useState(0)
-
   const faqsList = [
     {
         q: "What are some random questions to ask?",
@@ -86,16 +63,16 @@ const [currentTestimonial, setCurrentTestimonial] = useState(0)
 
 return (
   <div className='bg-neutral-100 dark:bg-neutral-900'>
-    <div className='container dark:bg-neutral-900'>
+    <div className='container'>
       <Navbar/>
-          <div className=' flex flex-col xl:flex-row items-center'>
+          <div className='flex flex-col xl:flex-row items-center'>
             <div className='w-full md:w-2/4y'>
               <h1 className='text-2xl xl:ml-32 xl:text-left sm:text-center sm:text-base sm:pt-12 sm:ml-0'>
                 <span className='text-5xl text-neutral-700 font-extrabold leading-8 lg:text-5xl md:text-4xl sm:text-2xl dark:text-white'>Make every <i><span className='font-black text-neutral-700 dark:text-white'>click count.</span></i></span>
                 <p className='font-normal text-neutral-700 text-lg pt-1 leading-5 lg:text-lg md:text-base sm:text-xs dark:text-neutral-300'>
                 DeskMe is built to elevate individuals, providing a seamless <br /> intersection where booking meets brilliance,  empowering <br /> users to thrive through the power of connection <br /> and convenience.
                 </p>
-                <button onClick={handleClick} className='text-neutral-700 bg-white font-semibold text-lg rounded-lg border-2 border-neutral-700 shadow-lg hover:bg-neutral-700 hover:text-white transition-colors duration-300 mt-3 md:mx-auto md:px-7 md:py-3 sm:px-5 sm:py-2 dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-300 dark:hover:bg-neutral-300 dark:hover:text-neutral-700 dark:transition-colors dark:duration-300'>Book Now</button>
+                <button onClick={handleClick} className='text-neutral-700 bg-white font-semibold text-lg rounded-lg border-2 border-neutral-700 hover:bg-neutral-700 hover:text-white transition-colors duration-300 mt-3 md:mx-auto md:px-7 md:py-3 sm:px-5 sm:py-2 dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-300 dark:hover:bg-neutral-300 dark:hover:text-neutral-700 dark:transition-colors dark:duration-300'>Book Now</button>
               </h1>
             </div>
 
@@ -137,7 +114,7 @@ return (
           <span class="relative flex justify-center">
           <div class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-gray-500 to-transparent opacity-75"></div>
 
-          <span class="relative z-10 bg-neutral-100 dark:bg-neutral-900 dark:text-white px-6">Reasons & Offers</span>
+          <span class="relative z-10 bg-neutral-100 dark:bg-neutral-900 dark:text-white px-6">Reasons & Gallery</span>
           </span>
 
           <div className='container '>
@@ -174,29 +151,94 @@ return (
             </div>
           </div>
 
-          <div className='container'>
-            <div className='flex lg:flex-row lg:justify-center lg:gap-20 pt-12 sm:items-center sm:flex-col'>
-              <div className='flex h-72 lg:w-[500px] md:h-72 md:w-[500px] sm:h-60 sm:w-[260px]'>
-                  <img className='rounded-2xl border-2 border-neutral-700 shadow-xl dark:border-neutral-300' src={offer1} alt="Offer 1"/>
+          <div className='container lg:-mt-20 lg:-mb-20 sm:-mt-0 sm:mb-10'>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:p-36 sm:p-0">
+            <div className="grid gap-4">
+              <div>
+                <img
+                  className="h-auto max-w-full rounded-lg object-cover object-center border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-105"
+                  src="https://images.unsplash.com/photo-1432462770865-65b70566d673?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+                  alt="gallery-photo"
+                />
               </div>
-
-              <div className='w-1/3'>
-                  <h1 className='text-4xl font-black lg:pt-8 lg:pb-6 lg:text-left sm:text-center sm:pt-5 text-neutral-700 dark:text-white'>Seamless</h1>
-                  <p className='text-xl lg:text-left lg:pt-0 sm:text-center sm:pt-5 text-neutral-700 dark:text-neutral-300'>Book with ease, experience with delight! Elevate your journey with our seamless booking where every click sparks satisfaction.Your great adventure starts here!</p>
+              <div>
+                <img
+                  className="h-auto max-w-full rounded-lg object-cover object-center border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-105"
+                  src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=927&q=80"
+                  alt="gallery-photo"
+                />
+              </div>
+              <div>
+                <img
+                  className="h-auto max-w-full rounded-lg object-cover object-center border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-105"
+                  src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
+                  alt="gallery-photo"
+                />
               </div>
             </div>
-
-            <div className='flex lg:flex-row lg:justify-center lg:gap-20 pb-12 sm:items-center sm:flex-col-reverse'>
-              <div className='w-1/3'>
-              <div className='flex items-center lg:justify-end justify-center w-full  '>  
-                <h1 className='text-4xl font-black lg:pb-6 sm:text-center lg:pt-5 sm:pt-5 text-neutral-700 dark:text-white'>Innovative</h1></div>
-                    <p className='text-xl lg:pt-0 lg:text-right sm:text-center sm:pt-5 text-neutral-700 dark:text-neutral-300'>Experience the future with our innovative system where simplicity meets sophistication. Redefining possibilities, one breakthrough at a time.</p>
+            <div className="grid gap-4">
+              <div>
+                <img
+                  className="h-auto max-w-full rounded-lg object-cover object-center border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-105"
+                  src="https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                  alt="gallery-photo"
+                />
               </div>
-
-              <div className='flex h-72 lg:w-[500px] md:h-72 md:w-[500px] sm:h-60 sm:w-[260px]'>
-                  <img className='rounded-2xl border-2 border-neutral-700 shadow-xl dark:border-neutral-300' src={offer2} alt="Offer 2"/>
+              <div>
+                <img
+                  className="h-auto max-w-full rounded-lg object-cover object-center border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-105"
+                  src="https://images.unsplash.com/photo-1540553016722-983e48a2cd10?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
+                  alt="gallery-photo"
+                />
+              </div>
+              <div>
+                <img
+                  className="h-auto max-w-full rounded-lg object-cover object-center border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-105"
+                  src="https://docs.material-tailwind.com/img/team-3.jpg"
+                  alt="gallery-photo"
+                />
               </div>
             </div>
+            <div className="grid gap-4">
+              <div>
+                <img
+                  className="h-auto max-w-full rounded-lg object-cover object-center border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-105"
+                  src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
+                  alt="gallery-photo"
+                />
+              </div>
+              <div>
+                <img
+                  className="h-auto max-w-full rounded-lg object-cover object-center border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-105"
+                  src="https://docs.material-tailwind.com/img/team-3.jpg"
+                  alt="gallery-photo"
+                />
+              </div>
+              <div>
+                <img
+                  className="h-auto max-w-full rounded-lg object-cover object-center border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-105"
+                  src="https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                  alt="gallery-photo"
+                />
+              </div>
+            </div>
+            <div className="grid gap-4">
+              <div>
+                <img
+                  className="h-auto max-w-full rounded-lg object-cover object-center border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-105"
+                  src="https://images.unsplash.com/photo-1552960562-daf630e9278b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                  alt="gallery-photo"
+                />
+              </div>
+              <div>
+                <img
+                  className="h-auto max-w-full rounded-lg object-cover object-center border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-105"
+                  src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=927&q=80"
+                  alt="gallery-photo"
+                />
+              </div>
+            </div>
+          </div>
           </div>
 
           <span class="relative flex justify-center">
@@ -221,50 +263,7 @@ return (
           </div>
 
           <div className='container'>
-            <section className="py-14 -mt-10">
-              <div className="max-w-screen-xl mx-auto px-4 md:px-8">
-              <div className="max-w-3xl mx-auto text-center">
-                <h3 className="text-neutral-700 font-bold pb-6 dark:text-neutral-200">What people are saying?</h3>
-                <ul>
-                    {
-                    testimonials.map((item, idx) => (
-                    currentTestimonial == idx ? (
-                    <li key={idx}>
-                    <figure>
-                    <blockquote>
-                      <p className="text-gray-800 dark:text-neutral-300 text-xl font-semibold sm:text-xl">
-                          “{item.quote}“
-                      </p>
-                    </blockquote>
-                    <div className="mt-6">
-                      <img src={item.avatar} className="w-16 h-16 mx-auto rounded-full" />
-                      <div className="mt-3">
-                          <span className="block text-gray-800 dark:text-neutral-300 font-semibold">{item.name}</span>
-                          <span className="block text-gray-600 dark:text-neutral-300 text-sm mt-0.5">{item.title}</span>
-                      </div>
-                    </div>
-                    </figure>
-                    </li>
-                    ) : ""
-                    ))
-                    }
-                </ul>
-                </div>
-                <div className="mt-6">
-                  <ul className="flex gap-x-3 justify-center">
-                      {
-                      testimonials.map((item, idx) => (
-                      <li key={idx}>
-                        <button className={`w-2.5 h-2.5 rounded-full duration-150 ring-offset-2 ring-neutral-700 focus:ring ${currentTestimonial == idx ? "bg-neutral-700" : "bg-gray-300"}`}
-                            onClick={() => setCurrentTestimonial(idx)}
-                        ></button>
-                      </li>
-                      ))
-                      }
-                  </ul>
-                  </div>
-              </div>
-          </section>
+            
           </div>
 
           <div className='container'>
@@ -321,15 +320,9 @@ return (
               </div>
           </section>
           </div>
-
-          <span class="relative flex justify-center">
-          <div class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-transparent bg-gradient-to-r from-transparent via-gray-500 to-transparent opacity-75"></div>
-
-          <span class="relative z-10 bg-neutral-100 dark:bg-neutral-900 dark:text-white px-6">2023</span>
-          </span>
           
           <div className='container'>
-            <div className="bg-neutral-100 dark:bg-neutral-900 mt-10 mb-10 sm:py-1">
+            <div className="bg-neutral-100 dark:bg-neutral-900 mt-10 mb-16 sm:py-1">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
               <h2 className="text-center text-lg font-semibold leading-8 text-neutral-700 dark:text-neutral-300">
                 Trusted by the world’s most innovative teams
