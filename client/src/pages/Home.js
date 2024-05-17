@@ -8,11 +8,10 @@ import { PiRocketFill } from "react-icons/pi";
 import { PiBookBookmarkFill } from "react-icons/pi";
 import { PiCloudArrowUpFill } from "react-icons/pi";
 import { TbClockPlus } from "react-icons/tb";
-import offer1 from '../assets/offer1.webp';
-import offer2 from '../assets/offer2.webp';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
+import FAQ from "../components/FAQ";
 
 const stats = [
   { id: 1, name: 'Daily Active Users', value: '20,203' },
@@ -267,58 +266,7 @@ return (
           </div>
 
           <div className='container'>
-            <section className='py-14 -mt-12'>
-              <div className="max-w-screen-xl mx-auto px-4 md:px-20">
-                <div className="space-y-5 sm:text-center sm:max-w-md sm:mx-auto">
-                  <h3 className="text-neutral-700 dark:text-neutral-300 text-3xl font-extrabold sm:text-4xl">
-                    Frequently Asked Questions:
-                  </h3>
-                  <p className="text-gray-600 dark:text-neutral-300">
-                    Everything you need to know about DESKME. Can’t find the answer you’re looking for? feel free to {" "}
-                    <a className='text-neutral-700 dark:text-neutral-100 hover:underline font-semibold whitespace-nowrap' href='javascript:void(0)'>Contact us</a>.
-                  </p>
-
-                  <form onSubmit={(e) => e.preventDefault()} className="mx-auto sm:max-w-xs">
-                  <div className="relative">
-                      <svg className="w-6 h-6 text-gray-400 dark:text-neutral-300 absolute left-3 inset-y-0 my-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clipRule="evenodd" />
-                      </svg>
-                      <input
-                          type="text"
-                          placeholder="Enter your email"
-                          className="w-full pl-12 pr-3 py-2 text-gray-500 dark:text-neutral-300 bg-transparent outline-none border focus:border-neutral-700 shadow-sm rounded-lg"
-                      />
-                  </div>
-                  </form>
-
-                  </div>
-                  <div className='mt-12'>
-                  <ul className='space-y-8 gap-12 grid-cols-2 sm:grid sm:space-y-0 lg:grid-cols-3'>
-                    {faqsList.map((item, idx) => (
-                    <li
-                      key={idx}
-                      className="space-y-3"
-                    >
-                      <summary
-                          className="flex items-center justify-between font-bold text-neutral-700 dark:text-neutral-100">
-                          {item.q}
-                      </summary>
-                      <p
-                          dangerouslySetInnerHTML={{ __html: item.a }}
-                          className='text-gray-600 dark:text-neutral-300 leading-relaxed'>
-                      </p>
-                      <a href={item.href} className="flex items-center gap-x-1 text-sm text-neutral-700 dark:text-neutral-300 dark:hover:text-neutral-100 hover:text-neutral-500 duration-150 font-medium">
-                          Read more
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                              <path fillRule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clipRule="evenodd" />
-                          </svg>
-                      </a>
-                    </li>
-                    ))}
-                  </ul>
-                  </div>
-              </div>
-          </section>
+            <FAQ />
           </div>
           
           <div className='container'>

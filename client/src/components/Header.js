@@ -4,6 +4,7 @@ import Dropdown from './Dropdown';
 import Switcher from '../components/Switcher';
 import ModalAvatar from '../components/ModalAvatar';
 import Logo from '../assets/Logo.png';
+import jc from '../assets/jc.jpg';
 
 const Header = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // Add state for modal visibility
@@ -18,7 +19,7 @@ const Header = () => {
 
   return (
     <div>
-      <header className="dark:bg-neutral-900 w-screen fixed bg-white p-2 border-b-[1px] border-gray-200 dark:border-neutral-500 dark:shadow-neutral-800">
+      <header className="dark:bg-neutral-900 w-screen fixed bg-white p-2 border-b-[1px] border-gray-200 dark:border-neutral-700 dark:shadow-neutral-800">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2 pl-2">
             <img src={Logo} alt="Logo" className="h-9 w-9"/>
@@ -33,7 +34,7 @@ const Header = () => {
               {[
                 <button className="focus:outline-none">
                   <img
-                    src="https://scontent.fcrk1-3.fna.fbcdn.net/v/t39.30808-6/432775149_3747249338844359_5265507157405488405_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFTzw_9uAbJZ1jiEvCoRKokHlc2p5Q5ZnoeVzanlDlmeg_e-61fWkdDRrXsqzBmzOE7dT5kO24p5m6BHllytThw&_nc_ohc=E-bqFrkZISUQ7kNvgF3vbJr&_nc_ht=scontent.fcrk1-3.fna&oh=00_AfB3IoWBYmAHRjMwlex_UZH8F0E8KCp_Fv2n9Xi9Vd6Upw&oe=6634341D"
+                    src={jc}
                     className="h-9 w-9 rounded-full border-2 border-neutral-500 dark:border-neutral-300 transition duration-300 transform hover:scale-110"
                   />
                 </button>,
