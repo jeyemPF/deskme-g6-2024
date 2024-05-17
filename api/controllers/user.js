@@ -28,16 +28,17 @@ export const getUser = async (req, res, next) => {
 
 // get my self even im user or not
 export const getSelf = async (req, res, next) => {
-    try{
-        const user = await User.findById(req.params.id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.status(200).json(user);
-    } catch (err){
-        next(err);
-    }
-}
+  try {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
+      res.status(200).json(user);
+  } catch (err) {
+      next(err);
+  }
+};
+
 
 // GET ALL
 export const getUsers = async (_req, res, next) => {

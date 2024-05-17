@@ -4,7 +4,7 @@ import Services from '../src/pages/Services';
 import Contact from '../src/pages/Contact';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'; // Make sure to import BrowserRouter
 import Authenticate from '../src/auth/Authenticate';
-import Login from '../src/auth/Login.js'
+import Login from '../src/auth/Login'
 import AuthenticateSuccess from '../src/auth/AuthenticateSuccess';
 import Dashboard from '../src/user/Dashboard';
 import Booking from '../src/user/Booking';

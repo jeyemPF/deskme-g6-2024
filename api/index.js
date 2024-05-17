@@ -25,6 +25,7 @@ cloudinary.config({
 });
 
 // Configure CORS
+// Configure CORS
 const allowedOrigins = ["http://localhost:3000"];
 app.use(cors({
   origin: function (origin, callback) {
@@ -34,6 +35,7 @@ app.use(cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
+  credentials: true, // Allow credentials
 }));
 
 // Connect to MongoDB

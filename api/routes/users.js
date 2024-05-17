@@ -58,7 +58,7 @@ router.delete("/:id", verifySuperAdmin, deleteUser);
 router.get("/:id", verifyAdmin, getUser);
 
 // getself
-router.get ('/self', verifyToken, getSelf);
+router.get ('/self', getSelf);
 
 // get all users by superadmin
 router.get("/", verifySuperAdmin, getUsers);
