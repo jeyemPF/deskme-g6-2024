@@ -7,7 +7,7 @@ import Logo from '../assets/Logo.png';
 import jc from '../assets/jc.jpg';
 
 const Header = () => {
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false); // Add state for modal visibility
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const handleCustomizeProfileClick = () => {
     setIsProfileModalOpen(true);
@@ -39,7 +39,7 @@ const Header = () => {
                   />
                 </button>,
                 [
-                  'Customize Profile',
+                  'My Profile',
                 ].map((item, index) => (
                   <a
                     key={index}

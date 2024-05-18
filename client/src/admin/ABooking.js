@@ -27,7 +27,7 @@ const ABooking = () => {
         reservation_date: "May 26, 2024",
         start_time: "12:00pm",
         end_time: "9:00pm",
-        status: "Cancelled"
+        status: "Pending"
     },
     {
         reservation_id: 3,
