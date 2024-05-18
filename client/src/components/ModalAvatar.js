@@ -16,7 +16,7 @@ const ModalAvatar = ({ onClose, avatar }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-10 overflow-y-auto bg-opacity-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div className="fixed px-5 inset-0 z-10 overflow-y-auto bg-opacity-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
           <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
@@ -33,7 +33,7 @@ const ModalAvatar = ({ onClose, avatar }) => {
                 <input type="file" id="avatar-upload" className="hidden" accept="image/*" onChange={handleAvatarChange} />
                 <div className="mb-4 text-left">
                   <label className="mt-5 block text-sm font-normal text-gray-700 dark:text-neutral-300">Edit name:</label>
-                  <input type="text" className="border-[1px] border-neutral-300 rounded-sm p-2 mt-1 block w-full pl-5 text-sm text-gray-700 placeholder-gray-400" />
+                  <input type="text" className="border-[1px] border-neutral-300 rounded-sm p-2 mt-1 block w-full pl-5 text-sm text-gray-700 placeholder-gray-400" placeholder='John Carlo Diga' />
                 </div>
             </form>
           </div>
