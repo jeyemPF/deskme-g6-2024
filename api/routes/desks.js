@@ -14,16 +14,6 @@
     router.delete("/:id", verifyAdmin, deleteDesk);
 
     // Counting desk
-
-    router.get('/count', getDeskCount);
-
-    // // DELETE
-    // router.delete("/:id/:reservation", verifyAdmin,);
-
-    // // GET
-    // router.get("/:id", verifyAdmin, getDeskById);
-
-    // // GET ALL
-    // router.get("/", getAllDesks);
+     router.get('/count', getDeskCount);
 
     export default router;

@@ -14,7 +14,7 @@ const OtpSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 60 * 5, // Document will be removed after 5 minutes
+    expires: 60 * 5, 
   },
 });
 

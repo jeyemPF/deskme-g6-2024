@@ -21,7 +21,7 @@ const Header = () => {
         setRole(credentials.user.role);
         setAvatar(credentials.user.avatar);
         setUsername(credentials.user.username);
-        setCredentialsChanged(false); // Reset credentialsChanged flag
+        setCredentialsChanged(false); 
       }
     };
 
