@@ -14,6 +14,7 @@ import { deleteUser,
          } from "../controllers/user.js";
 import { verifySuperAdmin, verifyAdmin, verifyToken, verifyOfficeManager, } from "../utils/verifyToken.js";
 import upload from "../middleware/multer.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 
 
@@ -58,7 +59,7 @@ router.delete("/:id", verifySuperAdmin, deleteUser);
 router.get("/:id", verifyAdmin, getUser);
 
 // getself
-router.get ('/self', getSelf);
+router.get ('/self', protect, getSelf);
 
 // get all users by superadmin
 router.get("/", verifySuperAdmin, getUsers);
@@ -73,7 +74,7 @@ router.post("/office-manager", verifySuperAdmin, createOfficeManager);
 router.delete("/", verifySuperAdmin, deleteAllUser);
 
 // Upload avatars
-router.patch("/self/avatar", verifyToken, upload.single("avatar"), uploadAvatar,);
+router.patch("/self/avatar", protect, upload.single("avatar"), uploadAvatar,);
 
 // updating profile
 router.put("/", verifyToken, updateProfile);
