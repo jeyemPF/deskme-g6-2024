@@ -1,126 +1,261 @@
-import * as React from 'react';
-import Sidebar from '../components/Sidebar';
+import React, { useState } from 'react';
 import Header from '../components/Header';
-import { Link } from 'react-router-dom';
-import { FaTruckLoading } from "react-icons/fa";
+import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
+import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
-const tableItems = [
-  {
-      avatar: "https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ",
-      name: "Liam James",
-      email: "liamjames@example.com",
-      phone_nimber: "+1 (555) 000-000",
-      position: "Software engineer",
-      salary: "$100K"
-  },
-  {
-      avatar: "https://randomuser.me/api/portraits/men/86.jpg",
-      name: "Olivia Emma",
-      email: "oliviaemma@example.com",
-      phone_nimber: "+1 (555) 000-000",
-      position: "Product designer",
-      salary: "$90K"
-  },
-  {
-      avatar: "https://randomuser.me/api/portraits/women/79.jpg",
-      name: "William Benjamin",
-      email: "william.benjamin@example.com",
-      phone_nimber: "+1 (555) 000-000",
-      position: "Front-end developer",
-      salary: "$80K"
-  },
-  {
-      avatar: "https://api.uifaces.co/our-content/donated/xZ4wg2Xj.jpg",
-      name: "Henry Theodore",
-      email: "henrytheodore@example.com",
-      phone_nimber: "+1 (555) 000-000",
-      position: "Laravel engineer",
-      salary: "$120K"
-  },
-  {
-      avatar: "https://images.unsplash.com/photo-1439911767590-c724b615299d?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ",
-      name: "Amelia Elijah",
-      email: "amelia.elijah@example.com",
-      phone_nimber: "+1 (555) 000-000",
-      position: "Open source manager",
-      salary: "$75K"
-  },
-]
+const ABooking = () => {
+  const [isOn, setIsOn] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-const Card = ({ icon, title, description }) => {
+  const handleToggle = () => {
+    setIsOn(!isOn);
+  };
+
+  const handleManageClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const tableItems = [
+    {
+      reservation_id: 1,
+      name: "Peter Sthanlie Rayos",
+      reservation_date: "May 20, 2024",
+      start_time: "4:00pm",
+      end_time: "11:00pm",
+      status: "Pending"
+    },
+    {
+      reservation_id: 2,
+      name: "John Carlo Diga",
+      reservation_date: "May 26, 2024",
+      start_time: "12:00pm",
+      end_time: "9:00pm",
+      status: "Pending"
+    },
+    {
+      reservation_id: 3,
+      name: "Johnmack Faeldonia",
+      reservation_date: "May 31, 2024",
+      start_time: "6:00am",
+      end_time: "6:00pm",
+      status: "Pending"
+    },
+    {
+      reservation_id: 4,
+      name: "Jayvee Brian Ibale",
+      reservation_date: "June 3, 2024",
+      start_time: "12:00am",
+      end_time: "12:00pm",
+      status: "Pending"
+    },
+  ];
+
+  const navigate = useNavigate();
+
+  const handleSignOutClick = () => {
+    navigate('/login');
+  };
+
+  const handleBookingClick = () => {
+    navigate('/adminbooking');
+  };
+
+  const handleDashboardClick = () => {
+    navigate('/admindashboard');
+  };
+
   return (
-    <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-md p-4 xl:w-80 sm:w-64 xl:h-32 sm:h-28 flex items-center space-x-3 border-[1px] border-neutral-200">
-      <div className="xl:text-3xl mr-8 ml-8 sm:text-xl">
-        {icon === 'pending' && <FaTruckLoading   />}
+    <>
+      <Header />
+      <div className="flex dark:bg-neutral-900">
+        <SidebarProvider>
+          <Sidebar>
+            <SidebarItem icon={<LayoutDashboard size={20} onClick={handleDashboardClick} />} text="Dashboard" />
+            <SidebarItem icon={<BookCopy size={20} onClick={handleBookingClick} />} text="Booking" active />
+            <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" />
+            <SidebarItem icon={<Flag size={20} />} text="Reporting" />
+            <hr className="my-3" />
+            <SidebarItem icon={<Settings size={20} />} text="Settings" />
+            <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
+            <hr className="my-3" />
+            <SidebarItem icon={<LogOut size={20} onClick={handleSignOutClick} />} text="Sign Out" />
+          </Sidebar>
+          <Content>
+            <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Booking</h1>
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
+              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
+                <div className='flex flex-col'>
+                  <span className="text-xl font-semibold">Total: 2</span>
+                  <span className="text-sm font-normal">Pending Books</span>
+                </div>
+                <FileCog className="w-10 h-10 ml-10" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
+              <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
+                <div className="flex justify-end items-center w-full">
+                  <label className="inline-flex items-center cursor-pointer">
+                    <span className='font-normal pr-3'>Auto accept :</span>
+                    <input type="checkbox" className="sr-only" checked={isOn} onChange={handleToggle} />
+                    <div className={`w-10 h-5 ${isOn ? 'bg-blue-600' : 'bg-gray-200'} rounded-full peer dark:bg-gray-700 shadow-md`}>
+                      <div
+                        className={`w-5 h-5 bg-white rounded-full shadow-md transform ${isOn ? 'translate-x-5' : 'translate-x-0'} transition-transform duration-300 ease-in-out`}
+                      ></div>
+                    </div>
+                  </label>
+                  <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{isOn ? 'On' : 'Off'}</span>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full table-auto">
+                    <thead className="text-gray-900 font-medium text-lg border-b text-center">
+                      <tr>
+                        <th className="py-3 pr-6">ID</th>
+                        <th className="py-3 pr-6">Name</th>
+                        <th className="py-3 pr-6">Date</th>
+                        <th className="py-3 pr-6">Time-In</th>
+                        <th className="py-3 pr-6">Time-Out</th>
+                        <th className="py-3 pr-6">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-gray-600 divide-y text-center text-sm">
+                      {
+                        tableItems.map((item, idx) => (
+                          <tr key={idx}>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_date}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.start_time}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.end_time}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">
+                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+                                {item.status}
+                              </span>
+                            </td>
+                            <td className="whitespace-nowrap text-center">
+                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                                Manage
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                  </table>
+                </div>
+                <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
+                  <li>
+                    <a
+                      href="#"
+                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                    >
+                      <span className="sr-only">Prev Page</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-3 w-3"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      href="#"
+                      className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
+                    >
+                      1
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      href="#"
+                      className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
+                    >
+                      2
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      href="#"
+                      className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
+                    >
+                      3
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      href="#"
+                      className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
+                    >
+                      4
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      href="#"
+                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                    >
+                      <span className="sr-only">Next Page</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-3 w-3"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </a>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </Content>
+        </SidebarProvider>
       </div>
-      <div>
-        <h5 className="xl:text-lg sm:text-base">{title}</h5>
-        <p className="xl:text-sm sm:text-xs text-gray-600 dark:text-gray-400">{description}</p>
-      </div>
-    </div>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-6 w-11/12 max-w-md mx-auto">
+            <h2 className="text-xl font-semibold mb-4">Pending Books</h2>
+            <p className="mb-6">Do you want to accept or decline this booking?</p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={handleCloseModal}
+                className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 transition duration-200"
+              >
+                Decline
+              </button>
+              <button
+                onClick={handleCloseModal}
+                className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-200"
+              >
+                Accept
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
-const ABooking = () => {
-  return (
-    <div className="dark:bg-neutral-900">
-    <Header />
-    <Sidebar />
-    <div>
-        <main className="container 2xl:pl-12 sm:pl-24 pt-24 dark:bg-neutral-900 dark:text-white">
-          <a className="text-sm font-light dark:text-white" href="#">
-            Admin
-            <span className="mx-1 text-sm text-navy-700 hover:text-navy-700 dark:text-white">
-              {" "}
-              /{" "}
-            </span>
-          </a>
-          <Link className="text-sm font-normal capitalize text-navy-700 hover:underline dark:text-white dark:hover:text-white" to="#">
-            Booking
-          </Link>
-          <div className="mx-auto">
-            <div className="mt-5 shadow-sm border rounded-lg overflow-x-auto">
-                <table className="w-full table-auto text-sm text-left">
-                    <thead className="text-neutral-700 font-medium border-b">
-                        <tr>
-                            <th className="py-3 px-6">Username</th>
-                            <th className="py-3 px-6">Check In</th>
-                            <th className="py-3 px-6">Check Out</th>
-                            <th className="py-3 px-6">Status</th>
-                            <th className="py-3 px-6"></th>
-
-                        </tr>
-                    </thead>
-                    <tbody className="text-gray-600 divide-y">
-                        {
-                            tableItems.map((item, idx) => (
-                                <tr key={idx}>
-                                    <td className="flex items-center gap-x-3 py-3 px-6 whitespace-nowrap">
-                                        <img src={item.avatar} className="w-10 h-10 rounded-full" />
-                                        <div>
-                                            <span className="block text-gray-700 text-sm font-medium">{item.name}</span>
-                                            <span className="block text-gray-700 text-xs">{item.email}</span>
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{item.phone_nimber}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{item.position}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap">{item.salary}</td>
-                                    <td className="text-right px-6 whitespace-nowrap">
-                                        <a href="#" className="py-2 px-3 font-medium text-neutral-600 hover:text-neutral-500 duration-150 hover:bg-gray-50 rounded-lg">
-                                            Edit
-                                        </a>
-                                    </td>
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        </main> 
-        </div>
-    </div>
-  )
-}
-
-export default ABooking
+export default ABooking;

@@ -22,7 +22,7 @@ export default function Sidebar({ children }) {
 
     return (
         <aside className={`h-screen fixed top-[58px] ${expanded ? "w-64" : "w-16"} transition-all duration-500`}>
-            <nav className="h-full flex flex-col bg-white dark:bg-neutral-900 border-r">
+            <nav className="h-full flex flex-col bg-white dark:bg-neutral-900 border-r dark:border-neutral-700">
                 <div className="p-4 pb-2 flex justify-end items-center">
                     <button
                         onClick={() => setExpanded((curr) => !curr)}
@@ -36,16 +36,16 @@ export default function Sidebar({ children }) {
         </aside>
     );
 }
-
 export function Content({ children }) {
     const { expanded } = useContext(SidebarContext);
     return (
-        <div className={`content-container transition-all duration-500 pt-20 pl-10 ml-${expanded ? "64" : "16"}`}>
+        <div
+            className={`content-container transition-all duration-500 mt-10 p-10 w-screen ${expanded ? "ml-64" : "ml-16"}`}
+        >
             {children}
         </div>
     );
 }
-
 export function SidebarItem({ icon, text, active, alert }) {
     const { expanded } = useContext(SidebarContext);
     return (
