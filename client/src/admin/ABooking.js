@@ -110,7 +110,7 @@ const ABooking = () => {
                   <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{isOn ? 'On' : 'Off'}</span>
                 </div>
                 <div className="overflow-x-auto">
-                  <table className="w-full table-auto">
+                  <table className="w-full table-auto mt-2">
                     <thead className="text-gray-900 font-medium text-lg border-b text-center">
                       <tr>
                         <th className="py-3 pr-6">ID</th>
