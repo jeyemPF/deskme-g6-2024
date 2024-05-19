@@ -15,6 +15,9 @@ const ADashboard = () => {
   const handleBookingClick = () => {
     navigate('/adminbooking');
   }
+  const handleManageBookingClick = () => {
+    navigate('/adminmanagebooking');
+  }
 
   const onPanelChange = (value, mode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
@@ -28,7 +31,7 @@ const ADashboard = () => {
         <Sidebar>
           <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
           <SidebarItem icon={<BookCopy size={20} onClick={handleBookingClick} />} text="Booking" />
-          <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" />
+          <SidebarItem icon={<Layers size={20} onClick={handleManageBookingClick} />} text="Manage Bookings" />
           <SidebarItem icon={<Flag size={20} />} text="Reporting" />
           <hr className="my-3" />
           <SidebarItem icon={<Settings size={20} />} text="Settings" />

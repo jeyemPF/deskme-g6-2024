@@ -13,6 +13,7 @@ import ResetPassword from './auth/ResetPassword';
 import NewPassword from './auth/NewPassword';
 import ADashboard from './admin/ADashboard';
 import ABooking from './admin/ABooking';
+import AManageBooking from './admin/AManageBooking';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path='/newpassword' element={<NewPassword />} />
         <Route path='/admindashboard' element={<ADashboard />} />
         <Route path='/adminbooking' element={<ABooking />} />
+        <Route path='/adminmanagebooking' element={<AManageBooking />} />
       </Routes>
     </Router> 
   </div>
