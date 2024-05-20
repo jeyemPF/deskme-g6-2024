@@ -18,7 +18,8 @@ router.patch('/reset-password/:token/:id', resetPassword);
 
 // Validate Reset Token Route
 router.get('/reset-password/validate/:token/:id', validateResetToken);
-    
+
+// Signup with the otp 
 router.post('/signup', registerOrSignup)
 
 

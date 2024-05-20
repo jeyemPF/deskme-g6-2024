@@ -11,7 +11,7 @@ import usersRoute from "./routes/users.js";
 import desksRoute from "./routes/desks.js";
 import reservationsRoute from "./routes/reservations.js";
 import switchsRoute from "./routes/switchs.js";
-import otpRoutes from "./routes/otpRoutes.js"; // Ensure the import is correct
+import otpRoutes from "./routes/otpRoutes.js"; 
 import auditTrailsRoute from "./routes/auditTrails.js";
 
 const app = express();
@@ -24,7 +24,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Configure CORS
 // Configure CORS
 const allowedOrigins = ["http://localhost:3000"];
 app.use(cors({
@@ -66,7 +65,7 @@ app.use("/api/desks", desksRoute);
 app.use("/api/reservations", reservationsRoute);
 app.use("/api/switchs", switchsRoute);
 app.use("/api/auditTrails", auditTrailsRoute);
-app.use("/api/otp", otpRoutes); // Ensure the path matches
+app.use("/api/otp", otpRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

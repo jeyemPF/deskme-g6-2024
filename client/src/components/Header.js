@@ -4,17 +4,13 @@ import Dropdown from './Dropdown';
 import Switcher from '../components/Switcher';
 import ModalAvatar from '../components/ModalAvatar';
 import Logo from '../assets/Logo.png';
-import jc from '../assets/jc.jpg';
 
 const Header = () => {
-<<<<<<< HEAD
-  const [avatar, setAvatar] = useState(null);
-  const [username, setUsername] = useState(null);
-  const [role, setRole] = useState(null);
-  const [credentialsChanged, setCredentialsChanged] = useState(false);
-=======
->>>>>>> d627dfa457b86f258465478a9e5edc3b134a7131
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [credentialsChanged, setCredentialsChanged] = useState(false); // Add this line
+  const [username, setUsername] = useState('');
+  const [role, setRole] = useState('');
+  const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
     // Function to fetch user credentials from sessionStorage
@@ -62,14 +58,26 @@ const Header = () => {
     setIsProfileModalOpen(false);
   };
 
+  const fetchUpdatedUser = async () => {
+    try {
+      const response = await fetch('/api/routes/users/avatar/self');
+      if (response.ok) {
+        const data = await response.json();
+        setAvatar(data.user.avatar);
+        setUsername(data.user.username);
+      } else {
+        // Handle error response
+        console.error('Error fetching updated user information');
+      }
+    } catch (error) {
+      console.error('Error fetching updated user information', error);
+    }
+  };
+  
+
   return (
-<<<<<<< HEAD
-    <div className="overflow-hidden">
-      <header className="dark:bg-neutral-900 w-screen bg-white p-3 border-b-[1px] border-black dark:border-neutral-500 dark:shadow-neutral-800">
-=======
     <div>
       <header className="dark:bg-neutral-900 w-screen fixed bg-white p-2 border-b-[1px] border-gray-200 dark:border-neutral-700 dark:shadow-neutral-800">
->>>>>>> d627dfa457b86f258465478a9e5edc3b134a7131
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
           <img src={Logo} alt="Logo" className="h-9 w-9"/>
@@ -84,14 +92,8 @@ const Header = () => {
               {[
                 <button className="focus:outline-none" onClick={() => setAvatarImage(avatar)}>
                   <img
-<<<<<<< HEAD
                     src={avatar}
-                    alt="Avatar"
-                    className="h-9 w-9 rounded-full border-2 border-neutral-700 dark:border-neutral-300 transition duration-300 transform hover:scale-110"
-=======
-                    src={jc}
                     className="h-9 w-9 rounded-full border-2 border-neutral-500 dark:border-neutral-300 transition duration-300 transform hover:scale-110"
->>>>>>> d627dfa457b86f258465478a9e5edc3b134a7131
                   />
                 </button>,
                 [
@@ -112,7 +114,9 @@ const Header = () => {
         </div>
       </header>
       
-      {isProfileModalOpen && <ModalAvatar avatar={avatar} onClose={closeProfileModal} />}
+      {isProfileModalOpen && <ModalAvatar onClose={closeProfileModal} avatar={avatar} username={username} updateUser={fetchUpdatedUser} />
+
+}
     </div>
   );
 };
