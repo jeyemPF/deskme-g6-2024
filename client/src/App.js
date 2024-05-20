@@ -14,6 +14,7 @@ import NewPassword from './auth/NewPassword';
 import ADashboard from './admin/ADashboard';
 import ABooking from './admin/ABooking';
 import AManageBooking from './admin/AManageBooking';
+import AReports from './admin/AReports';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path='/admindashboard' element={<ADashboard />} />
         <Route path='/adminbooking' element={<ABooking />} />
         <Route path='/adminmanagebooking' element={<AManageBooking />} />
+        <Route path='/adminreports' element={<AReports />} />
       </Routes>
     </Router> 
   </div>
