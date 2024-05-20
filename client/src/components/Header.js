@@ -28,7 +28,7 @@ const Header = () => {
           <div className="flex items-center md:space-x-4 sm:space-x-2 flex-row-reverse">
             <div className="flex flex-col md:pr-2 sm:pr-0">
               <span className="md:text-sm sm:text-xs font-medium text-gray-700 dark:text-neutral-100 ml-3">John Carlo Diga</span>
-              <span className="md:text-xs sm:text-xs text-gray-500 dark:text-neutral-400 ml-3">Admin</span>
+              <span className="md:text-xs sm:text-xs text-gray-500 dark:text-neutral-400 ml-3">Specific Role</span>
             </div>
             <Dropdown>
               {[

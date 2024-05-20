@@ -15,6 +15,8 @@ import ADashboard from './admin/ADashboard';
 import ABooking from './admin/ABooking';
 import AManageBooking from './admin/AManageBooking';
 import AReports from './admin/AReports';
+import SADashboard from './superadmin/SADashboard';
+import SABooking from './superadmin/SABooking';
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
         <Route path='/adminbooking' element={<ABooking />} />
         <Route path='/adminmanagebooking' element={<AManageBooking />} />
         <Route path='/adminreports' element={<AReports />} />
+        <Route path='/superdashboard' element={<SADashboard />} />
+        <Route path='/superbooking' element={<SABooking />} />
       </Routes>
     </Router> 
   </div>
