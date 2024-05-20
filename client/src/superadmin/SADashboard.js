@@ -3,6 +3,7 @@ import Header from '../components/Header'
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
 import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, Users, MonitorCheck, ScrollText, MonitorX, GalleryVerticalEnd } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
+import { Calendar } from 'antd';
 
 const SADashboard = () => {
 
@@ -14,6 +15,16 @@ const SADashboard = () => {
   const handleBookingClick = () => {
     navigate('/superbooking');
   }
+  const handleManageBookingClick = () => {
+    navigate('/supermanagebooking');
+  }
+  const handlePrivManageClick = () => {
+    navigate('/superprivmanage');
+  }
+  const onPanelChange = (value, mode) => {
+    console.log(value.format('YYYY-MM-DD'), mode);
+  };
+
 
   return (
     <>
@@ -23,8 +34,8 @@ const SADashboard = () => {
         <Sidebar>
           <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
           <SidebarItem icon={<BookCopy size={20} onClick={handleBookingClick}/>} text="Booking" />
-          <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" />
-          <SidebarItem icon={<Users size={20} />} text="Manage Admins" />
+          <SidebarItem icon={<Layers size={20} onClick={handleManageBookingClick} />} text="Manage Bookings" />
+          <SidebarItem icon={<Users size={20} onClick={handlePrivManageClick} />} text="Manage Roles" />
           <hr className="my-3" />
           <SidebarItem icon={<Settings size={20} />} text="Settings" />
           <SidebarItem icon={<LifeBuoy size={20} />} text="Help"/>
@@ -61,6 +72,76 @@ const SADashboard = () => {
                       <span className="text-sm font-normal">All Desks</span>
                     </div>
                     <GalleryVerticalEnd className="w-10 h-10 ml-10" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mt-6">
+                  <div className="border-[1px] border-neutral-100 rounded-lg shadow-sm bg-white">
+                  <h1 className='md:pl-5 sm:pl-2 pt-2 font-semibold'>Calendar</h1>
+                    <Calendar fullscreen={false} onPanelChange={onPanelChange} />
+                  </div>
+                  <div className="rounded-lg bg-white border-[1px] border-neutral-100 shadow-sm lg:col-span-2">
+                  <h1 className='p-6 text-lg font-medium'>Statistics | Overview</h1>
+                  <article className="flex flex-col gap-4 rounded-lg border border-gray-100 bg-white p-6">
+                    <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                        />
+                      </svg>
+
+                      <span className="text-xs font-medium"> 83.15% </span>
+                    </div>
+
+                    <div>
+                      <strong className="block text-sm font-medium text-gray-500"> Users </strong>
+
+                      <p>
+                        <span className="text-2xl font-medium text-gray-900"> 1,000 </span>
+
+                        <span className="text-xs text-gray-500"> from 50 </span>
+                      </p>
+                    </div>
+                  </article>
+
+                  <article className="flex flex-col gap-4 rounded-lg border border-gray-100 bg-white p-6">
+                  <div className="inline-flex gap-2 self-end rounded bg-green-100 p-1 text-green-600">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                        />
+                      </svg>
+
+                      <span className="text-xs font-medium"> 76.38% </span>
+                    </div>
+
+                    <div>
+                      <strong className="block text-sm font-medium text-gray-500"> Bookings per day </strong>
+
+                      <p>
+                        <span className="text-2xl font-medium text-gray-900"> 30 </span>
+
+                        <span className="text-xs text-gray-500"> from 5 </span>
+                      </p>
+                    </div>
+                  </article>
                   </div>
                 </div>
         </Content>

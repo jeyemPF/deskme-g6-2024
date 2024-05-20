@@ -17,6 +17,8 @@ import AManageBooking from './admin/AManageBooking';
 import AReports from './admin/AReports';
 import SADashboard from './superadmin/SADashboard';
 import SABooking from './superadmin/SABooking';
+import SAManageBooking from './superadmin/SAManageBooking';
+import SAPManage from './superadmin/SAPManage';
 
 function App() {
   return (
@@ -30,7 +32,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/authenticate" element={<Authenticate />} />
         <Route path="/authenticatesuccess" element={<AuthenticateSuccess />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/dashboard' element={<Dashboard />} /> 
         <Route path='/booking' element={<Booking />} />
         <Route path='/managebooking' element={<ManageBooking />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
@@ -41,6 +43,8 @@ function App() {
         <Route path='/adminreports' element={<AReports />} />
         <Route path='/superdashboard' element={<SADashboard />} />
         <Route path='/superbooking' element={<SABooking />} />
+        <Route path='/supermanagebooking' element={<SAManageBooking />} />
+        <Route path='/superprivmanage' element={<SAPManage />} />
       </Routes>
     </Router> 
   </div>
