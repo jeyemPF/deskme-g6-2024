@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header'
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
-import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, Users, ClipboardMinus } from "lucide-react";
+import { LayoutDashboard, Layers, Flag, BookCopy, Settings, LogOut, Users, ClipboardMinus, NotebookTabs } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
 const SAReports = () => {
@@ -20,15 +20,13 @@ const tableItems = [
         reservation_id: 1,
         name: "Elon Musk",
         reservation_date: "May 1, 2024",
-        status: "Done"
     },
     {
         reservation_id: 2,
         name: "Mark Zuckerberg",
         reservation_date: "May 5, 2024",
-        status: "Done"
     },
-    ];
+  ];
 
     const navigate = useNavigate();
 
@@ -49,6 +47,9 @@ const tableItems = [
   const handlePrivManageClick = () => {
     navigate('/superprivmanage');
   }
+  const handleAuditClick = () => {
+    navigate('/superaudit');
+  };
 
   return (
     <>
@@ -62,14 +63,14 @@ const tableItems = [
             <SidebarItem icon={<Users size={20} onClick={handlePrivManageClick} />} text="Manage Roles" />
             <SidebarItem icon={<Flag size={20} />} text="Reports" active />
             <hr className="my-3" />
+            <SidebarItem icon={<NotebookTabs size={20} onClick={handleAuditClick} />} text="Audit Trails"/>
             <SidebarItem icon={<Settings size={20} />} text="Settings" />
-            <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} onClick={handleSignOutClick} />} text="Sign Out" />
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Reports</h1>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-violet-50 to-violet-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
                   <span className="text-xl font-semibold">Total: 2</span>
@@ -78,7 +79,7 @@ const tableItems = [
                 <ClipboardMinus className="w-10 h-10 ml-10" />
               </div>
             </div>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
             <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm mt-6">
             <div className="flex justify-end items-center">
                 <div className="relative w-60 max-w-md">
@@ -183,8 +184,8 @@ const tableItems = [
                     </a>
                   </li>
                 </ol>
-                </div>
-                </div>
+              </div>
+            </div>
           </Content>
         </SidebarProvider>
         </div>

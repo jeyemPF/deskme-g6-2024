@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header'
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
-import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, Users, FileCog, MonitorCheck, ScrollText, MonitorX, GalleryVerticalEnd } from "lucide-react";
+import { LayoutDashboard, Layers, Flag, BookCopy, Settings, LogOut, Users, FileCog, NotebookTabs } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
 const SABooking = () => {
@@ -72,6 +72,9 @@ const SABooking = () => {
   const handleReportClick = () => {
     navigate('/superreports');
   };
+  const handleAuditClick = () => {
+    navigate('/superaudit');
+  };
 
   return (
     <>
@@ -85,14 +88,14 @@ const SABooking = () => {
           <SidebarItem icon={<Users size={20} onClick={handlePrivManageClick} />} text="Manage Roles" />
           <SidebarItem icon={<Flag size={20} onClick={handleReportClick} />} text="Reports" />
           <hr className="my-3" />
+          <SidebarItem icon={<NotebookTabs size={20} onClick={handleAuditClick} />} text="Audit Trails"/>
           <SidebarItem icon={<Settings size={20} />} text="Settings" />
-          <SidebarItem icon={<LifeBuoy size={20} />} text="Help"/>
           <hr className="my-3" />
           <SidebarItem icon={<LogOut size={20} onClick={handleSignOutClick} />} text="Sign Out"/>
         </Sidebar>
         <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
                   <span className="text-xl font-semibold">Total: 4</span>

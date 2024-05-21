@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../components/Header'
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
-import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, Users, MonitorCheck, ScrollText, MonitorX, GalleryVerticalEnd } from "lucide-react";
+import { LayoutDashboard, Layers, Flag, BookCopy, Settings, LogOut, Users, MonitorCheck, ScrollText, MonitorX, GalleryVerticalEnd, NotebookTabs } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'antd';
 
@@ -24,6 +24,9 @@ const SADashboard = () => {
   const handleReportClick = () => {
     navigate('/superreports');
   };
+  const handleAuditClick = () => {
+    navigate('/superaudit');
+  };
 
   const onPanelChange = (value, mode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
@@ -42,8 +45,8 @@ const SADashboard = () => {
           <SidebarItem icon={<Users size={20} onClick={handlePrivManageClick} />} text="Manage Roles" />
           <SidebarItem icon={<Flag size={20} onClick={handleReportClick} />} text="Reports" />
           <hr className="my-3" />
+          <SidebarItem icon={<NotebookTabs size={20} onClick={handleAuditClick} />} text="Audit Trails"/>
           <SidebarItem icon={<Settings size={20} />} text="Settings" />
-          <SidebarItem icon={<LifeBuoy size={20} />} text="Help"/>
           <hr className="my-3" />
           <SidebarItem icon={<LogOut size={20} onClick={handleSignOutClick} />} text="Sign Out"/>
         </Sidebar>

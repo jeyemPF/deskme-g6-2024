@@ -20,6 +20,7 @@ import SABooking from './superadmin/SABooking';
 import SAManageBooking from './superadmin/SAManageBooking';
 import SAPManage from './superadmin/SAPManage';
 import SAReports from './superadmin/SAReports';
+import SAAuditReport from './superadmin/SAAuditReport';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         <Route path='/supermanagebooking' element={<SAManageBooking />} />
         <Route path='/superprivmanage' element={<SAPManage />} />
         <Route path='/superreports' element={<SAReports />} />
+        <Route path='/superaudit' element={<SAAuditReport />} />
       </Routes>
     </Router> 
   </div>
