@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
 import { ChevronFirst, ChevronLast } from "lucide-react";
+import { createContext, useContext, useState } from "react";
 
 // Create a context for managing the sidebar state
 const SidebarContext = createContext();
@@ -15,10 +15,6 @@ export function SidebarProvider({ children }) {
 
 export default function Sidebar({ children }) {
     const { expanded, setExpanded } = useContext(SidebarContext);
-
-    if (!SidebarContext) {
-        throw new Error("Sidebar must be used within a SidebarProvider");
-    }
 
     return (
         <aside className={`h-screen fixed top-[58px] ${expanded ? "w-64" : "w-16"} transition-all duration-500`}>
