@@ -22,7 +22,7 @@ const SADashboard = () => {
     navigate('/superprivmanage');
   }
   const handleReportClick = () => {
-    navigate('/adminreports');
+    navigate('/superreports');
   };
 
   const onPanelChange = (value, mode) => {

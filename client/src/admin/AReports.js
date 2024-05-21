@@ -74,6 +74,7 @@ const tableItems = [
                 <ClipboardMinus className="w-10 h-10 ml-10" />
               </div>
             </div>
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
             <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm mt-6">
             <div className="flex justify-end items-center">
                 <div className="relative w-60 max-w-md">
@@ -178,6 +179,7 @@ const tableItems = [
                     </a>
                   </li>
                 </ol>
+                </div>
                 </div>
           </Content>
         </SidebarProvider>
