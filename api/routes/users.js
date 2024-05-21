@@ -74,7 +74,7 @@ router.post("/office-manager", verifySuperAdmin, createOfficeManager);
 router.delete("/", verifySuperAdmin, deleteAllUser);
 
 // Upload avatars
-router.patch("/self/avatar", protect, upload.single("avatar"), uploadAvatar,);
+router.patch("/self/avatar", verifyToken, upload.single("avatar"), uploadAvatar,);
 
 // updating profile
 router.put("/", verifyToken, updateProfile);

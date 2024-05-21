@@ -140,34 +140,35 @@ export const createOfficeManager = async (req, res, next) => {
 
 // UPLOAD AVATARS FOR USER
 export const uploadAvatar = async function (req, res, next) {
+
+      
   try {
-    // Retrieve the user ID from the authenticated user's token or session
-    const userId = req.user.id;
+      // Retrieve the user ID from the authenticated user's token or session
+      const userId = req.user.id;
 
-    // Find the user by ID
-    const user = await User.findById(userId);
+      // Find the user by ID
+      const user = await User.findById(userId);
 
-    // If user not found, return 404
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+      // If user not found, return 404
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
 
-    // Upload the avatar to Cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path);
+      // Upload the avatar to Cloudinary
+      const result = await cloudinary.uploader.upload((req.file.path));
 
-    // Update the user's avatar URL in the database
-    user.avatar = result.url;
-    await user.save();
+      // Update the user's avatar URL in the database
+      user.avatar = result.url;
+      await user.save();
 
-    // Fetch the updated user data from the database
-    const updatedUser = await User.findById(userId).select('-password -verification');
-
-    // Send success response with updated user data
-    res.status(200).json({ message: "Avatar has been uploaded", user: updatedUser });
+      // Send success response
+      res.status(200).json({ message: "Avatar has been uploaded" });
   } catch (err) {
-    next(err);
+      next(err);
   }
 };
+
+
 
 
 // UPDATE PROFILE FOR ALL USERS
