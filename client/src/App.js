@@ -2,7 +2,7 @@ import Home from '../src/pages/Home';
 import About from '../src/pages/About';
 import Services from '../src/pages/Services';
 import Contact from '../src/pages/Contact';
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'; // Make sure to import BrowserRouter
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Authenticate from '../src/auth/Authenticate';
 import Login from '../src/auth/Login';
 import AuthenticateSuccess from '../src/auth/AuthenticateSuccess';
@@ -19,6 +19,7 @@ import SADashboard from './superadmin/SADashboard';
 import SABooking from './superadmin/SABooking';
 import SAManageBooking from './superadmin/SAManageBooking';
 import SAPManage from './superadmin/SAPManage';
+import SAReports from './superadmin/SAReports';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path='/superbooking' element={<SABooking />} />
         <Route path='/supermanagebooking' element={<SAManageBooking />} />
         <Route path='/superprivmanage' element={<SAPManage />} />
+        <Route path='/superreports' element={<SAReports />} />
       </Routes>
     </Router> 
   </div>

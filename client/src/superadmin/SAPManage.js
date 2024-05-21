@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Layers, Users, BookCopy, LifeBuoy, Settings, LogOut, ScrollText } from "lucide-react";
+import { LayoutDashboard, Layers, Users, BookCopy, LifeBuoy, Settings, LogOut, Flag } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
 import Header from '../components/Header'
@@ -38,6 +38,9 @@ const handleCloseModal2 = () => {
   const handleManageBookingClick = () => {
     navigate('/supermanagebooking');
   }
+  const handleReportClick = () => {
+    navigate('/superreports');
+  };
 
   const tableItems = [
     {
@@ -62,6 +65,7 @@ const handleCloseModal2 = () => {
             <SidebarItem icon={<BookCopy size={20} onClick={handleBookingClick} />} text="Booking" />
             <SidebarItem icon={<Layers size={20} onClick={handleManageBookingClick}/>} text="Manage Bookings" />
             <SidebarItem icon={<Users size={20} />} text="Manage Roles" active />
+            <SidebarItem icon={<Flag size={20} onClick={handleReportClick} />} text="Reports" />
             <hr className="my-3" />
             <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />

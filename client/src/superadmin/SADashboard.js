@@ -21,6 +21,10 @@ const SADashboard = () => {
   const handlePrivManageClick = () => {
     navigate('/superprivmanage');
   }
+  const handleReportClick = () => {
+    navigate('/adminreports');
+  };
+
   const onPanelChange = (value, mode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
   };
@@ -36,6 +40,7 @@ const SADashboard = () => {
           <SidebarItem icon={<BookCopy size={20} onClick={handleBookingClick}/>} text="Booking" />
           <SidebarItem icon={<Layers size={20} onClick={handleManageBookingClick} />} text="Manage Bookings" />
           <SidebarItem icon={<Users size={20} onClick={handlePrivManageClick} />} text="Manage Roles" />
+          <SidebarItem icon={<Flag size={20} onClick={handleReportClick} />} text="Reports" />
           <hr className="my-3" />
           <SidebarItem icon={<Settings size={20} />} text="Settings" />
           <SidebarItem icon={<LifeBuoy size={20} />} text="Help"/>
