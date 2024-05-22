@@ -140,34 +140,37 @@ export const createOfficeManager = async (req, res, next) => {
 
 // UPLOAD AVATARS FOR USER
 export const uploadAvatar = async function (req, res, next) {
-
-      
   try {
-      // Retrieve the user ID from the authenticated user's token or session
-      const userId = req.user.id;
+    console.log('Received avatar upload request:', req.file); // Log uploaded file details
+    if (!req.file) {
+      throw new Error('No file uploaded');
+    }
 
-      // Find the user by ID
-      const user = await User.findById(userId);
+    // Retrieve the user ID from the authenticated user's token or session
+    const userId = req.user.id;
 
-      // If user not found, return 404
-      if (!user) {
-          return res.status(404).json({ message: "User not found" });
-      }
+    // Find the user by ID
+    const user = await User.findById(userId);
 
-      // Upload the avatar to Cloudinary
-      const result = await cloudinary.uploader.upload((req.file.path));
+    // If user not found, return 404
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-      // Update the user's avatar URL in the database
-      user.avatar = result.url;
-      await user.save();
+    // Upload the avatar to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path);
 
-      // Send success response
-      res.status(200).json({ message: "Avatar has been uploaded" });
+    // Update the user's avatar URL in the database
+    user.avatar = result.url;
+    await user.save();
+
+    console.log('Avatar uploaded successfully:', result); // Log Cloudinary upload result
+    res.status(200).json({ message: "Avatar has been uploaded", avatarUrl: result.url });
   } catch (err) {
-      next(err);
+    console.error('Error uploading avatar:', err.message); // Log error message
+    next(err);
   }
 };
-
 
 
 

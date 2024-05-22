@@ -1,7 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
-const api = axios.create({
-  baseURL: 'http://localhost:8800/api',
+const API = axios.create({
+  baseURL: "http://localhost:8800/api",
 });
 
-export default api;
+export const uploadAvatar = (data) =>
+  API.patch("/users/self/avatar", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });

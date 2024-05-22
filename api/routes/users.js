@@ -11,7 +11,9 @@ import { deleteUser,
         toggleReservationEmailNotifications,
         toggleReservationEmailNotificationsForAllUsers,
         updateAllUsersEmailPreference
-         } from "../controllers/user.js";
+         }  from "../controllers/user.js";
+
+
 import { verifySuperAdmin, verifyAdmin, verifyToken, verifyOfficeManager, } from "../utils/verifyToken.js";
 import upload from "../middleware/multer.js";
 import { protect } from "../middleware/authMiddleware.js";
@@ -74,7 +76,7 @@ router.post("/office-manager", verifySuperAdmin, createOfficeManager);
 router.delete("/", verifySuperAdmin, deleteAllUser);
 
 // Upload avatars
-router.patch("/self/avatar", verifyToken, upload.single("avatar"), uploadAvatar,);
+router.patch("/self/avatar", verifyToken, upload.single("avatar"), uploadAvatar);
 
 // updating profile
 router.put("/", verifyToken, updateProfile);
@@ -87,10 +89,5 @@ router.put("/:userId/toggle-reservation-emails", toggleReservationEmailNotificat
 
 // Update the all users email preferences
 router.put("/toggle-reservation-emails-for-all-users",verifyOfficeManager, toggleReservationEmailNotificationsForAllUsers);
-
-
-
-
-
 
 export default router

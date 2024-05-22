@@ -28,23 +28,34 @@ const ModalAvatar = ({ onClose, avatar, username }) => {
   const handleSaveChanges = async () => {
     setLoading(true);
     setError(null);
-
+  
     try {
-      // Fetch data using useFetch hook
-      const { data, loading, error } = useFetch('/api/self/avatar');
-
-      if (!loading && !error) {
-        onClose(); // Close the modal
-      } else {
-        setError(error);
+      const formData = new FormData();
+      formData.append("key", "value"); // Assuming 'file' is the selected avatar file
+    
+      // Send PATCH request to update avatar
+      const response = await fetch('/api/users/self/avatar', {
+        method: 'PATCH',
+        body: formData,
+        credentials: 'include', // Include credentials for CORS
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to upload avatar');
       }
+  
+      onClose(); // Close the modal
+  
+      // Optionally trigger useEffect to fetch updated user data
+      // setCredentialsChanged(true);
+  
     } catch (error) {
-      setError(error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="fixed px-5 inset-0 z-10 overflow-y-auto bg-opacity-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
