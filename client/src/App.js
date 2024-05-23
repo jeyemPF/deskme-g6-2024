@@ -22,6 +22,8 @@ import SAPManage from './superadmin/SAPManage';
 import SAReports from './superadmin/SAReports';
 import SAAuditReport from './superadmin/SAAuditReport';
 import OMDashboard from './officemanager/OMDashboard';
+import OMBooking from './officemanager/OMBooking';
+import OMManageBooking from './officemanager/OMManageBooking';
 
 function App() {
   return (
@@ -51,6 +53,8 @@ function App() {
         <Route path='/superreports' element={<SAReports />} />
         <Route path='/superaudit' element={<SAAuditReport />} />
         <Route path='/officedashboard' element={<OMDashboard />} />
+        <Route path='/officebooking' element={<OMBooking />} />
+        <Route path='/officemanagebooking' element={<OMManageBooking />} />
       </Routes>
     </Router> 
   </div>

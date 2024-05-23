@@ -1,59 +1,18 @@
 import React, { useState } from 'react';
-import Header from '../components/Header';
-import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
-import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
+import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog, ScrollText } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
+import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
+import Header from '../components/Header'
 
-const OMBooking = () => {
-  const [isOn, setIsOn] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const OMManageBooking = () => {
+const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleToggle = () => {
-    setIsOn(!isOn);
-  };
-
-  const handleManageClick = () => {
+const handleManageClick = () => {
     setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
+    };
+const handleCloseModal = () => {
     setIsModalOpen(false);
-  };
-
-  const tableItems = [
-    {
-      reservation_id: 1,
-      name: "Peter Sthanlie Rayos",
-      reservation_date: "May 20, 2024",
-      start_time: "4:00pm",
-      end_time: "11:00pm",
-      status: "Pending"
-    },
-    {
-      reservation_id: 2,
-      name: "John Carlo Diga",
-      reservation_date: "May 26, 2024",
-      start_time: "12:00pm",
-      end_time: "9:00pm",
-      status: "Pending"
-    },
-    {
-      reservation_id: 3,
-      name: "Johnmack Faeldonia",
-      reservation_date: "May 31, 2024",
-      start_time: "6:00am",
-      end_time: "6:00pm",
-      status: "Pending"
-    },
-    {
-      reservation_id: 4,
-      name: "Jayvee Brian Ibale",
-      reservation_date: "June 3, 2024",
-      start_time: "12:00am",
-      end_time: "12:00pm",
-      status: "Pending"
-    },
-  ];
+    };
 
   const navigate = useNavigate();
 
@@ -61,12 +20,48 @@ const OMBooking = () => {
     navigate('/login');
   };
 
+  const handleBookingClick = () => {
+    navigate('/officebooking');
+  };
+
   const handleDashboardClick = () => {
     navigate('/officedashboard');
   };
-  const handleManageBookingClick = () => {
-    navigate('/officemanagebooking');
-  }
+
+  const tableItems = [
+    {
+      reservation_id: 1,
+      name: "Jireh Belen",
+      reservation_date: "May 14, 2024",
+      start_time: "1:00am",
+      end_time: "1:00pm",
+      status: "Done"
+    },
+    {
+      reservation_id: 2,
+      name: "Algen Rey Ubang",
+      reservation_date: "May 22, 2024",
+      start_time: "12:00pm",
+      end_time: "9:00pm",
+      status: "Cancelled"
+    },
+    {
+      reservation_id: 3,
+      name: "Mhayumie",
+      reservation_date: "May 30, 2024",
+      start_time: "11:00am",
+      end_time: "6:00pm",
+      status: "Cancelled"
+    },
+    {
+      reservation_id: 4,
+      name: "Lebron James",
+      reservation_date: "June 1, 2024",
+      start_time: "2:00am",
+      end_time: "2:00pm",
+      status: "Done"
+    },
+  ];
 
   return (
     <>
@@ -75,8 +70,8 @@ const OMBooking = () => {
         <SidebarProvider>
           <Sidebar>
             <SidebarItem icon={<LayoutDashboard size={20} onClick={handleDashboardClick} />} text="Dashboard" />
-            <SidebarItem icon={<BookCopy size={20} />} text="Booking" active />
-            <SidebarItem icon={<Layers size={20} onClick={handleManageBookingClick} />} text="Manage Bookings" />
+            <SidebarItem icon={<BookCopy size={20} onClick={handleBookingClick} />} text="Booking" />
+            <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" active />
             <hr className="my-3" />
             <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
@@ -84,8 +79,15 @@ const OMBooking = () => {
             <SidebarItem icon={<LogOut size={20} onClick={handleSignOutClick} />} text="Sign Out" />
           </Sidebar>
           <Content>
-            <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
+            <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Manage Bookings</h1>
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
+              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
+                <div className='flex flex-col'>
+                  <span className="text-xl font-semibold">Total: 4</span>
+                  <span className="text-sm font-normal">All Bookings</span>
+                </div>
+                <ScrollText className="w-10 h-10 ml-10" />
+              </div>
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
                   <span className="text-xl font-semibold">Total: 4</span>
@@ -96,17 +98,30 @@ const OMBooking = () => {
             </div>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
               <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
-                <div className="flex justify-end items-center w-full">
-                  <label className="inline-flex items-center cursor-pointer">
-                    <span className='font-normal pr-3'>Auto accept :</span>
-                    <input type="checkbox" className="sr-only" checked={isOn} onChange={handleToggle} />
-                    <div className={`w-10 h-5 ${isOn ? 'bg-blue-600' : 'bg-gray-200'} rounded-full peer dark:bg-gray-700 shadow-md`}>
-                      <div
-                        className={`w-5 h-5 bg-white rounded-full shadow-md transform ${isOn ? 'translate-x-5' : 'translate-x-0'} transition-transform duration-300 ease-in-out`}
-                      ></div>
+              <div className="flex justify-end items-center">
+                <div className="relative w-60 max-w-md">
+                    <input
+                    type="text"
+                    className="w-full p-2 pr-10 pl-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
+                    placeholder="Search bookings"
+                    />
+                    <div className="absolute right-0 top-0 flex items-center h-full pr-4">
+                    <svg
+                        className="w-5 h-5 text-gray-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
+                        />
+                    </svg>
                     </div>
-                  </label>
-                  <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{isOn ? 'On' : 'Off'}</span>
+                </div>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full table-auto mt-2">
@@ -205,27 +220,27 @@ const OMBooking = () => {
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg p-6 w-11/12 max-w-md mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Pending Books</h2>
-            <p className="mb-6">Do you want to accept or decline this booking?</p>
+            <h2 className="text-xl font-semibold mb-4">Manage Bookings</h2>
+            <p className="mb-6">Do you want to delete or archive this booking?</p>
             <div className="flex justify-end space-x-4">
               <button
                 onClick={handleCloseModal}
                 className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 transition duration-200"
               >
-                Decline
+                Delete
               </button>
               <button
                 onClick={handleCloseModal}
                 className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-200"
               >
-                Accept
+                Archive
               </button>
             </div>
           </div>
         </div>
-      )}
+        )}
     </>
-  );
-};
+  )
+}
 
-export default OMBooking;
+export default OMManageBooking
