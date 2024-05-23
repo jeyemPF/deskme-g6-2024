@@ -65,7 +65,7 @@ const tableItems = [
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Reports</h1>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-violet-50 to-violet-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
                   <span className="text-xl font-semibold">Total: 2</span>
@@ -74,6 +74,7 @@ const tableItems = [
                 <ClipboardMinus className="w-10 h-10 ml-10" />
               </div>
             </div>
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
             <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm mt-6">
             <div className="flex justify-end items-center">
                 <div className="relative w-60 max-w-md">
@@ -178,6 +179,7 @@ const tableItems = [
                     </a>
                   </li>
                 </ol>
+                </div>
                 </div>
           </Content>
         </SidebarProvider>

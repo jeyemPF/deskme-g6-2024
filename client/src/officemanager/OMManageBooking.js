@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
 import Header from '../components/Header'
 
-const AManageBooking = () => {
+const OMManageBooking = () => {
 const [isModalOpen, setIsModalOpen] = useState(false);
 
 const handleManageClick = () => {
@@ -21,14 +21,11 @@ const handleCloseModal = () => {
   };
 
   const handleBookingClick = () => {
-    navigate('/adminbooking');
+    navigate('/officebooking');
   };
 
   const handleDashboardClick = () => {
-    navigate('/admindashboard');
-  };
-  const handleReportClick = () => {
-    navigate('/adminreports');
+    navigate('/officedashboard');
   };
 
   const tableItems = [
@@ -75,7 +72,6 @@ const handleCloseModal = () => {
             <SidebarItem icon={<LayoutDashboard size={20} onClick={handleDashboardClick} />} text="Dashboard" />
             <SidebarItem icon={<BookCopy size={20} onClick={handleBookingClick} />} text="Booking" />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" active />
-            <SidebarItem icon={<Flag size={20} onClick={handleReportClick} />} text="Reports" />
             <hr className="my-3" />
             <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
@@ -247,4 +243,4 @@ const handleCloseModal = () => {
   )
 }
 
-export default AManageBooking
+export default OMManageBooking

@@ -1,58 +1,46 @@
 import React from 'react'
-import Header from '../components/Header'
+import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, ScrollText, MonitorCheck, MonitorX, GalleryVerticalEnd } from "lucide-react";
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
-import { LayoutDashboard, Layers, Flag, BookCopy, Settings, LogOut, Users, MonitorCheck, ScrollText, MonitorX, GalleryVerticalEnd, NotebookTabs } from "lucide-react";
+import Header from '../components/Header'
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'antd';
 
-const SADashboard = () => {
+const OMDashboard = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSignOutClick = () => {
     navigate('/login');
   }
   const handleBookingClick = () => {
-    navigate('/superbooking');
+    navigate('/officebooking');
   }
   const handleManageBookingClick = () => {
-    navigate('/supermanagebooking');
+    navigate('/officemanagebooking');
   }
-  const handlePrivManageClick = () => {
-    navigate('/superprivmanage');
-  }
-  const handleReportClick = () => {
-    navigate('/superreports');
-  };
-  const handleAuditClick = () => {
-    navigate('/superaudit');
-  };
 
   const onPanelChange = (value, mode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
   };
 
-
   return (
     <>
-     <Header />
+      <Header />
       <div className="flex dark:bg-neutral-900">
       <SidebarProvider>
         <Sidebar>
           <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
-          <SidebarItem icon={<BookCopy size={20} onClick={handleBookingClick}/>} text="Booking" />
+          <SidebarItem icon={<BookCopy size={20} onClick={handleBookingClick} />} text="Booking" />
           <SidebarItem icon={<Layers size={20} onClick={handleManageBookingClick} />} text="Manage Bookings" />
-          <SidebarItem icon={<Users size={20} onClick={handlePrivManageClick} />} text="Manage Roles" />
-          <SidebarItem icon={<Flag size={20} onClick={handleReportClick} />} text="Reports" />
           <hr className="my-3" />
-          <SidebarItem icon={<NotebookTabs size={20} onClick={handleAuditClick} />} text="Audit Trails"/>
           <SidebarItem icon={<Settings size={20} />} text="Settings" />
+          <SidebarItem icon={<LifeBuoy size={20} />} text="Help"/>
           <hr className="my-3" />
           <SidebarItem icon={<LogOut size={20} onClick={handleSignOutClick} />} text="Sign Out"/>
         </Sidebar>
         <Content>
-            <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Dashboard</h1>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8"> 
+                <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Dashboard</h1>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8"> 
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
                       <span className="text-xl font-semibold">Total: 4</span>
@@ -154,9 +142,9 @@ const SADashboard = () => {
                 </div>
         </Content>
       </SidebarProvider>
-    </div>
+      </div>
     </>
   )
 }
 
-export default SADashboard
+export default OMDashboard
