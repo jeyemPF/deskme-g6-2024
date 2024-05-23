@@ -10,7 +10,7 @@ const SAAuditReport = () => {
         {
             userId: 14151315151612,
             email: "johncarlodiga@student.laverdad.edu.ph",
-            timestamp: "May 1, 2024",
+            timestamp: "May 1, 2024 at 12:38pm",
             status: "Admin",
             action_type: "Login",
             ip_adress: "192.168.0.0.1"
@@ -19,7 +19,7 @@ const SAAuditReport = () => {
         {
             userId: 11314014810801,
             email: "johnmarkfaeldonia@student.laverdad.edu.ph",
-            timestamp: "May 5, 2024",
+            timestamp: "May 5, 2024 at 3:20pm",
             status: "Admin",
             action_type: "Logout",
             ip_adress: "192.168.0.100.1"
