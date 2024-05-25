@@ -67,7 +67,7 @@ return (
           <div className='flex flex-col xl:flex-row items-center'>
             <div className='w-full md:w-2/4y'>
               <h1 className='text-2xl xl:ml-32 xl:text-left sm:text-center sm:text-base sm:pt-12 sm:ml-0'>
-                <span className='text-5xl text-neutral-700 font-extrabold leading-8 lg:text-5xl md:text-4xl sm:text-2xl dark:text-white'>Make every <i><span className='font-black text-neutral-700 dark:text-white'>click count.</span></i></span>
+                <span className='text-5xl text-neutral-800 font-extrabold leading-8 lg:text-5xl md:text-4xl sm:text-2xl dark:text-white'>Make every <i><span className='font-black text-neutral-800 dark:text-white'>click count.</span></i></span>
                 <p className='font-normal text-neutral-700 text-lg pt-1 leading-5 lg:text-lg md:text-base sm:text-xs dark:text-neutral-300'>
                 DeskMe is built to elevate individuals, providing a seamless <br /> intersection where booking meets brilliance,  empowering <br /> users to thrive through the power of connection <br /> and convenience.
                 </p>

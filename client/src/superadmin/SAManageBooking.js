@@ -78,16 +78,16 @@ const handleCloseModal = () => {
       <div className="flex dark:bg-neutral-900">
         <SidebarProvider>
           <Sidebar>
-            <SidebarItem icon={<LayoutDashboard size={20} onClick={handleDashboardClick} />} text="Dashboard" />
-            <SidebarItem icon={<BookCopy size={20} onClick={handleBookingClick} />} text="Booking" />
+            <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick} />
+            <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" active />
-            <SidebarItem icon={<Users size={20} onClick={handlePrivManageClick} />} text="Manage Roles" />
-            <SidebarItem icon={<Flag size={20} onClick={handleReportClick} />} text="Reports" />
+            <SidebarItem icon={<Users size={20} />} text="Manage Roles" onClick={handlePrivManageClick} />
+            <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick}/>
             <hr className="my-3" />
-            <SidebarItem icon={<NotebookTabs size={20} onClick={handleAuditClick} />} text="Audit Trails"/>
+            <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails" onClick={handleAuditClick} />
             <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <hr className="my-3" />
-            <SidebarItem icon={<LogOut size={20} onClick={handleSignOutClick} />} text="Sign Out" />
+            <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />  
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Manage Bookings</h1>
