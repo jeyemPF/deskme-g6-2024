@@ -38,6 +38,13 @@ const Dashboard = () => {
       officeEquipment: "Sofa, Computer",
       area: "Right Wing"
     },
+    {
+      desk_id: 3,
+      name: "Desk 1C",
+      status: "Available",
+      officeEquipment: "Sofa",
+      area: "Center"
+    },
   ];
 
   return (

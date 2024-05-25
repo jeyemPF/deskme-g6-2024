@@ -28,7 +28,7 @@ const Navbar = () => {
         <div className="flex flex-col-reverse items-center justify-between max-w-screen-navbar mx-auto">
 
           <div className="flex justify-end md:items-center sm:justify-between w-full navbar:w-auto gap-48">
-          <h1 onClick={handleClickH1} className="flex w-full max-w-60 font-black lg:w-60 lg:p-12 lg:text-4xl md:w-52 md:p-8 md:text-2xl sm:w-32 sm:p-5 sm:text-xl cursor-pointer text-neutral-700 dark:text-white">DESKME</h1> 
+          <h1 onClick={handleClickH1} className="flex w-full max-w-60 font-black lg:w-60 lg:p-12 lg:text-4xl md:w-52 md:p-8 md:text-2xl sm:w-32 sm:p-5 sm:text-xl cursor-pointer text-neutral-800 dark:text-white">DESKME</h1> 
 
             <ul className="hidden navbar:flex gap-14 pt-1">
               <li className="font-bold">
