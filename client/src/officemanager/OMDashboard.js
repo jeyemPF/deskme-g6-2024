@@ -10,8 +10,11 @@ const OMDashboard = () => {
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
+    // Clear session storage
+    sessionStorage.removeItem('userCredentials');
+    // Navigate to login page
     navigate('/login');
-  }
+  };
   const handleBookingClick = () => {
     navigate('/officebooking');
   }
