@@ -30,10 +30,13 @@ const tableItems = [
 
     const navigate = useNavigate();
 
-  const handleSignOutClick = () => {
-    navigate('/login');
-  };
-
+    const handleSignOutClick = () => {
+      // Clear session storage
+      sessionStorage.removeItem('userCredentials');
+      // Navigate to login page
+      navigate('/login');
+    };
+  
   const handleBookingClick = () => {
     navigate('/superbooking');
   };

@@ -35,8 +35,12 @@ const Booking = () => {
   const location = useLocation();
 
   const handleSignOutClick = () => {
+    // Clear session storage
+    sessionStorage.removeItem('userCredentials');
+    // Navigate to login page
     navigate('/login');
   };
+
 
   const handleDashboardClick = () => {
     navigate('/dashboard');
