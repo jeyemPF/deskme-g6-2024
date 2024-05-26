@@ -79,7 +79,7 @@ router.delete("/", verifySuperAdmin, deleteAllUser);
 router.patch("/self/avatar", verifyToken, upload.single("avatar"), uploadAvatar);
 
 // updating profile
-router.put("/", verifyToken, updateProfile);
+router.put('/update-profile',verifyToken, upload.single('avatar'), updateProfile);
 
 // Update the receiving email of users
 router.put("/email-preference",verifyOfficeManager, updateAllUsersEmailPreference);

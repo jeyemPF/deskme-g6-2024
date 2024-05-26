@@ -174,58 +174,63 @@ export const uploadAvatar = async function (req, res, next) {
 
 
 
-// UPDATE PROFILE FOR ALL USERS
 export const updateProfile = async (req, res) => {
-    const { username } = req.body;
+  const { username } = req.body;
+
+  // Ensure the user is authenticated and the user ID is available
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({
+      success: false,
+      error: "Unauthorized",
+    });
+  }
+
+  try {
+    // Fetch the user by ID and exclude the password field
     const user = await User.findById(req.user.id).select("-password");
-  
-    const defaultAvatar = "http://res.cloudinary.com/drlztlr1m/image/upload/v1706979188/oxbsppubd3rsabqwfxsr.jpg";
-  
+
+    // Check if the user exists
     if (!user) {
       return res.status(404).json({
         success: false,
         error: "User not found",
       });
     }
-  
-    if (username && !/^[a-zA-Z_]+$/.test(username)) {
+
+    // Validate the new username
+    const usernameRegex = /^[a-zA-Z_]+$/;
+    if (username && !usernameRegex.test(username)) {
       return res.status(400).json({
         success: false,
         error: "Invalid username",
       });
     }
-  
-    if (req.files && req.files["avatar"]) {
-      const avatar = req.files["avatar"][0];
-      try {
-        const result = await cloudinary.uploader.upload(avatar.path);
-        user.avatar = result.url;
-        await user.save();
-        return res.status(200).json({ success: true, user, message: "Avatar updated successfully!" });
-      } catch (err) {
-        return res.status(500).json({
-          success: false,
-          error: "Cannot upload avatar",
-        });
-      }
-    } else if (req.body.defaultAvatar && req.body.defaultAvatar === defaultAvatar) {
-      user.avatar = defaultAvatar;
-      await user.save();
-      return res.status(200).json({ success: true, user, message: "Avatar updated successfully!" });
+
+    // Update the username if provided
+    if (username) {
+      user.username = username;
     }
-  
-    try {
-      await user.save();
-      return res.status(200).json({ success: true, user, message: "Profile updated successfully!" });
-    } catch (error) {
-      return res.status(500).json({
-        success: false,
-        error: "Error saving user",
-      });
+
+    // Upload the avatar if provided
+    if (req.file) {
+      // Upload the avatar to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
+
+      // Update the user's avatar URL in the database
+      user.avatar = result.url;
     }
+
+    // Save the updated user
+    await user.save();
+
+    return res.status(200).json({ success: true, user, message: "Profile updated successfully!" });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      error: "Error updating profile",
+    });
+  }
 };
-
-
     // export const updateUserEmailPreference = async (req, res, next) => {
     //     try {
     //     const { id } = req.params;
