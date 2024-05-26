@@ -87,8 +87,15 @@ function Login() {
       // Ideally, the token should be stored in a more secure manner (e.g., HTTP-only cookies)
       sessionStorage.setItem('userCredentials', JSON.stringify(response.data));
 
-      // Redirect to the dashboard route after successful login
-      navigate("/dashboard");
+      // Redirect based on user role
+      const userRole = response.data.user.role;
+      if (userRole === 'admin') {
+        navigate("/admindashboard");
+      } else if (userRole === 'superadmin') {
+        navigate("/superdashboard");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         console.error('Incorrect password');
