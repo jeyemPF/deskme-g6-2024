@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:8800/api",
+  baseURL: "http://localhost:8800/",
 });
 
 export const uploadAvatar = (data) =>

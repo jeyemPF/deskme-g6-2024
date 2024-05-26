@@ -93,9 +93,12 @@ function Login() {
         navigate("/admindashboard");
       } else if (userRole === 'superadmin') {
         navigate("/superdashboard");
+      } else if (userRole === 'officemanager') {
+        navigate('/officedashboard');
       } else {
         navigate("/dashboard");
       }
+
     } catch (error) {
       if (error.response && error.response.status === 401) {
         console.error('Incorrect password');
