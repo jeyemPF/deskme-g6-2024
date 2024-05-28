@@ -29,6 +29,7 @@
     "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
     "react-toggle-dark-mode": "^1.1.1",
+    "socket.io-client": "^4.7.5",
     "tw-elements-react": "^1.0.0-alpha2",
     "web-vitals": "^2.1.4"
   },
