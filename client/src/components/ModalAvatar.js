@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useFetch from '../Hooks/useFetch';
+import axiosInstance from '../utils/axiosInstance'; // Import axiosInstance
 
 const ModalAvatar = ({ onClose, avatar, username }) => {
   const [loading, setLoading] = useState(false);
@@ -31,30 +32,25 @@ const ModalAvatar = ({ onClose, avatar, username }) => {
   
     try {
       const formData = new FormData();
-      formData.append("key", "value"); // Assuming 'file' is the selected avatar file
-    
-      // Send PATCH request to update avatar
-      const response = await fetch('/api/users/self/avatar', {
-        method: 'PATCH',
-        body: formData,
-        credentials: 'include', // Include credentials for CORS
-      });
+      formData.append("avatar", "value"); // Assuming 'avatar' is the key for the avatar file
   
-      if (!response.ok) {
+      // Send PATCH request to update avatar using axiosInstance
+      const response = await axiosInstance.patch('/api/users/self/avatar', formData);
+  
+      // Check if the response is successful
+      if (response.ok) {
+        onClose(); // Close the modal
+      } else {
         throw new Error('Failed to upload avatar');
       }
-  
-      onClose(); // Close the modal
-  
-      // Optionally trigger useEffect to fetch updated user data
-      // setCredentialsChanged(true);
-  
     } catch (error) {
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
+  
+  
   
   return (
     <div className="fixed px-5 inset-0 z-10 overflow-y-auto bg-opacity-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">

@@ -86,7 +86,6 @@ export const login = async (req, res, next) => {
       email: user.email,
       // Add other relevant details here
     });
-
     res.cookie('access_token', token, {
       httpOnly: true,
     }).status(200).json({ user: user.toObject(), token });
