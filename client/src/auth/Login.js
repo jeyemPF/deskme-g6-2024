@@ -83,6 +83,9 @@ function Login() {
 
       console.log('Login successful');
       console.log('Response:', response.data);
+      
+      // Store the token in localStorage
+      localStorage.setItem('token', response.data.token);
 
       // Ideally, the token should be stored in a more secure manner (e.g., HTTP-only cookies)
       sessionStorage.setItem('userCredentials', JSON.stringify(response.data));

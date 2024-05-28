@@ -45,7 +45,6 @@ export const register = async (req, res, next) => {
 };
 
 
-// Login user
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -69,28 +68,12 @@ export const login = async (req, res, next) => {
       // Add other user details here
     };
 
-    const token = jwt.sign(tokenPayload, process.env.JWT);
+    const token = jwt.sign(tokenPayload, process.env.JWT, { expiresIn: '1h' });
 
-    // Log the login action
-    const auditTrail = await AuditTrail.create({
-      actionType: 'login',
-      userId: user._id,
-      ipAddress: req.ip
-    });
-
-    // Console log the audit trail along with IP address and other details
-    console.log('Audit Trail:', {
-      auditTrail,
-      ipAddress: req.ip,
-      userId: user._id,
-      email: user.email,
-      // Add other relevant details here
-    });
     res.cookie('access_token', token, {
       httpOnly: true,
     }).status(200).json({ user: user.toObject(), token });
   } catch (err) {
-    // Handle errors
     next(err);
   }
 };

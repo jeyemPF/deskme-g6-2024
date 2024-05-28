@@ -4,7 +4,7 @@ import User from "../models/User.js";
 
 
 // Middleware to verify JWT token from cookies
-export const verifyToken = (req, _res, next) => {
+export const verifyToken = (req, res, next) => {
     const token = req.cookies.access_token;
     if (!token) {
         return next(createError(401, "You are not authenticated!"));
@@ -26,23 +26,20 @@ export const protect = async (req, res, next) => {
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         try {
             token = req.headers.authorization.split(" ")[1];
-            console.log("Token extracted:", token);
             const decoded = jwt.verify(token, process.env.JWT);
-            console.log("Decoded token:", decoded);
             req.user = await User.findById(decoded.id).select("-password");
             if (!req.user) {
                 return res.status(404).json({ success: false, error: "User not found" });
             }
-            console.log("User found:", req.user);
             next();
         } catch (err) {
-            console.error("Token verification error:", err);
             return res.status(401).json({ success: false, error: "Session expired" });
         }
     } else {
         return res.status(401).json({ success: false, error: "You are not authenticated!" });
     }
 };
+
 
 // Higher-order middleware to check user roles
 const checkRole = (roles) => (req, res, next) => {

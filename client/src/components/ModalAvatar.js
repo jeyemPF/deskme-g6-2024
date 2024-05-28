@@ -1,57 +1,59 @@
 import React, { useState } from 'react';
-import useFetch from '../Hooks/useFetch';
-import axiosInstance from '../utils/axiosInstance'; // Import axiosInstance
+import axios from 'axios';
 
-const ModalAvatar = ({ onClose, avatar, username }) => {
+const ModalAvatar = ({ onClose, username }) => {
+  const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleAvatarChange = (event) => {
-    const file = event.target.files[0];
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
     
-    // Check if file is valid
     if (!file || !(file instanceof Blob)) {
       console.error('Invalid file selected');
       return;
     }
 
-    const reader = new FileReader();
+    setAvatar(file);
 
+    const reader = new FileReader();
     reader.onload = () => {
-      // Update the avatar image source with the uploaded file
       const avatarElement = document.querySelector('div.avatar img');
       avatarElement.src = reader.result;
     };
-
     reader.readAsDataURL(file);
   };
 
   const handleSaveChanges = async () => {
+    if (!avatar) {
+      setError("Please select an avatar image.");
+      return;
+    }
+
     setLoading(true);
-    setError(null);
-  
+
+    const formData = new FormData();
+    formData.append("avatar", avatar);
+
     try {
-      const formData = new FormData();
-      formData.append("avatar", "value"); // Assuming 'avatar' is the key for the avatar file
-  
-      // Send PATCH request to update avatar using axiosInstance
-      const response = await axiosInstance.patch('/api/users/self/avatar', formData);
-  
-      // Check if the response is successful
-      if (response.ok) {
-        onClose(); // Close the modal
-      } else {
-        throw new Error('Failed to upload avatar');
-      }
+      const token = localStorage.getItem('token');
+      const response = await axios.patch('http://localhost:8800/api/users/self/avatar', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+
+      console.log('Avatar updated successfully:', response.data);
+      setError(null);
     } catch (error) {
-      setError(error.message);
+      console.error('Failed to update avatar:', error);
+      setError('Failed to update avatar. Please try again.');
     } finally {
       setLoading(false);
     }
   };
-  
-  
-  
+
   return (
     <div className="fixed px-5 inset-0 z-10 overflow-y-auto bg-opacity-20" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
