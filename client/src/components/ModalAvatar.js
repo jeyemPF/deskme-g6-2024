@@ -1,5 +1,3 @@
-// client/src/components/ModalAvatar.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
@@ -10,7 +8,7 @@ const ModalAvatar = ({ onClose, username, onAvatarUpdate }) => {
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
 
   useEffect(() => {
     socket.on('avatarUpdated', (data) => {
@@ -54,7 +52,7 @@ const ModalAvatar = ({ onClose, username, onAvatarUpdate }) => {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
         }
-      });
+      }); 
 
       console.log('Avatar updated successfully:', response.data);
       setError(null);
