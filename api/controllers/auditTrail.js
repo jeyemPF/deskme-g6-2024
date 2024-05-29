@@ -37,3 +37,16 @@ export const getAuditTrails = async (req, res, next) => {
 //         next(err);
 //     }
 // };
+
+export const deleteAllAuditTrails = async (req, res, next) => {
+    try {
+        // Delete all audit trails from the database
+        await AuditTrail.deleteMany();
+
+        // Return success message
+        res.status(200).json({ message: "All audit trails deleted successfully." });
+    } catch (err) {
+        // Handle errors
+        next(err);
+    }
+};
