@@ -54,6 +54,7 @@ const Header = () => {
         const data = await response.json();
         setAvatar(data.user.avatar);
         setUsername(data.user.username);
+        setAvatar(data.user.role);
       } else {
         console.error('Error fetching updated user information');
       }
@@ -105,7 +106,7 @@ const Header = () => {
         </div>
       </header>
 
-      {isProfileModalOpen && <ModalAvatar onClose={closeProfileModal} avatar={avatar} username={username} updateUser={fetchUpdatedUser} onAvatarUpdate={handleAvatarUpdate} />}
+      {isProfileModalOpen && <ModalAvatar onClose={closeProfileModal} avatar={avatar} username={username} role={role} updateUser={fetchUpdatedUser} onAvatarUpdate={handleAvatarUpdate} />}
     </div>
   );
 };

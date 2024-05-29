@@ -1,16 +1,16 @@
 import express from "express"
 import { deleteUser,
-        getUser,
         getUsers,
         createAdminUser,
         deleteAllUser,
         createOfficeManager,
         uploadAvatar,
         updateProfile,
-        getSelf,
         toggleReservationEmailNotifications,
         toggleReservationEmailNotificationsForAllUsers,
-        updateAllUsersEmailPreference
+        updateAllUsersEmailPreference,
+        getSelf,
+        
          }  from "../controllers/user.js";
 
 
@@ -58,7 +58,7 @@ const router = express.Router()
 router.delete("/:id", verifySuperAdmin, deleteUser);
 
 // Both admins and super admins can get a single user
-router.get("/:id", verifyAdmin, getUser);
+router.get("/:id", verifyAdmin);
 
 // getself
 router.get ('/self', protect, getSelf);

@@ -2,6 +2,8 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs"
 import cloudinary from "../config/cloudinary.js";
 import asyncHandler from "express-async-handler";
+import { io } from "../index.js";
+
 
 
 // DELETE
@@ -15,7 +17,7 @@ export const deleteUser = async (req, res, next) => {
 };
 
 // GET
-export const getUser = async (req, res, next) => {
+export const getSelf = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id);
         if (!user) {
@@ -27,14 +29,6 @@ export const getUser = async (req, res, next) => {
     }
 };
 
-// get my self even im user or not
-export const getSelf = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id).select("-password -verification");
-  res.status(200).json({
-    success: true,
-    user,
-  });
-});
 
 
 // GET ALL
@@ -154,7 +148,7 @@ export const uploadAvatar = async function (req, res, next) {
 
     // If user not found, return 404
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: 'User not found' });
     }
 
     // Upload the avatar to Cloudinary
@@ -162,10 +156,21 @@ export const uploadAvatar = async function (req, res, next) {
 
     // Update the user's avatar URL in the database
     user.avatar = result.url;
+
+    // You can also update other user details like role and username here
+    // For example, assuming you have these properties in the request body:
+    // user.role = req.body.role;
+    // user.username = req.body.username;
+    
+    // Save the user with updated avatar and other details
     await user.save();
 
     console.log('Avatar uploaded successfully:', result); // Log Cloudinary upload result
-    res.status(200).json({ message: "Avatar has been uploaded", avatarUrl: result.url });
+
+    // Emit an event to notify about the avatar update
+    io.emit('avatarUpdated', { userId: user._id, avatar: result.url, username: user.username, role: user.role });
+
+    res.status(200).json({ message: 'Avatar has been uploaded', avatarUrl: result.url });
   } catch (err) {
     console.error('Error uploading avatar:', err.message); // Log error message
     next(err);

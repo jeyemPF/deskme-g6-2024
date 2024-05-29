@@ -16,7 +16,7 @@ const ModalAvatar = ({ onClose, username, onAvatarUpdate }) => {
     socket.on('avatarUpdated', (data) => {
       console.log('Avatar updated:', data);
       onAvatarUpdate(data.avatar); // Update the avatar in the header
-      sessionStorage.setItem('userCredentials', JSON.stringify({ user: { avatar: data.avatar, username: data.username } }));
+      sessionStorage.setItem('userCredentials', JSON.stringify({ user: { avatar: data.avatar, username: data.username, role: data.role } }));
     });
 
     return () => {
@@ -58,7 +58,7 @@ const ModalAvatar = ({ onClose, username, onAvatarUpdate }) => {
 
       console.log('Avatar updated successfully:', response.data);
       setError(null);
-      socket.emit('avatarUpdated', response.data); // Emit socket event for avatar update
+      socket.emit('avatarUpdated', response.data);
       onClose(); 
     } catch (error) {
       console.error('Failed to update avatar:', error);
