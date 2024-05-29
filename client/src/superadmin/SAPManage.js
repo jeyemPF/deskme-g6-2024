@@ -98,7 +98,7 @@ const handleCloseModal2 = () => {
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-pink-50 to-pink-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: 2</span>
+                  <span className="text-xl font-semibold">Total: 3</span>
                   <span className="text-sm font-normal">Privelege Users</span>
                 </div>
                 <UserCog className="w-10 h-10 ml-10" />
