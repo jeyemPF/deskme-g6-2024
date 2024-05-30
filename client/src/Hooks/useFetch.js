@@ -10,11 +10,16 @@ function useFetch(url) {
       try {
         const response = await fetch(url);
         if (!response.ok) {
-          throw new Error('Failed to fetch data');
+          throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+        }
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Response is not in JSON format');
         }
         const responseData = await response.json();
-        setData(responseData);
+        setData(responseData.count); // Adjust according to your response structure
       } catch (error) {
+        console.error('Fetch error:', error);
         setError(error);
       } finally {
         setLoading(false);
@@ -22,8 +27,6 @@ function useFetch(url) {
     };
 
     fetchData();
-
-    return () => {}; // Cleanup function
   }, [url]);
 
   return { data, loading, error };
