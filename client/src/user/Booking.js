@@ -5,7 +5,6 @@ import Desk1 from '../assets/Desk1.jpeg';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
 import { LayoutDashboard, Layers, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import { Calendar } from 'antd';
 
 const Booking = () => {
   const [hoveredArea, setHoveredArea] = useState(null);
@@ -384,9 +383,6 @@ const Booking = () => {
                     </div>
                   </form>
                 </div>
-
-
-
               </div>
             </div>
           </Content>
