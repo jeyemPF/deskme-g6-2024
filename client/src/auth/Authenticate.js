@@ -40,7 +40,7 @@ function Authenticate() {
                 <h1 className='text-4xl font-black'>Your Account</h1>
             </div>
             <div className='pt-5'>
-                <h1 className='text-center pb-3'>Please confirm your account by entering <br/> the authorization code sent to <br/> example@gmail.com.</h1>
+                <h1 className='text-center pb-3'>Please confirm your account by entering <br/> the authorization code sent to <br/> <strong> Registered email </strong></h1>
                 <form onSubmit={handleSubmit} className='text-center pt-5'>
                   <input
                     type="text"
@@ -50,7 +50,7 @@ function Authenticate() {
                     className="border border-black rounded-lg py-3 px-2 w-[70%] mx-auto"
                   />
                   <h1 className='pt-3'>It may take a minute to receive your code. <br/>
-                    Haven't received it? <a className='text-blue-900' href='/'>Resend a new code.</a></h1>
+                    Haven't received it? <a className='text-blue-900' href='/'><u>Resend a new code.</u></a></h1>
                   <br/>
                   <button type="submit" className=" text-white bg-black font-semibold rounded-full text-base py-3 w-[25%]">Submit</button>
                 </form>

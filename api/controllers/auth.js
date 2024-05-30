@@ -45,9 +45,47 @@ export const register = async (req, res, next) => {
 };
 
 
+// export const login = async (req, res, next) => {
+//   try {
+//     const { email, password } = req.body;
+//     const user = await User.findOne({ email });
+
+//     if (!user) {
+//       return next(createError(404, 'User not found'));
+//     }
+
+//     const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+//     if (!isPasswordCorrect) {
+//       return next(createError(400, 'Wrong password or email!'));
+//     }
+
+//     // Include more user details in the token payload if needed
+//     const tokenPayload = {
+//       id: user._id,
+//       role: user.role,
+//       username: user.username,
+//       // Add other user details here
+//     };
+
+//     const token = jwt.sign(tokenPayload, process.env.JWT, { expiresIn: '1h' });
+
+//     res.cookie('access_token', token, {
+//       httpOnly: true,
+//     }).status(200).json({ user: user.toObject(), token });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, otp } = req.body;
+
+    if (!email || !password || !otp) {
+      return next(createError(400, 'All fields are required'));
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -60,7 +98,13 @@ export const login = async (req, res, next) => {
       return next(createError(400, 'Wrong password or email!'));
     }
 
-    // Include more user details in the token payload if needed
+    const recentOtp = await OTP.findOne({ email }).sort({ createdAt: -1 });
+
+    if (!recentOtp || otp !== recentOtp.otp) {
+      return next(createError(400, 'Invalid OTP'));
+    }
+
+    // If OTP is valid, you can proceed with generating the token
     const tokenPayload = {
       id: user._id,
       role: user.role,
