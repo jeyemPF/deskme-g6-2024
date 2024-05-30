@@ -41,7 +41,7 @@ function App() {
         <Route path='/booking' element={<Booking />} />
         <Route path='/managebooking' element={<ManageBooking />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
-        <Route path='/newpassword' element={<NewPassword />} />
+        <Route path='/newpassword/:token/:id' element={<NewPassword />} />
         <Route path='/admindashboard' element={<ADashboard />} />
         <Route path='/adminbooking' element={<ABooking />} />
         <Route path='/adminmanagebooking' element={<AManageBooking />} />

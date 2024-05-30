@@ -12,7 +12,7 @@ router.post("/register", register )
 router.post("/login", login)
 
 // Forgot Password Route
-router.post('/forgot-password', verifyToken, forgotPassword);
+router.post('/forgot-password', forgotPassword);
 
 // Reset Password Route
 router.patch('/reset-password/:token/:id', resetPassword);
