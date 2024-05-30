@@ -1,11 +1,32 @@
 import { ChevronFirst, ChevronLast } from "lucide-react";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 // Create a context for managing the sidebar state
 const SidebarContext = createContext();
 
 export function SidebarProvider({ children }) {
     const [expanded, setExpanded] = useState(true);
+
+    useEffect(() => {
+        // Function to check window size and update sidebar state
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setExpanded(false);
+            } else {
+                setExpanded(true);
+            }
+        };
+
+        // Set initial state based on window size
+        handleResize();
+
+        // Add event listener for window resize
+        window.addEventListener('resize', handleResize);
+
+        // Clean up event listener on component unmount
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <SidebarContext.Provider value={{ expanded, setExpanded }}>
             {children}

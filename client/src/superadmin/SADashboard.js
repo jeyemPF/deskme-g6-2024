@@ -45,7 +45,7 @@ const SADashboard = () => {
           <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
           <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
           <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
-          <SidebarItem icon={<Users size={20} />} text="Manage Roles" onClick={handlePrivManageClick} />
+          <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
           <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick}/>
           <hr className="my-3" />
           <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails" onClick={handleAuditClick} />
