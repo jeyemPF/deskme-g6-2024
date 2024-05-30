@@ -215,3 +215,12 @@ export const getAvailableDeskCount = async (req, res, next) => {
         next(error);
     }
 };
+
+export const getPendingReservations = async (req, res, next) => {
+    try {
+        const pendingReservations = await Reservation.find({ status: 'PENDING' });
+        res.status(200).json(pendingReservations);
+    } catch (error) {
+        next(error);
+    }
+};

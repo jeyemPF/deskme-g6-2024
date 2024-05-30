@@ -50,7 +50,7 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
+  },"proxy" :"http://localhost:8800/api",
   "devDependencies": {
     "autoprefixer": "^10.4.18",
     "postcss": "^8.4.38",
