@@ -12,6 +12,9 @@ import useFetch from '../Hooks/useFetch';
 const ADashboard = () => {
   const { data: availableDeskData, loading: availableDeskLoading, error: availableDeskError } = useFetch("reservations/available-desk");
   const { data: deskCountData, loading: deskCountLoading, error: deskCountError } = useFetch("desks/count");
+  const { data: deskCountReservedData, loading: deskCountReservedLoading, error: deskCountReservedError } = useFetch("desks/count-reserved");
+  const { data: deskCountUnavailableData, loading: deskCountUnavailableLoading, error: deskCountUnavailableError } = useFetch("desks/count-unavailable");
+
   
   const navigate = useNavigate();
 
@@ -36,8 +39,8 @@ const ADashboard = () => {
     console.log(value.format('YYYY-MM-DD'), mode);
   };
 
-  const isLoading = availableDeskLoading || deskCountLoading;
-  const isError = availableDeskError || deskCountError;
+  const isLoading = availableDeskLoading || deskCountLoading || deskCountReservedLoading || deskCountUnavailableLoading;
+  const isError = availableDeskError || deskCountError || deskCountReservedError || deskCountUnavailableError;
 
   return (
     <>
@@ -61,14 +64,14 @@ const ADashboard = () => {
             {isLoading ? (
               <div>Loading, please wait...</div>
             ) : isError ? (
-              <div>Error: {availableDeskError?.message || deskCountError?.message}</div>
+              <div>Error: {availableDeskError?.message || deskCountError?.message || deskCountReservedError?.message || deskCountUnavailableError?.message  }</div>
             ) : (
               <>
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
                 
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: 4</span>
+                      <span className="text-xl font-semibold">Total: {deskCountReservedData}</span>
                       <span className="text-sm font-normal">All Bookings</span>
                     </div>
                     <ScrollText className="w-10 h-10 ml-10" />
@@ -84,7 +87,7 @@ const ADashboard = () => {
 
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-red-50 to-red-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: 3</span>
+                      <span className="text-xl font-semibold">Total: {deskCountUnavailableData}</span>
                       <span className="text-sm font-normal">Unavailable Desks</span>
                     </div>
                     <MonitorX className="w-10 h-10 md:ml-10 sm:ml-5" />

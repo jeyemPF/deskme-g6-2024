@@ -50,3 +50,21 @@ export const getDeskCount = async (req, res, next) => {
         next(err);
     }
 };
+
+export const countReservedDesks = async (req, res, next) => {
+    try {
+        const reservedDesksCount = await Desk.countDocuments({ status: 'reserved' });
+        res.status(200).json({ count: reservedDesksCount });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const countUnavailableDesks = async (req, res, next) => {
+    try{
+        const unavailableDeskCount = await Desk.countDocuments({ status: 'unavailable'});
+        res.status(200).json({ count: unavailableDeskCount });
+    } catch (err) {
+        next(err);
+    }
+};
