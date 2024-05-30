@@ -224,3 +224,13 @@ export const getPendingReservations = async (req, res, next) => {
         next(error);
     }
 };
+
+
+export const getPendingReservationsCount = async (req, res, next) => {
+    try{
+        const pendingReservationCount = await Reservation.countDocuments({ status: 'PENDING'});
+        res.status(200).json({ count: pendingReservationCount });
+    } catch (err) {
+        next(err);
+    }
+};
