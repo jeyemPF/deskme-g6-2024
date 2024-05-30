@@ -33,6 +33,23 @@ const Booking = () => {
     { desk: 5, top: 2, left: 55, width: 9.5, height: 16 },
     { desk: 6, top: 2, left: 64, width: 9.5, height: 16 }, 
     { desk: 7, top: 2, left: 73.5, width: 9.5, height: 16 }, 
+    { desk: 8, top: 34, left: 28, width: 8.5, height: 15 }, 
+    { desk: 9, top: 34, left: 36.5, width: 8.5, height: 15 }, 
+    { desk: 10, top: 34, left: 44.5, width: 8.5, height: 15 }, 
+    { desk: 11, top: 34, left: 53, width: 8.5, height: 15 },
+    { desk: 12, top: 34, left: 61, width: 8.5, height: 15 }, 
+    { desk: 13, top: 48.5, left: 28, width: 8.5, height: 15 }, 
+    { desk: 14, top: 48.5, left: 36.5, width: 8.5, height: 15 }, 
+    { desk: 15, top: 48.5, left: 44.5, width: 8.5, height: 15 }, 
+    { desk: 16, top: 48.5, left: 53, width: 8.5, height: 15 }, 
+    { desk: 17, top: 48.5, left: 61, width: 8.5, height: 15 },
+    { desk: 18, top: 81, left: 18, width: 9.5, height: 16 },
+    { desk: 19, top: 81, left: 27, width: 9.5, height: 16 },
+    { desk: 20, top: 81, left: 36, width: 9.5, height: 16 },
+    { desk: 21, top: 81, left: 45.5, width: 9.5, height: 16 },
+    { desk: 22, top: 81, left: 54.5, width: 9.5, height: 16 },
+    { desk: 23, top: 81, left: 63.5, width: 9.5, height: 16 },
+    { desk: 24, top: 81, left: 73, width: 9.5, height: 16 },
   ];
   const handleMouseEnter = (index) => {
     setHoveredArea(index);
@@ -226,7 +243,7 @@ const Booking = () => {
                     ></div>
                   ))}
                 </div>
-                <h1 className="lg:text-xl md:pl-2 sm:pl-0 font-bold mt-8 mb-4 gap-4">Note:</h1>
+                <h1 className="lg:text-xl md:pl-2 sm:pl-0 font-bold mt-4 mb-4 gap-4">Note:</h1>
                 <span className="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700 md:ml-2 mr-3">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -293,70 +310,73 @@ const Booking = () => {
                 
                 <div className="border-[1px] border-neutral-100 rounded-lg shadow-sm bg-white p-5">
                   <h1 className="lg:text-xl font-bold mb-4">Details:</h1>
-                  <div className="mb-4">
+                  <div className="mb-5">
                     <img src={Desk1} className='rounded-md'/>
                   </div>
+                  <div className="mb-5 flex flex-wrap">
+                    <span className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mr-3 mb-2">
+                        Chair
+                    </span>
+                    <span className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mr-3 mb-2">
+                        Laptop
+                    </span>
+                    <span className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mb-2">
+                        Computer Table
+                    </span>
+                  </div>
                   <form>
-                    <div className="mb-4">
-                      <label htmlFor="userId" className="block text-sm font-medium text-gray-700">User ID</label>
-                      <input
-                        type="text"
-                        id="userId"
-                        name="userId"
-                        value={bookingData.userId}
-                        onChange={(e) => setBookingData({ ...bookingData, userId: e.target.value })}
-                        className={`mt-1 p-2 border ${emptyFields.userId ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                        disabled={!isAreaClicked}
-                      />
+                    <div className="mb-4 flex">
+                      <div className="w-1/2 mr-2">
+                        <label htmlFor="deskId" className="block text-sm font-medium text-gray-700">Desk ID:</label>
+                        <input
+                          type="text"
+                          id="deskId"
+                          name="deskId"
+                          readOnly="readonly"
+                          value={bookingData.deskId}
+                          onChange={(e) => setBookingData({ ...bookingData, deskId: e.target.value })}
+                          className={`mt-1 p-2 border ${emptyFields.deskId ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                          disabled="disableonly"
+                        />
+                      </div>
+                      <div className="w-1/2 ml-2">
+                        <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date:</label>
+                        <input
+                          type="date"
+                          id="date"
+                          name="date"
+                          value={bookingData.date}
+                          onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
+                          className={`mt-1 p-2 border ${emptyFields.date ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                          disabled={!isAreaClicked}
+                        />
+                      </div>
                     </div>
-                    <div className="mb-4">
-                      <label htmlFor="deskId" className="block text-sm font-medium text-gray-700">Desk ID</label>
-                      <input
-                        type="text"
-                        id="deskId"
-                        name="deskId"
-                        readonly="readonly"
-                        value={bookingData.deskId}
-                        onChange={(e) => setBookingData({ ...bookingData, deskId: e.target.value })}
-                        className={`mt-1 p-2 border ${emptyFields.deskId ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                        disabled="disableonly"
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
-                      <input
-                        type="date"
-                        id="date"
-                        name="date"
-                        value={bookingData.date}
-                        onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
-                        className={`mt-1 p-2 border ${emptyFields.date ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                        disabled={!isAreaClicked}
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">Start Time</label>
-                      <input
-                        type="time"
-                        id="startTime"
-                        name="startTime"
-                        value={bookingData.startTime}
-                        onChange={(e) => setBookingData({ ...bookingData, startTime: e.target.value })}
-                        className={`mt-1 p-2 border ${emptyFields.startTime ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                        disabled={!isAreaClicked}
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time</label>
-                      <input
-                        type="time"
-                        id="endTime"
-                        name="endTime"
-                        value={bookingData.endTime}
-                        onChange={(e) => setBookingData({ ...bookingData, endTime: e.target.value })}
-                        className={`mt-1 p-2 border ${emptyFields.endTime ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                        disabled={!isAreaClicked}
-                      />
+                    <div className="mb-10 flex">
+                      <div className="w-1/2 mr-2">
+                        <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">Start Time:</label>
+                        <input
+                          type="time"
+                          id="startTime"
+                          name="startTime"
+                          value={bookingData.startTime}
+                          onChange={(e) => setBookingData({ ...bookingData, startTime: e.target.value })}
+                          className={`mt-1 p-2 border ${emptyFields.startTime ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                          disabled={!isAreaClicked}
+                        />
+                      </div>
+                      <div className="w-1/2 ml-2">
+                        <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time:</label>
+                        <input
+                          type="time"
+                          id="endTime"
+                          name="endTime"
+                          value={bookingData.endTime}
+                          onChange={(e) => setBookingData({ ...bookingData, endTime: e.target.value })}
+                          className={`mt-1 p-2 border ${emptyFields.endTime ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                          disabled={!isAreaClicked}
+                        />
+                      </div>
                     </div>
                     <div className="flex justify-end">
                       <button type="button" className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-normal py-2 px-4 rounded">Cancel</button>
@@ -364,6 +384,8 @@ const Booking = () => {
                     </div>
                   </form>
                 </div>
+
+
 
               </div>
             </div>
