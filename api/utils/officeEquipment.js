@@ -4,7 +4,7 @@ const officeEquipmentEnum = [
     "Mouse and Keyboard Wrist Rests",
     "Document Holder",
     "Multi-Outlet Power Strip",
-    "Drawer Organizers",
+    "Drawer Organizers",  
     "Standing Desk Converter",
     "Adjustable Monitor Stand",
     "Blue Light Blocking Glasses",

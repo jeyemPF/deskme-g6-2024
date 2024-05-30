@@ -9,10 +9,10 @@ const Accordion = ({ title, answer }) => {
         onClick={() => setAccordionOpen(!accordionOpen)}
         className="flex justify-between w-full"
       >
-        <span>{title}</span>
+        <span className="dark:text-neutral-200">{title}</span>
         {/* {accordionOpen ? <span>-</span> : <span>+</span>} */}
         <svg
-          className="fill-neutral-800 shrink-0 ml-8"
+          className="fill-neutral-800 shrink-0 ml-8 dark:fill-neutral-300"
           width="16"
           height="16"
           xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ const Accordion = ({ title, answer }) => {
             : "grid-rows-[0fr] opacity-0"
         }`}
       >
-        <div className="overflow-hidden">{answer}</div>
+        <div className="overflow-hidden dark:text-neutral-400">{answer}</div>
       </div>
     </div>
   );

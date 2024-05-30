@@ -5,7 +5,7 @@ import Header from '../components/Header'
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'antd';
 
-const ADashboard = () => {
+const OMDashboard = () => {
 
   const navigate = useNavigate();
 
@@ -16,14 +16,11 @@ const ADashboard = () => {
     navigate('/login');
   };
   const handleBookingClick = () => {
-    navigate('/adminbooking');
+    navigate('/officebooking');
   }
   const handleManageBookingClick = () => {
-    navigate('/adminmanagebooking');
+    navigate('/officemanagebooking');
   }
-  const handleReportClick = () => {
-    navigate('/adminreports');
-  };
 
   const onPanelChange = (value, mode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
@@ -38,7 +35,6 @@ const ADashboard = () => {
           <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
           <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
           <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
-          <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
           <hr className="my-3" />
           <SidebarItem icon={<Settings size={20} />} text="Settings" />
           <SidebarItem icon={<LifeBuoy size={20} />} text="Help"/>
@@ -154,4 +150,4 @@ const ADashboard = () => {
   )
 }
 
-export default ADashboard
+export default OMDashboard

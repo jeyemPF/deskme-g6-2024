@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from "react";
 const SidebarContext = createContext();
 
 export function SidebarProvider({ children }) {
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(true);
     return (
         <SidebarContext.Provider value={{ expanded, setExpanded }}>
             {children}
@@ -32,6 +32,7 @@ export default function Sidebar({ children }) {
         </aside>
     );
 }
+
 export function Content({ children }) {
     const { expanded } = useContext(SidebarContext);
     return (
@@ -42,10 +43,12 @@ export function Content({ children }) {
         </div>
     );
 }
-export function SidebarItem({ icon, text, active, alert }) {
+
+export function SidebarItem({ icon, text, active, alert, onClick }) {
     const { expanded } = useContext(SidebarContext);
     return (
         <li
+            onClick={onClick} // Attach the onClick handler here
             className={`relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ${
                 active
                     ? "bg-gradient-to-tr from-gray-300 to-gray-200 text-gray-900"
@@ -53,13 +56,13 @@ export function SidebarItem({ icon, text, active, alert }) {
             }`}
         >
             {icon}
-            <span className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>{text}</span>
+            <span className={`flex-grow whitespace-nowrap overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>{text}</span>
             {alert && (
                 <div className={`absolute right-2 w-2 h-2 rounded bg-gray-400 ${expanded ? "" : "top-2"}`}></div>
             )}
             {!expanded && (
                 <div
-                    className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-gray-100 text-gray-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+                    className={`absolute whitespace-nowrap left-full rounded-md px-2 py-1 ml-6 bg-gray-100 text-gray-800 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
                 >
                     {text}
                 </div>

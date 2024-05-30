@@ -4,7 +4,7 @@ import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Si
 import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 
-const ABooking = () => {
+const OMBooking = () => {
   const [isOn, setIsOn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -66,14 +66,11 @@ const ABooking = () => {
 
 
   const handleDashboardClick = () => {
-    navigate('/admindashboard');
+    navigate('/officedashboard');
   };
   const handleManageBookingClick = () => {
-    navigate('/adminmanagebooking');
+    navigate('/officemanagebooking');
   }
-  const handleReportClick = () => {
-    navigate('/adminreports');
-  };
 
   return (
     <>
@@ -81,10 +78,9 @@ const ABooking = () => {
       <div className="flex dark:bg-neutral-900">
         <SidebarProvider>
           <Sidebar>
-            <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick} />
+            <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick}/>
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" active />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
-            <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
             <hr className="my-3" />
             <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
@@ -236,4 +232,4 @@ const ABooking = () => {
   );
 };
 
-export default ABooking;
+export default OMBooking;

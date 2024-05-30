@@ -1,8 +1,10 @@
 import jwt from "jsonwebtoken";
 import { createError } from "./error.js";
+import User from "../models/User.js";
 
-// Middleware to verify JWT token
-export const verifyToken = (req, _res, next ) => {
+
+// Middleware to verify JWT token from cookies
+export const verifyToken = (req, res, next) => {
     const token = req.cookies.access_token;
     if (!token) {
         return next(createError(401, "You are not authenticated!"));
@@ -17,6 +19,39 @@ export const verifyToken = (req, _res, next ) => {
     });
 };
 
+// Middleware to verify JWT token from authorization header
+export const protect = async (req, res, next) => {
+    let token;
+
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+        try {
+            token = req.headers.authorization.split(" ")[1];
+            const decoded = jwt.verify(token, process.env.JWT);
+            req.user = await User.findById(decoded.id).select("-password");
+            if (!req.user) {
+                return res.status(404).json({ success: false, error: "User not found" });
+            }
+            next();
+        } catch (err) {
+            return res.status(401).json({ success: false, error: "Session expired" });
+        }
+    } else {
+        return res.status(401).json({ success: false, error: "You are not authenticated!" });
+    }
+};
+
+
+// Higher-order middleware to check user roles
+const checkRole = (roles) => (req, res, next) => {
+    verifyToken(req, res, () => {
+        if (req.user && roles.includes(req.user.role)) {
+            next();
+        } else {
+            return next(createError(403, "You are not authorized"));
+        }
+    });
+};
+
 // Middleware to check if user is authorized
 export const verifyUser = (req, res, next) => {
     verifyToken(req, res, () => {
@@ -28,55 +63,8 @@ export const verifyUser = (req, res, next) => {
     });
 };
 
-
-// Middleware to check if user is an admin
-export const verifyAdmin = (req, res, next ) => {
-    verifyToken(req, res, () => {
-        // Check if the user is authenticated and has the "admin" role
-        if (req.user && req.user.role === 'admin') {
-            next(); // User is authorized as admin, proceed to the next middleware
-        } else {
-            // User is not authorized as admin, return a 403 Forbidden error
-            return next(createError(403, "You are not authorized as admin"));
-        }
-    });
-};
-
-// Middleware to check if user is a super admin
-export const verifySuperAdmin = (req, res, next ) => {
-    verifyToken(req, res, () => {
-        // Check if the user is authenticated and has the "superadmin" role
-        if (req.user && req.user.role === 'superadmin') {
-            next(); // User is authorized as superadmin, proceed to the next middleware
-        } else {
-            // User is not authorized as superadmin, return a 403 Forbidden error
-            return next(createError(403, "You are not authorized as superadmin"));
-        }
-    });
-};
-
-// Middleware to check if user is an admin or super admin
-export const verifyAdminOrSuperAdmin = (req, res, next ) => {
-    verifyToken(req, res, () => {
-        // Check if the user is authenticated and has either "admin" or "superadmin" role
-        if (req.user && (req.user.role === 'admin' || req.user.role === 'superadmin')) {
-            next(); // User is authorized as admin or superadmin, proceed to the next middleware
-        } else {
-            // User is not authorized as admin or superadmin, return a 403 Forbidden error
-            return next(createError(403, "You are not authorized as admin or superadmin"));
-        }
-    });
-};
-
-export const verifyOfficeManager = (req, res, next) => {
-    verifyToken(req, res, () => {
-        // Check if the user is authenticated and has the "superadmin" role
-        if (req.user && req.user.role === 'officemanager') {
-            next(); // User is authorized as superadmin, proceed to the next middleware
-        } else {
-            // User is not authorized as superadmin, return a 403 Forbidden error
-            return next(createError(403, "You are not authorized as Office Manager"));
-        }
-    });
-};
-
+// Specific role verification middlewares
+export const verifyAdmin = checkRole(['admin']);
+export const verifySuperAdmin = checkRole(['superadmin']);
+export const verifyAdminOrSuperAdmin = checkRole(['admin', 'superadmin']);
+export const verifyOfficeManager = checkRole(['officemanager']);

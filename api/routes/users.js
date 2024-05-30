@@ -1,22 +1,22 @@
 import express from "express"
 import { deleteUser,
-        getUser,
         getUsers,
         createAdminUser,
         deleteAllUser,
         createOfficeManager,
         uploadAvatar,
         updateProfile,
-        getSelf,
         toggleReservationEmailNotifications,
         toggleReservationEmailNotificationsForAllUsers,
-        updateAllUsersEmailPreference
+        updateAllUsersEmailPreference,
+        getSelf,
+        
          }  from "../controllers/user.js";
 
 
-import { verifySuperAdmin, verifyAdmin, verifyToken, verifyOfficeManager, } from "../utils/verifyToken.js";
+import { verifySuperAdmin, verifyAdmin, verifyToken, verifyOfficeManager, verifyUser, protect, } from "../utils/verifyToken.js";
 import upload from "../middleware/multer.js";
-import { protect } from "../middleware/authMiddleware.js";
+
 
 
 
@@ -58,7 +58,7 @@ const router = express.Router()
 router.delete("/:id", verifySuperAdmin, deleteUser);
 
 // Both admins and super admins can get a single user
-router.get("/:id", verifyAdmin, getUser);
+router.get("/:id", verifyAdmin);
 
 // getself
 router.get ('/self', protect, getSelf);
@@ -76,10 +76,10 @@ router.post("/office-manager", verifySuperAdmin, createOfficeManager);
 router.delete("/", verifySuperAdmin, deleteAllUser);
 
 // Upload avatars
-router.patch("/self/avatar", verifyToken, upload.single("avatar"), uploadAvatar);
+router.patch("/self/avatar", protect, upload.single("avatar"), uploadAvatar);
 
 // updating profile
-router.put("/", verifyToken, updateProfile);
+router.put('/update-profile',verifyUser, upload.single('avatar'), updateProfile);
 
 // Update the receiving email of users
 router.put("/email-preference",verifyOfficeManager, updateAllUsersEmailPreference);

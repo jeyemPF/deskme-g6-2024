@@ -7,13 +7,12 @@ import Logo from '../assets/Logo.png';
 
 const Header = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-  const [credentialsChanged, setCredentialsChanged] = useState(false); // Add this line
+  const [credentialsChanged, setCredentialsChanged] = useState(false);
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
   const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
-    // Function to fetch user credentials from sessionStorage
     const fetchUserCredentials = () => {
       const storedCredentials = sessionStorage.getItem('userCredentials');
       if (storedCredentials) {
@@ -21,16 +20,15 @@ const Header = () => {
         setRole(credentials.user.role);
         setAvatar(credentials.user.avatar);
         setUsername(credentials.user.username);
-        setCredentialsChanged(false); 
+        setCredentialsChanged(false);
       }
     };
 
-    fetchUserCredentials(); // Fetch user credentials initially
+    fetchUserCredentials();
 
-    // Listen for changes in sessionStorage
     const handleStorageChange = (event) => {
       if (event.key === 'userCredentials') {
-        setCredentialsChanged(true); // Set credentialsChanged flag when credentials change
+        setCredentialsChanged(true);
       }
     };
 
@@ -39,48 +37,42 @@ const Header = () => {
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, [credentialsChanged]); // Trigger effect when credentialsChanged flag changes
+  }, [credentialsChanged]);
 
-  // Function to set avatar
-  const setAvatarImage = () => {
-    setAvatar(avatar);
-  };
-
-  // Function to handle customize profile click
   const handleCustomizeProfileClick = () => {
-    // Add your logic for handling customize profile click here
-    // For example, you can set a state to open the profile modal
     setIsProfileModalOpen(true);
   };
 
-  // Function to close profile modal
   const closeProfileModal = () => {
     setIsProfileModalOpen(false);
   };
 
   const fetchUpdatedUser = async () => {
     try {
-      const response = await fetch('/api/routes/users/avatar/self');
+      const response = await fetch('http://localhost:8800/api/routes/users/avatar/self');
       if (response.ok) {
         const data = await response.json();
         setAvatar(data.user.avatar);
         setUsername(data.user.username);
+        setAvatar(data.user.role);
       } else {
-        // Handle error response
         console.error('Error fetching updated user information');
       }
     } catch (error) {
       console.error('Error fetching updated user information', error);
     }
   };
-  
+
+  const handleAvatarUpdate = (newAvatar) => {
+    setAvatar(newAvatar);
+  };
 
   return (
     <div>
       <header className="dark:bg-neutral-900 w-screen fixed bg-white p-2 border-b-[1px] border-gray-200 dark:border-neutral-700 dark:shadow-neutral-800">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-          <img src={Logo} alt="Logo" className="h-9 w-9"/>
+            <img src={Logo} alt="Logo" className="h-9 w-9" />
             <button className="text-black pt-1 ml-5"><Switcher /></button>
           </div>
           <div className="flex items-center space-x-4 flex-row-reverse">
@@ -90,7 +82,7 @@ const Header = () => {
             </div>
             <Dropdown>
               {[
-                <button className="focus:outline-none" onClick={() => setAvatarImage(avatar)}>
+                <button className="focus:outline-none" onClick={() => setAvatar(avatar)}>
                   <img
                     src={avatar}
                     className="h-9 w-9 rounded-full border-2 border-neutral-500 dark:border-neutral-300 transition duration-300 transform hover:scale-110"
@@ -101,7 +93,7 @@ const Header = () => {
                 ].map((item, index) => (
                   <a
                     key={index}
-                    onClick={handleCustomizeProfileClick} // Add onClick event here
+                    onClick={handleCustomizeProfileClick}
                     className="block text-sm hover:bg-gray-100 hover:text-gray-900 dark:hover:text-gray-900 dark:text-neutral-300 cursor-pointer"
                   >
                     {item}
@@ -113,10 +105,8 @@ const Header = () => {
           </div>
         </div>
       </header>
-      
-      {isProfileModalOpen && <ModalAvatar onClose={closeProfileModal} avatar={avatar} username={username} updateUser={fetchUpdatedUser} />
 
-}
+      {isProfileModalOpen && <ModalAvatar onClose={closeProfileModal} avatar={avatar} username={username} role={role} updateUser={fetchUpdatedUser} onAvatarUpdate={handleAvatarUpdate} />}
     </div>
   );
 };
