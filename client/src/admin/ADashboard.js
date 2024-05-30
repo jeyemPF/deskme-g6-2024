@@ -62,15 +62,14 @@ const ADashboard = () => {
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Dashboard</h1>
-
-            {isLoading ? (
-              <>
-                <Skeleton height={120} count={4} />
-              </>
-            ) : isError ? (
-              <div>Error: {availableDeskError?.message || deskCountError?.message || deskCountReservedError?.message || deskCountUnavailableError?.message  }</div>
-            ) : (
-              <>
+                { isLoading ? (
+                  <>
+                   <Skeleton height={120} count={4} />
+                  </>
+                ) : isError ? (
+                  <div>Error: {availableDeskError?.message || deskCountError?.message || deskCountReservedError?.message || deskCountUnavailableError?.message  }</div>
+                ) : (
+                  <>
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
                 
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
@@ -105,6 +104,8 @@ const ADashboard = () => {
                     <GalleryVerticalEnd className="w-10 h-10 ml-10" />
                   </div>
                 </div>
+                </>
+            )}
 
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mt-6">
                   <div className="border-[1px] border-neutral-100 rounded-lg shadow-sm bg-white">
@@ -165,8 +166,6 @@ const ADashboard = () => {
                     </article>
                   </div>
                 </div>
-              </>
-            )}
           </Content>
         </SidebarProvider>
       </div>
