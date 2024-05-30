@@ -4,12 +4,6 @@ import deskmap from '../assets/deskmap.png';
 import Desk1 from '../assets/Desk1.jpeg';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
 import { LayoutDashboard, Layers, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
-import { useNavigate, useLocation } from 'react-router-dom';
-import deskmap from '../assets/deskmap.png';
-import Desk1 from '../assets/Desk1.jpeg';
-import { VscDebugContinue } from "react-icons/vsc";
-import axios from 'axios';
-import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'antd';
 
@@ -64,41 +58,15 @@ const Booking = () => {
     setIsOn(!isOn);
   };
 
-  const [showBookingModal, setShowBookingModal] = useState(false);
-  const [bookingMessage, setBookingMessage] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [hoveredArea, setHoveredArea] = useState(null);
-  const [bookingData, setBookingData] = useState({
-    userId: '',
-    deskId: '',
-    date: '',
-    startTime: '',
-    endTime: '',
-  });
-  const [emptyFields, setEmptyFields] = useState({
-    deskId: false,
-    date: false,
-    startTime: false,
-    endTime: false
-  });
-  const [selectedDesk, setSelectedDesk] = useState(null);
-  const [showBookingForm, setShowBookingForm] = useState(false);
   const navigate = useNavigate();
 
-  const location = useLocation();
-
   const handleSignOutClick = () => {
-    // Clear session storage
-    sessionStorage.removeItem('userCredentials');
-    // Navigate to login page
     navigate('/login');
   };
-
 
   const handleDashboardClick = () => {
     navigate('/dashboard');
   };
-
   const handleManageBookingClick = () => {
     navigate('/managebooking');
   }
@@ -140,19 +108,6 @@ const Booking = () => {
                   <span className="text-sm font-normal">Pending Books</span>
                 </div>
                 <FileCog className="w-10 h-10 ml-10" />
-                <div>
-                  <div className='flex gap-40'>
-                    <h3 className="text-lg font-bold mb-2">Equipment:</h3>
-                    <button onClick={() => setShowBookingModal(true)} className="text-2xl">
-                      <VscDebugContinue />
-                    </button>
-                  </div>
-                  <ul className="list-disc pl-6">
-                    {selectedDesk && selectedDesk.amenities.map((amenity, index) => (
-                      <li key={index} className="mb-2">{amenity}</li>
-                    ))}
-                  </ul>
-                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8 -mt-2">
