@@ -8,6 +8,8 @@ import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'antd';
 import useFetch from '../Hooks/useFetch';
+import { Skeleton } from "antd";
+
 
 const ADashboard = () => {
   const { data: availableDeskData, loading: availableDeskLoading, error: availableDeskError } = useFetch("reservations/available-desk");
@@ -62,7 +64,9 @@ const ADashboard = () => {
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Dashboard</h1>
 
             {isLoading ? (
-              <div>Loading, please wait...</div>
+              <>
+                <Skeleton height={120} count={4} />
+              </>
             ) : isError ? (
               <div>Error: {availableDeskError?.message || deskCountError?.message || deskCountReservedError?.message || deskCountUnavailableError?.message  }</div>
             ) : (
@@ -124,7 +128,7 @@ const ADashboard = () => {
                             strokeWidth="2"
                             d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                         </svg>
-                        <span className="text-xs font-medium"> 83.15% </span>
+                        <span className="text-xs font-medium"> 83.15%</span>
                       </div>
                       <div>
                         <strong className="block text-sm font-medium text-gray-500"> Users </strong>
