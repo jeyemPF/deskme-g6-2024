@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
-import { LayoutDashboard, Layers, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
+import { LayoutDashboard, Calendar, Flag, LifeBuoy, Settings, LogOut } from "lucide-react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import deskmap from '../assets/deskmap.png';
 import Desk1 from '../assets/Desk1.jpeg';
@@ -35,12 +35,9 @@ const Booking = () => {
   const location = useLocation();
 
   const handleSignOutClick = () => {
-    // Clear session storage
     sessionStorage.removeItem('userCredentials');
-    // Navigate to login page
     navigate('/login');
   };
-
 
   const handleDashboardClick = () => {
     navigate('/dashboard');
@@ -76,7 +73,6 @@ const Booking = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // Check for empty fields
     const emptyFieldsCopy = { ...emptyFields };
     let hasEmptyField = false;
     for (const key in bookingData) {
@@ -90,7 +86,7 @@ const Booking = () => {
     setEmptyFields(emptyFieldsCopy);
 
     if (hasEmptyField) {
-      return; // Prevent form submission if there are empty fields
+      return;
     }
 
     try {
@@ -109,7 +105,6 @@ const Booking = () => {
       setIsModalOpen(true);
     }
 
-    // Reset form fields and hide the booking form
     setBookingData({
       userId: '',
       deskId: '',
@@ -129,7 +124,7 @@ const Booking = () => {
       <div style={{ height: '100vh', overflowY: 'hidden' }}>
         <Header />
         <Sidebar>
-          <SidebarItem icon={<LayoutDashboard size={20} onClick={handleDashboard} />} text="Dashboard" active={isActive('/dashboard')} />
+          <SidebarItem icon={<LayoutDashboard size={20} onClick={handleDashboardClick} />} text="Dashboard" active={isActive('/dashboard')} />
           <SidebarItem icon={<Calendar size={20} />} text="Booking" active={isActive('/booking')} />
           <SidebarItem icon={<Flag size={20} />} text="Reporting" active={isActive('/reporting')} />
           <hr className="my-3" />
@@ -257,7 +252,7 @@ const Booking = () => {
           </div>
         </Content>
       </div>
-    </>
+    </SidebarProvider>
   );
 };
 
