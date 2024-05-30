@@ -81,6 +81,8 @@ const NewPassword = () => {
             }}
             error={passwordError}
           />
+
+        <div className='relative mt-4'>
           <InputField
             type={showPassword ? 'text' : 'password'}
             name='confirmPassword'
@@ -93,6 +95,7 @@ const NewPassword = () => {
             }}
             error={passwordError}
           />
+           </div>
           <button type="submit" className='bg-white text-neutral-700 font-semibold rounded-2xl mt-12 mb-4 border-[1px] border-neutral-700 py-3 w-full hover:bg-neutral-700 hover:text-white transition-colors duration-300'>
             Confirm Password
           </button>
