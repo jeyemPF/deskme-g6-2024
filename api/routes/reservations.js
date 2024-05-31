@@ -1,6 +1,6 @@
 import express from 'express';
 
-import {deleteAllReservations, createReservation, getAllReservations, approveReservations, cancelReservation, getReservationCount, getAvailableDeskCount, getPendingReservations, getPendingReservationsCount } from '../controllers/reservation.js';
+import {deleteAllReservations, createReservation, getAllReservations, approveReservations, cancelReservation, getReservationCount, getAvailableDeskCount, getPendingReservations, getPendingReservationsCount, addFeedback, getReservationFeedback } from '../controllers/reservation.js';
 import {verifyOfficeManager } from '../utils/verifyToken.js'
 
 const router = express.Router();
@@ -27,9 +27,16 @@ router.get("/count-reservation", getReservationCount);
 router.get("/available-desk", getAvailableDeskCount)
 
 // Get all pendings bookings
-
 router.get("/get-pendings-bookings", getPendingReservations)
 
+// Counts pending bookings
 router.get("/pending-counts", getPendingReservationsCount)
+
+// add feedback
+router.post("/:reservationId", addFeedback);
+
+router.get('/:reservationId', getReservationFeedback); 
+
+
 
 export default router;

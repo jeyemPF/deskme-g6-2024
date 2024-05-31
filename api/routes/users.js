@@ -82,7 +82,7 @@ router.patch("/self/avatar", protect, upload.single("avatar"), uploadAvatar);
 router.put('/update-profile',verifyUser, upload.single('avatar'), updateProfile);
 
 // Update the receiving email of users
-router.put("/email-preference",verifyOfficeManager, updateAllUsersEmailPreference);
+router.put("/email-preference", updateAllUsersEmailPreference);
 
 // Update the user receiving email for reservation by id 
 router.put("/:userId/toggle-reservation-emails", toggleReservationEmailNotifications);

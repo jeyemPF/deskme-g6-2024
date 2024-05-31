@@ -1,7 +1,5 @@
 import express from "express"
-import { login, register, forgotPassword, resetPassword, validateResetToken, registerOrSignup } from "../controllers/auth.js"
-import { verifyToken } from "../utils/verifyToken.js"
-import { getSelf } from "../controllers/user.js"
+import { login, register, forgotPassword, resetPassword, validateResetToken, registerOrSignup, } from "../controllers/auth.js"
 import { sendLoginOTP } from "../controllers/otpController.js"
 
 const router = express.Router()
@@ -27,6 +25,9 @@ router.post('/signup', registerOrSignup)
 
 // Send Login OTP Route
 router.post('/send-login-otp', sendLoginOTP);
+
+// Authorize user will login to this page
+// router.post('/authorize-user/login', authorizeUserLogin);
 
 
 

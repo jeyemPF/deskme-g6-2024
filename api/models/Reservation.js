@@ -38,6 +38,10 @@ const ReservationSchema = new Schema({
         type: String,
         enum: officeEquipmentEnum,
     }],
+    feedback: {
+        type: String,
+        default: '',
+  },
     
 }, { timestamps: true });
 

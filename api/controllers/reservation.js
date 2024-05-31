@@ -6,6 +6,8 @@ import { scheduleJob } from 'node-schedule';
 import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation } from "../utils/emailService.js";
 import AuditTrail from "../models/AuditTrail.js";
 
+
+
 export const createReservation = async (req, res, next) => {
     try {
         const { userId, deskId } = req.params;
@@ -230,6 +232,49 @@ export const getPendingReservationsCount = async (req, res, next) => {
     try{
         const pendingReservationCount = await Reservation.countDocuments({ status: 'PENDING'});
         res.status(200).json({ count: pendingReservationCount });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const addFeedback = async (req, res, next) => {
+    try {
+        const { reservationId } = req.params;
+        const { feedback } = req.body;
+
+        const reservation = await Reservation.findById(reservationId);
+        if (!reservation) {
+            return res.status(404).json({ message: "Reservation not found" });
+        }
+
+        // Update reservation with feedback
+        reservation.feedback = feedback;
+        await reservation.save();
+
+        res.status(200).json({ message: "Feedback added successfully" });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const getReservationFeedback = async (req, res, next) => {
+    try {
+        const { reservationId } = req.params;
+
+        // Find the reservation by ID
+        const reservation = await Reservation.findById(reservationId);
+
+        if (!reservation) {
+            return res.status(404).json({ message: "Reservation not found" });
+        }
+
+        // Check if feedback exists
+        if (!reservation.feedback) {
+            return res.status(404).json({ message: "Feedback not found for this reservation" });
+        }
+
+        // Return the feedback
+        res.status(200).json({ feedback: reservation.feedback });
     } catch (err) {
         next(err);
     }
