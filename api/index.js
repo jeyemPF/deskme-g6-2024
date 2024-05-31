@@ -16,15 +16,15 @@ import switchsRoute from './routes/switchs.js';
 import otpRoutes from './routes/otpRoutes.js';
 import auditTrailsRoute from './routes/auditTrails.js';
 
-
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["https://deskme-g6-2024.vercel.app"],
+    origin: "https://deskme-g6-2024.vercel.app",
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true,
   },
 });
 
@@ -106,4 +106,5 @@ io.on('connection', (socket) => {
   });
 });
 
-export { server, io };
+// Export the app as the default export
+export default app;
