@@ -91,9 +91,10 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-server.listen(8800, () => {
+const port = process.env.PORT || 8800;
+server.listen(port, () => {
   connect();
-  console.log('Connected to backend!');
+  console.log(`Connected to backend! Server running on port ${port}`);
 });
 
 // Socket.io connection handler
