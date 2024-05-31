@@ -106,4 +106,5 @@ io.on('connection', (socket) => {
   });
 });
 
-export { server, io };
+// Export the app as the default export
+export default app;
