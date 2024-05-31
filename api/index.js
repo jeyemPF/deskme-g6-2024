@@ -16,14 +16,13 @@ import switchsRoute from './routes/switchs.js';
 import otpRoutes from './routes/otpRoutes.js';
 import auditTrailsRoute from './routes/auditTrails.js';
 
-
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://deskme-g6-2024.vercel.app",
+    origin: ['http://localhost:3000', "https://deskme-g6-2024.vercel.app"],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   },
 });
@@ -35,7 +34,7 @@ cloudinary.config({
 });
 
 // Configure CORS
-const allowedOrigins = ["https://deskme-g6-2024.vercel.app"];
+const allowedOrigins = ['http://localhost:3000', "https://deskme-g6-2024.vercel.app"];
 app.use(cors({
   origin: function (origin, callback) {
     if (allowedOrigins.includes(origin) || !origin) {
@@ -106,4 +105,4 @@ io.on('connection', (socket) => {
   });
 });
 
-export { io };
+export default server; 
