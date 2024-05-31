@@ -79,7 +79,7 @@ function Login() {
 
     try {
       const credentials = { email, password };
-      const response = await axios.post('http://localhost:8800/api/auth/login', credentials);
+      const response = await axios.post('https://deskme-g6-2024-server.vercel.app/api/auth/login', credentials);
 
       console.log('Login successful');
       console.log('Response:', response.data);
