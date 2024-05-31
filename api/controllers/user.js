@@ -2,7 +2,7 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs"
 import cloudinary from "../config/cloudinary.js";
 import asyncHandler from "express-async-handler";
-import server from "../index.js";
+import { io } from "../index.js";
 
 
 
@@ -168,7 +168,7 @@ export const uploadAvatar = async function (req, res, next) {
     console.log('Avatar uploaded successfully:', result); // Log Cloudinary upload result
 
     // Emit an event to notify about the avatar update
-    server.emit('avatarUpdated', { userId: user._id, avatar: result.url, username: user.username, role: user.role });
+    io.emit('avatarUpdated', { userId: user._id, avatar: result.url, username: user.username, role: user.role });
 
     res.status(200).json({ message: 'Avatar has been uploaded', avatarUrl: result.url });
   } catch (err) {
