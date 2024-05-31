@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:8800');
+const socket = io('https://deskme-g6-2024-server.vercel.app');
 
 const ModalAvatar = ({ onClose, username, onAvatarUpdate }) => {
   const [avatar, setAvatar] = useState(null);
@@ -47,7 +47,7 @@ const ModalAvatar = ({ onClose, username, onAvatarUpdate }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.patch('http://localhost:8800/api/users/self/avatar', formData, {
+      const response = await axios.patch('https://deskme-g6-2024-server.vercel.app/api/users/self/avatar', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
