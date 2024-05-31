@@ -91,19 +91,23 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Socket.io connection handler
+io.on('connection', (socket) => {
+  console.log('A user connected');
+  socket.on('avatarUpdated', (data) => {
+    io.emit('avatarUpdated', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
+
 // Start the server
 const port = process.env.PORT || 8800;
 server.listen(port, () => {
   connect();
   console.log(`Connected to backend! Server running on port ${port}`);
-});
-
-// Socket.io connection handler
-io.on('connection', (socket) => {
-  console.log('A user connected');
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
 });
 
 // Export the app and io as the default export
