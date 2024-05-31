@@ -23,7 +23,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:3000', "https://deskme-g6-2024.vercel.app"],
+    origin: "https://deskme-g6-2024.vercel.app",
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   },
 });
@@ -35,7 +35,7 @@ cloudinary.config({
 });
 
 // Configure CORS
-const allowedOrigins = ['http://localhost:3000', "https://deskme-g6-2024.vercel.app"];
+const allowedOrigins = ["https://deskme-g6-2024.vercel.app"];
 app.use(cors({
   origin: function (origin, callback) {
     if (allowedOrigins.includes(origin) || !origin) {
