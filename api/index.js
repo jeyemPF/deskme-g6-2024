@@ -16,7 +16,6 @@ import switchsRoute from './routes/switchs.js';
 import otpRoutes from './routes/otpRoutes.js';
 import auditTrailsRoute from './routes/auditTrails.js';
 
-
 dotenv.config();
 
 const app = express();
@@ -106,4 +105,8 @@ io.on('connection', (socket) => {
   });
 });
 
-export { server, io };
+export default function () {
+  return server;
+}
+
+export { io };
