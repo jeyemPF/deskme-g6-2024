@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:8800/",
+  baseURL: "https://deskme-g6-2024-server.vercel.app/",
 });
 
 export const uploadAvatar = (data) =>

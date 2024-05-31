@@ -64,7 +64,7 @@ router.get("/:id", verifyAdmin);
 router.get ('/self', protect, getSelf);
 
 // get all users by superadmin
-router.get("/", verifySuperAdmin, getUsers);
+router.get("/", getUsers);
 
 // Only super admins can create admin users
 router.post("/admin", verifySuperAdmin, createAdminUser);
