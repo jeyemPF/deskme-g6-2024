@@ -53,6 +53,7 @@ const connect = async () => {
     await mongoose.connect(process.env.MONGO);
     console.log('Connected to MongoDB');
   } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
     throw error;
   }
 };
@@ -82,7 +83,8 @@ app.use('/api/otp', otpRoutes);
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
   const errorMessage = err.message || 'Something went wrong';
-  return res.status(errorStatus).json({
+  console.error('Error:', errorMessage);
+  res.status(errorStatus).json({
     success: false,
     status: errorStatus,
     message: errorMessage,
@@ -94,10 +96,9 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 8800;
 server.listen(port, () => {
   connect();
-  console.log(`Connected to backend! Server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
 
-// Socket.io connection handler
 io.on('connection', (socket) => {
   console.log('A user connected');
   socket.on('disconnect', () => {
@@ -105,8 +106,9 @@ io.on('connection', (socket) => {
   });
 });
 
-export default function () {
-  return server;
+// Export a handler for Vercel
+export default function handler(req, res) {
+  res.status(200).send('Server is running');
 }
 
 export { io };
