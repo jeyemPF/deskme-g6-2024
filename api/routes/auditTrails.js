@@ -4,7 +4,7 @@ import { deleteAllAuditTrails, getAuditTrails } from "../controllers/auditTrail.
 
 const router = express.Router()
 
-router.get('/', getAuditTrails);
+router.get('/get-audit-trails', getAuditTrails);
 
 //Delete all audit trail
 router.delete('/', deleteAllAuditTrails);
