@@ -52,7 +52,7 @@ const NewPassword = () => {
     }
 
     try {
-      await axios.patch(`https://deskme-g6-2024-server.vercel.app/api/auth/reset-password/${token}/${id}`, { password, confirmPassword });
+      await axios.patch(`http://localhost:8800/api/auth/reset-password/${token}/${id}`, { password, confirmPassword });
       navigate('/login');
     } catch (error) {
       setPasswordError('Failed to reset password. Please try again.');

@@ -2,17 +2,20 @@ import nodemailer from 'nodemailer';
 import Mailgen from "mailgen";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
+
 
 dotenv.config();
+
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD
+        user:  process.env.EMAIL,
+        pass:  process.env.EMAIL_PASSWORD
     }
 });
+
 const  getEmailContent = (username, resetUrl) => {
     return {
         body: {
@@ -98,12 +101,12 @@ const sendMagicLink = async (user, res) => {
     const mailGenerator = generateMailGenerator();
     const token = crypto.randomBytes(32).toString("hex");
   
-    const link = `https://deskme-g6-2024.vercel.app/newpassword/${token}/${user.id}`;
+    const link = `http://localhost:3000/newpassword/${token}/${user.id}`;
   
     var emailMessage = {
         body: {
           name: user.username,
-          intro: `<p style="font-size: 14px; color: #24292e; margin-bottom: 1rem !important;">You recently requested a password reset for your account. Please use the following link to reset your password:</p><a style="padding: 1rem 1.5rem; color: white; background-color:#000000; text-decoration:none; border-radius: 3px; border: 1px solid #000000; width: max-content;display: block;margin-bottom: 1rem !important;" href=${link} target="_blank">Reset password</a><p style="font-size: 14px; color: #24292e">If you don’t use this link within 10 minutes, it will expire. To get a new password reset link, visit: <a href="https://deskme-g6-2024.vercel.app/newpassword">https://deskme-g6-2024.vercel.app/newpassword</a></p>`,
+          intro: `<p style="font-size: 14px; color: #24292e; margin-bottom: 1rem !important;">You recently requested a password reset for your account. Please use the following link to reset your password:</p><a style="padding: 1rem 1.5rem; color: white; background-color:#000000; text-decoration:none; border-radius: 3px; border: 1px solid #000000; width: max-content;display: block;margin-bottom: 1rem !important;" href=${link} target="_blank">Reset password</a><p style="font-size: 14px; color: #24292e">If you don’t use this link within 10 minutes, it will expire. To get a new password reset link, visit: <a href="http://localhost:3000/newpassword">http://localhost:3000/newpassword</a></p>`,
           outro: `<p style="font-size: 14px; color: #24292e">If you did not initiate this request or have any concerns, please contact us immediately.</p>`,
         },
       };
@@ -111,7 +114,7 @@ const sendMagicLink = async (user, res) => {
     let mail = mailGenerator.generate(emailMessage);
   
     let message = {
-      from: process.env.EMAIL,
+      from: process.env.GSERVICE,
       to: user.email,
       subject: "[DeskMe] Please reset your password",
       html: mail,
@@ -170,7 +173,6 @@ const sendMagicLink = async (user, res) => {
                             <td style="border: 1px solid #ddd; padding: 8px;">${reservation.officeEquipment.join(', ')}</td>
                         </tr>
                     </table>
-                    <br/>
                     <p>Thank you for choosing us for your reservation. If you have any questions, feel free to contact us.</p>
                   
                 </div>
@@ -187,7 +189,7 @@ const sendReservationConfirmationEmail = async (email, emailContent) => {
             theme: "default",
             product: {
                 name: "DeskMe",
-                link: "https://deskme-g6-2024.vercel.app/"
+                link: "http://localhost:3000/"
             }
         });
 
@@ -250,7 +252,7 @@ const sendCancellationConfirmationEmail = async (email, emailContent) => {
             theme: "default",
             product: {
                 name: "DeskMe",
-                link: "https://deskme-g6-2024.vercel.app/"
+                link: "http://localhost:3000/"
             }
         });
 
@@ -277,7 +279,7 @@ const mailOtpSender = async (email, title, body) => {
         service: 'gmail',
         auth: {
             user: process.env.EMAIL,
-            pass: process.env.PASSWORD
+            pass: process.env.PASSWORD_EMAIL,
         }
       });
       // Send emails to users

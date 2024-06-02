@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://deskme-g6-2024-server.vercel.app', // Replace with your API base URL
+  baseURL: 'http://localhost:8800', // Replace with your API base URL
   withCredentials: true, // Include cookies in cross-origin requests
 });
 

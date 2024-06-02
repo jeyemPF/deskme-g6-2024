@@ -40,7 +40,7 @@ const ResetPassword = () => {
       setEmailError('Please enter a valid email address.');
     } else {
       try {
-        await axios.post('https://deskme-g6-2024-server.vercel.app/api/auth/forgot-password', { email });
+        await axios.post('http://localhost:8800/api/auth/forgot-password', { email });
       } catch (error) {
         setEmailError('Failed to send reset email. Please try again.');
       }

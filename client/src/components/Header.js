@@ -49,7 +49,7 @@ const Header = () => {
 
   const fetchUpdatedUser = async () => {
     try {
-      const response = await fetch('https://deskme-g6-2024-server.vercel.app/api/routes/users/avatar/self');
+      const response = await fetch('http://localhost:8800/api/routes/users/avatar/self');
       if (response.ok) {
         const data = await response.json();
         setAvatar(data.user.avatar);
