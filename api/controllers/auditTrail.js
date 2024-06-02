@@ -13,14 +13,18 @@ export const getAuditTrails = async (req, res, next) => {
             filter.timestamp = { $gte: new Date(startDate), $lte: new Date(endDate) };
         }
 
-        const auditTrails = await AuditTrail.find(filter)
-            .populate('userId', 'email role')  // Populate email and role from the User model
+        let auditTrails = await AuditTrail.find(filter)
+            .populate('userId', 'email role');  // Populate email and role from the User model
+
+        // Reverse the list of audit trails
+        auditTrails = auditTrails.reverse();
 
         res.status(200).json(auditTrails);
     } catch (err) {
         next(err);
     }
 };
+
 
 export const deleteAllAuditTrails = async (req, res, next) => {
     try {

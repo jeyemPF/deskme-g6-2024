@@ -15,6 +15,9 @@ const SAAuditReport = () => {
     roles: ''
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
   useEffect(() => {
     const fetchAuditTrails = async () => {
       try {
@@ -67,6 +70,26 @@ const SAAuditReport = () => {
     }));
   };
 
+  // Pagination
+  const totalPages = Math.ceil(auditTrails.length / itemsPerPage);
+
+  const handleClickPrev = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleClickNext = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const handleClickPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Calculate current items to display
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = auditTrails.slice(indexOfFirstItem, indexOfLastItem);
+
   return (
     <>
       <Header />
@@ -94,30 +117,70 @@ const SAAuditReport = () => {
               </div>
             </div>
             <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm mt-6 lg:col-span-2">
-              <div className="overflow-x-auto">
-                <table className="w-full table-auto mt-2">
-                  <thead className="text-gray-900 font-medium text-lg border-b text-center">
-                    <tr>
-                      <th className="py-3 pr-6">Email</th>
-                      <th className="py-3 pr-6">Roles</th>
-                      <th className="py-3 pr-6">Action type</th>
-                      <th className="py-3 pr-6">IP address</th>
-                      <th className="py-3 pr-6">Date</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-gray-600 divide-y text-center text-sm">
-                  {auditTrails.slice().reverse().map((item, idx) => (
-                      <tr key={idx}>
-                        <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.email : 'N/A'}</td>
-                        <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.role : 'N/A'}</td>
-                        <td className="pr-6 py-4 whitespace-nowrap">{item.actionType}</td>
-                        <td className="pr-6 py-4 whitespace-nowrap">{item.ipAddress}</td>
-                        <td className="pr-6 py-4 whitespace-nowrap">{new Date(item.timestamp).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' })}, {new Date(item.timestamp).toLocaleTimeString('en-PH', { hour: 'numeric', minute: 'numeric' })}</td>
-
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            <div className="overflow-x-auto">
+    <table className="w-full table-auto mt-2">
+      <thead className="text-gray-900 font-medium text-lg border-b text-center">
+        <tr>
+          <th className="py-3 pr-6">Email</th>
+          <th className="py-3 pr-6">Roles</th>
+          <th className="py-3 pr-6">Action type</th>
+          <th className="py-3 pr-6">IP address</th>
+          <th className="py-3 pr-6">Date</th>
+        </tr>
+      </thead>
+      <tbody className="text-gray-600 divide-y text-center text-sm">
+        {/* Reverse the order of items before mapping */}
+        {currentItems.slice().reverse().map((item, idx) => (
+          <tr key={idx}>
+            <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.email : 'N/A'}</td>
+            <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.role : 'N/A'}</td>
+            <td className="pr-6 py-4 whitespace-nowrap">{item.actionType}</td>
+            <td className="pr-6 py-4 whitespace-nowrap">{item.ipAddress}</td>
+            <td className="pr-6 py-4 whitespace-nowrap">{new Date(item.timestamp).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' })}, {new Date(item.timestamp).toLocaleTimeString('en-PH', { hour: 'numeric', minute: 'numeric' })}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+              {/* Pagination */}
+              <div className="flex justify-center mt-4">
+                <div className="inline-flex items-center justify-center rounded border border-gray-100 bg-white text-gray-900">
+                  <button
+                    className={`p-2 border-r ${currentPage === 1 ? 'pointer-events-none opacity-50' : 'hover:bg-gray-200'}`}
+                    onClick={handleClickPrev}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  <span className="p-2">{currentPage}</span>
+                  <button
+                    className={`p-2 border-l ${currentPage === totalPages ? 'pointer-events-none opacity-50' : 'hover:bg-gray-200'}`}
+                    onClick={handleClickNext}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </Content>
