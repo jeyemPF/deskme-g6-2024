@@ -1,5 +1,6 @@
 import Desk from "../models/Desk.js";
 import Reservation from "../models/Reservation.js";
+import { officeEquipmentEnum } from "../utils/officeEquipment.js";
 
 
 
@@ -13,6 +14,79 @@ export const createDesk = async (req, res, next) => {
         const savedDesk = await newDesk.save();
         await Reservation.findByIdAndUpdate(reservationId, { desk: savedDesk._id  });
         res.status(201).json(savedDesk);
+    } catch (err) {
+        next(err);
+    }
+};
+
+
+export const createMultipleDesksLeftWing = async (req, res, next) => {
+    try {
+        const desks = [];
+        for (let i = 1; i <= 7; i++) {
+            const desk = new Desk({
+                title: `Desk ${i}`,
+                status: 'available',
+                officeEquipment: officeEquipmentEnum.slice((i - 1) * 3, i * 3),
+                area: 'Left wing'
+            });
+            desks.push(desk);
+        }
+
+        const savedDesks = await Desk.insertMany(desks);
+        res.status(201).json(savedDesks);
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const createMultipleDesksCenterWing = async (req, res, next) => {
+    try {
+        const desks = [];
+        for (let i = 8; i <= 17; i++) {
+            const desk = new Desk({
+                title: `Desk ${i}`,
+                status: 'available',
+                officeEquipment: officeEquipmentEnum.slice((i - 8) * 3, (i - 7) * 3),
+                area: 'Center Wing'
+            });
+            desks.push(desk);
+        }
+
+        const savedDesks = await Desk.insertMany(desks);
+        res.status(201).json(savedDesks);
+    } catch (err) {
+        next(err);
+    }
+};
+
+
+export const createMultipleDesksRightWing = async (req, res, next) => {
+    try {
+        const desks = [];
+        for (let i = 18; i <= 24; i++) {
+            const desk = new Desk({
+                title: `Desk ${i}`,
+                status: 'available',
+                officeEquipment: officeEquipmentEnum.slice((i - 19) * 3, (i - 18) * 3), // Ensure each desk gets a unique set of 3 items
+                area: 'Right Wing'
+            });
+            desks.push(desk);
+        }
+
+        const savedDesks = await Desk.insertMany(desks);
+        res.status(201).json(savedDesks);
+    } catch (err) {
+        next(err);
+    }
+};
+
+
+
+export const deleteAllDesks = async (req, res, next) => {
+    try {
+        await Desk.deleteMany({});
+        res.status(200).json({ message: 'All desks have been deleted' });
     } catch (err) {
         next(err);
     }

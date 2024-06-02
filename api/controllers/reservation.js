@@ -65,6 +65,7 @@ export const createReservation = async (req, res, next) => {
             startTime: reservationStartTime,
             endTime: reservationEndTime,
             status: 'APPROVED',
+            area: desk.area, // Include the area field from the desk
             officeEquipment: desk.officeEquipment
         });
 

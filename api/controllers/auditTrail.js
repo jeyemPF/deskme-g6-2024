@@ -14,7 +14,7 @@ export const getAuditTrails = async (req, res, next) => {
         }
 
         let auditTrails = await AuditTrail.find(filter)
-            .populate('userId', 'email role');  // Populate email and role from the User model
+            .populate('userId', 'email role'); 
 
         // Reverse the list of audit trails
         auditTrails = auditTrails.reverse();

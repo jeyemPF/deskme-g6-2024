@@ -18,8 +18,10 @@ const DeskSchema = new Schema({
         enum: officeEquipmentEnum, 
     },
     area: {
-        type: Number,
+        type: String,
+        enum: ['Left wing', 'Center Wing', 'Right Wing'], // Ensure enum includes all possible areas
     }
 }, { timestamps: true });
+
 
 export default mongoose.model('Desk', DeskSchema);

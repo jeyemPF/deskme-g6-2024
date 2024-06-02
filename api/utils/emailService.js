@@ -172,12 +172,15 @@ const sendMagicLink = async (user, res) => {
                             <td style="border: 1px solid #ddd; padding: 8px;"><strong>Office Equipment:</strong></td>
                             <td style="border: 1px solid #ddd; padding: 8px;">${reservation.officeEquipment.join(', ')}</td>
                         </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>Area:</strong></td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.area}</td>
+                        </tr>
                     </table>
+                    <br/>
                     <p>Thank you for choosing us for your reservation. If you have any questions, feel free to contact us.</p>
-                  
                 </div>
             `,
-           
         }
     };
 };
