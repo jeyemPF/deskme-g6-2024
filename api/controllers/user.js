@@ -1,7 +1,6 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs"
 import cloudinary from "../config/cloudinary.js";
-import asyncHandler from "express-async-handler";
 import { io } from "../index.js";
 
 
@@ -57,6 +56,26 @@ export const deleteAllUser = async (req, res, next) => {
     } catch (err) {
         next(err);
     }
+};
+
+export const countUsersRole = async (req, res, next) => {
+  try {
+      const userCount = await User.countDocuments({ role: 'user' });
+
+      res.status(200).json({ userCount });
+  } catch (err) {
+      next(err);
+  }
+};
+
+export const countNotUsers = async (req, res, next) => {
+  try {
+      const nonUserCount = await User.countDocuments({ role: { $ne: 'user' } });
+
+      res.status(200).json({ nonUserCount });
+  } catch (err) {
+      next(err);
+  }
 };
 
 // CREATING A ADMIN USER

@@ -10,11 +10,13 @@ import { deleteUser,
         toggleReservationEmailNotificationsForAllUsers,
         updateAllUsersEmailPreference,
         getSelf,
+        countUsersRole,
+        countNotUsers,
         
          }  from "../controllers/user.js";
 
 
-import { verifySuperAdmin, verifyAdmin, verifyToken, verifyOfficeManager, verifyUser, protect, } from "../utils/verifyToken.js";
+import { verifySuperAdmin, verifyAdmin, verifyOfficeManager, verifyUser, protect, } from "../utils/verifyToken.js";
 import upload from "../middleware/multer.js";
 
 
@@ -57,14 +59,14 @@ const router = express.Router()
 // Only super admins can delete users
 router.delete("/:id", verifySuperAdmin, deleteUser);
 
-// Both admins and super admins can get a single user
-router.get("/:id", verifyAdmin);
+// // Both admins and super admins can get a single user
+// router.get("/:id", verifySuperAdmin);
 
 // getself
 router.get ('/self', protect, getSelf);
 
 // get all users by superadmin
-router.get("/", getUsers);
+// router.get("/", verifyOfficeManager, getUsers);
 
 // Only super admins can create admin users
 router.post("/admin", verifySuperAdmin, createAdminUser);
@@ -89,5 +91,12 @@ router.put("/:userId/toggle-reservation-emails", toggleReservationEmailNotificat
 
 // Update the all users email preferences
 router.put("/toggle-reservation-emails-for-all-users",verifyOfficeManager, toggleReservationEmailNotificationsForAllUsers);
+
+
+// COUNT 
+
+// count all users
+router.get("/get-all-users", countUsersRole)
+router.get("/get-all-non-users", countNotUsers)
 
 export default router
