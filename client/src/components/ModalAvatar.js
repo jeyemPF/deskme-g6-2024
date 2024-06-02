@@ -4,16 +4,16 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:8800');
 
-const ModalAvatar = ({ onClose, username, onAvatarUpdate }) => {
+const ModalAvatar = ({ onClose, username, avatar: initialAvatar, onAvatarUpdate }) => {
   const [avatar, setAvatar] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(initialAvatar);
   const [loading, setLoading] = useState(false);
   const [, setError] = useState(null);
 
   useEffect(() => {
     socket.on('avatarUpdated', (data) => {
       console.log('Avatar updated:', data);
-      onAvatarUpdate(data.avatar); // Update the avatar in the header
+      onAvatarUpdate(data.avatar);
       sessionStorage.setItem('userCredentials', JSON.stringify({ user: { avatar: data.avatar, username: data.username, role: data.role } }));
     });
 

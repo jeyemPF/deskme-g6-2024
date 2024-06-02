@@ -106,7 +106,15 @@ const Header = () => {
         </div>
       </header>
 
-      {isProfileModalOpen && <ModalAvatar onClose={closeProfileModal} avatar={avatar} username={username} role={role} updateUser={fetchUpdatedUser} onAvatarUpdate={handleAvatarUpdate} />}
+      {isProfileModalOpen && 
+        <ModalAvatar 
+            onClose={closeProfileModal} 
+            avatar={avatar} 
+            username={username} 
+            role={role} 
+            updateUser={fetchUpdatedUser} 
+            onAvatarUpdate={handleAvatarUpdate}
+         />}
     </div>
   );
 };
