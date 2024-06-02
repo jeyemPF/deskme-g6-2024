@@ -1,32 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LayoutDashboard, Layers, Users, BookCopy, Settings, LogOut, Flag, NotebookTabs, UserCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
-import Header from '../components/Header'
+import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
+import Header from '../components/Header';
+import useFetch from '../Hooks/useFetch';
+import { Skeleton } from 'antd';
 
 const SAPManage = () => {
-const [isModalOpen, setIsModalOpen] = useState(false);
-const [isModalOpen2, setIsModalOpen2] = useState(false);
+  // Correct destructuring to include error
+  const { data: availableUsers, loading: availableUsersLoading, error: availableUsersError } = useFetch("users/get-all-users");
 
-const handleManageClick = () => {
+  const isLoading = availableUsersLoading;
+  const isError = !!availableUsersError; // Ensure this is a boolean
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+
+  const handleManageClick = () => {
     setIsModalOpen(true);
-    };
-const handleCloseModal = () => {
-    setIsModalOpen(false);
-    };
+  };
 
-const handleManageClick2 = () => {
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleManageClick2 = () => {
     setIsModalOpen2(true);
-    };
-const handleCloseModal2 = () => {
+  };
+
+  const handleCloseModal2 = () => {
     setIsModalOpen2(false);
-    };
+  };
 
   const navigate = useNavigate();
+
   const handleSignOutClick = () => {
-    // Clear session storage
     sessionStorage.removeItem('userCredentials');
-    // Navigate to login page
     navigate('/login');
   };
 
@@ -37,12 +46,15 @@ const handleCloseModal2 = () => {
   const handleDashboardClick = () => {
     navigate('/superdashboard');
   };
+
   const handleManageBookingClick = () => {
     navigate('/supermanagebooking');
-  }
+  };
+
   const handleReportClick = () => {
     navigate('/superreports');
   };
+
   const handleAuditClick = () => {
     navigate('/superaudit');
   };
@@ -97,22 +109,32 @@ const handleCloseModal2 = () => {
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Manage Users | Role-Access</h1>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
-              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-pink-50 to-pink-200 border-[1px] border-neutral-100 shadow-sm">
-                <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: 3</span>
-                  <span className="text-sm font-normal">Privelege Users</span>
+            {isLoading ? (
+              <>
+                <Skeleton height={120} count={4} />
+              </>
+            ) : isError ? (
+              <div>Error: {availableUsersError?.message}</div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
+                  <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-pink-50 to-pink-200 border-[1px] border-neutral-100 shadow-sm">
+                    <div className='flex flex-col'>
+                      <span className="text-xl font-semibold">Total: 334</span>
+                      <span className="text-sm font-normal">Privilege Users</span>
+                    </div>
+                    <UserCog className="w-10 h-10 ml-10" />
+                  </div>
+                  <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-teal-50 to-teal-200 border-[1px] border-neutral-100 shadow-sm">
+                    <div className='flex flex-col'>
+                      <span className="text-xl font-semibold">Total: {availableUsers}</span>
+                      <span className="text-sm font-normal">Users</span>
+                    </div>
+                    <Users className="w-10 h-10 ml-10" />
+                  </div>
                 </div>
-                <UserCog className="w-10 h-10 ml-10" />
-              </div>
-              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-teal-50 to-teal-200 border-[1px] border-neutral-100 shadow-sm">
-                <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: 2</span>
-                  <span className="text-sm font-normal">Users</span>
-                </div>
-                <Users className="w-10 h-10 ml-10" />
-              </div>
-            </div>
+              </>
+            )}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8 mt-6">
               <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
               <div className="flex justify-end items-center">

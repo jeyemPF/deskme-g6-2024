@@ -4,8 +4,15 @@ import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Si
 import { LayoutDashboard, Layers, Flag, BookCopy, Settings, LogOut, Users, MonitorCheck, ScrollText, MonitorX, GalleryVerticalEnd, NotebookTabs } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'antd';
+import useFetch from '../Hooks/useFetch';
+import { Skeleton } from 'antd'
 
 const SADashboard = () => {
+
+  const { data: availableDeskData, loading: availableDeskLoading, error: availableDeskError } = useFetch("reservations/available-desk");
+  const { data: deskCountData, loading: deskCountLoading, error: deskCountError } = useFetch("desks/count");
+  const { data: deskCountReservedData, loading: deskCountReservedLoading, error: deskCountReservedError } = useFetch("desks/count-reserved");
+  const { data: deskCountUnavailableData, loading: deskCountUnavailableLoading, error: deskCountUnavailableError } = useFetch(  "desks/count-unavailable");
 
     const navigate = useNavigate();
 
@@ -35,6 +42,9 @@ const SADashboard = () => {
     console.log(value.format('YYYY-MM-DD'), mode);
   };
 
+  const isLoading = availableDeskLoading || deskCountLoading || deskCountReservedLoading || deskCountUnavailableLoading;
+  const isError = availableDeskError || deskCountError || deskCountReservedError || deskCountUnavailableError;
+
 
   return (
     <>
@@ -54,37 +64,52 @@ const SADashboard = () => {
           <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
         </Sidebar>
         <Content>
-            <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Dashboard</h1>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8"> 
+        <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Dashboard</h1>
+                { isLoading ? (
+                  <>
+                   <Skeleton height={120} count={4} />
+                  </>
+                ) : isError ? (
+                  <div>Error: {availableDeskError?.message || deskCountError?.message || deskCountReservedError?.message || deskCountUnavailableError?.message  }</div>
+                ) : (
+                  <>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
+                
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: 4</span>
+                      <span className="text-xl font-semibold">Total: {deskCountReservedData}</span>
                       <span className="text-sm font-normal">All Bookings</span>
                     </div>
                     <ScrollText className="w-10 h-10 ml-10" />
                   </div>
+
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-blue-50 to-blue-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: 7</span>
+                      <span className="text-xl font-semibold">Total: {availableDeskData}</span>
                       <span className="text-sm font-normal">Available Desks</span>
                     </div>
                     <MonitorCheck className="w-10 h-10 ml-10" />
                   </div>
+
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-red-50 to-red-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: 3</span>
+                      <span className="text-xl font-semibold">Total: {deskCountUnavailableData}</span>
                       <span className="text-sm font-normal">Unavailable Desks</span>
                     </div>
                     <MonitorX className="w-10 h-10 md:ml-10 sm:ml-5" />
                   </div>
+
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-yellow-50 to-yellow-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: 10</span>
+                      <span className="text-xl font-semibold">Total: {deskCountData}</span>
                       <span className="text-sm font-normal">All Desks</span>
                     </div>
                     <GalleryVerticalEnd className="w-10 h-10 ml-10" />
                   </div>
                 </div>
+                </>
+            )}
+
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mt-6">
                   <div className="border-[1px] border-neutral-100 rounded-lg shadow-sm bg-white">
                   <h1 className='md:pl-5 sm:pl-2 pt-2 font-semibold'>Calendar</h1>
