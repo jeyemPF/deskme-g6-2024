@@ -72,9 +72,14 @@ export const createReservation = async (req, res, next) => {
         const savedReservation = await newReservation.save();
 
         // Schedule a job to update the desk status when the reservation end time has passed
-        scheduleJob('updateDeskStatus', reservationEndTime, async () => {
-            desk.status = 'available';
-            await desk.save();
+        scheduleJob(`updateDeskStatus_${desk._id}`, reservationEndTime, async () => {
+            try {
+                // Update the desk status to 'available'
+                desk.status = 'available';
+                await desk.save();
+            } catch (error) {
+                console.error(`Error updating desk status: ${error.message}`);
+            }
         });
 
         // Send reservation confirmation email if the user wants to receive emails
