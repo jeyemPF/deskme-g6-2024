@@ -13,13 +13,15 @@ const AuditTrailSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Desk'
     },
+    email: String, // Make email field optional
     timestamp: {
         type: Date,
         default: Date.now
     },
     ipAddress: String,
     details: Object  
-});
+}, { timestamps: true });
+
 
 const AuditTrail = mongoose.model('AuditTrail', AuditTrailSchema);
 

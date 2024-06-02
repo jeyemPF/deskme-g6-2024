@@ -4,15 +4,24 @@ import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Si
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 import { Calendar } from 'antd';
+import axios from 'axios';
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  const handleSignOutClick = () => {
-    // Clear session storage
-    sessionStorage.removeItem('userCredentials');
-    // Navigate to login page
-    navigate('/login');
+  const handleSignOutClick = async () => {
+    try {
+      // Call the logout endpoint
+      await axios.post('http://localhost:8800/api/auth/logout', null, { withCredentials: true });
+
+      // Clear session storage
+      sessionStorage.removeItem('userCredentials');
+
+      // Navigate to the login page
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const handleBookingClick = () => {

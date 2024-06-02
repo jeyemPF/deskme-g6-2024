@@ -6,11 +6,20 @@ import { LayoutDashboard, Layers, Flag, BookCopy, Settings, LogOut, Users, Noteb
 
 const SAAuditReport = () => {
   const [auditTrails, setAuditTrails] = useState([]);
+  const [filters, setFilters] = useState({
+    userId: '',
+    actionType: '',
+    startDate: '',
+    endDate: '',
+    email: '',
+    roles: ''
+  });
 
   useEffect(() => {
     const fetchAuditTrails = async () => {
       try {
-        const response = await fetch('http://localhost:8800/api/auditTrails/get-audit-trails');
+        const queryParams = new URLSearchParams(filters).toString();
+        const response = await fetch(`http://localhost:8800/api/auditTrails/get-audit-trails?${queryParams}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -21,14 +30,12 @@ const SAAuditReport = () => {
       }
     };
     fetchAuditTrails();
-  }, []);
+  }, [filters]);
 
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
-    // Clear session storage
     sessionStorage.removeItem('userCredentials');
-    // Navigate to login page
     navigate('/login');
   };
 
@@ -52,28 +59,16 @@ const SAAuditReport = () => {
     navigate('/superreports');
   };
 
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value
+    }));
+  };
+
   return (
     <>
-<<<<<<< HEAD
-    <Header />
-    <div className="flex dark:bg-neutral-900">
-    <SidebarProvider>
-      <Sidebar>
-      <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick} />
-        <SidebarItem icon={<BookCopy size={20} />} text="Booking"  onClick={handleBookingClick} />
-        <SidebarItem icon={<Layers size={20}  />} text="Manage Bookings" onClick={handleManageBookingClick}/>
-        <SidebarItem icon={<Users size={20} />} text="Manage User" onClick={handlePrivManageClick} />
-        <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
-        <hr className="my-3" />
-        <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails" active/>
-        <SidebarItem icon={<Settings size={20} />} text="Settings" />
-        <hr className="my-3" />
-        <SidebarItem icon={<LogOut size={20} onClick={handleSignOutClick} />} text="Sign Out" />
-      </Sidebar>
-      <Content>
-        <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Audit Trails</h1>
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
-=======
       <Header />
       <div className="flex dark:bg-neutral-900">
         <SidebarProvider>
@@ -90,9 +85,7 @@ const SAAuditReport = () => {
             <SidebarItem icon={<LogOut size={20} onClick={handleSignOutClick} />} text="Sign Out" />
           </Sidebar>
           <Content>
-            <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Audit Trails</h1>
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
->>>>>>> 53d726e9336fb8ac6aea0c761a96ec7415323c5b
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8 mt-6">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-pink-50 to-pink-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
                   <span className="text-xl font-semibold">Audit Trails History</span>
@@ -105,7 +98,6 @@ const SAAuditReport = () => {
                 <table className="w-full table-auto mt-2">
                   <thead className="text-gray-900 font-medium text-lg border-b text-center">
                     <tr>
-                      <th className="py-3 pr-6">UserId</th>
                       <th className="py-3 pr-6">Email</th>
                       <th className="py-3 pr-6">Roles</th>
                       <th className="py-3 pr-6">Action type</th>
@@ -114,22 +106,16 @@ const SAAuditReport = () => {
                     </tr>
                   </thead>
                   <tbody className="text-gray-600 divide-y text-center text-sm">
-                    {
-                      auditTrails.map((item, idx) => (
-                        <tr key={idx}>
-                          <td className="pr-6 py-4 whitespace-nowrap">{item.userId}</td>
-                          <td className="pr-6 py-4 whitespace-nowrap">{item.email}</td>
-                          <td className="pr-6 py-4 whitespace-nowrap">
-                            <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                              {item.status}
-                            </span>
-                          </td>
-                          <td className="pr-6 py-4 whitespace-nowrap">{item.actionType}</td>
-                          <td className="pr-6 py-4 whitespace-nowrap">{item.ipAddress}</td>
-                          <td className="pr-6 py-4 whitespace-nowrap">{item.timestamp}</td>
-                        </tr>
-                      ))
-                    }
+                  {auditTrails.slice().reverse().map((item, idx) => (
+                      <tr key={idx}>
+                        <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.email : 'N/A'}</td>
+                        <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.role : 'N/A'}</td>
+                        <td className="pr-6 py-4 whitespace-nowrap">{item.actionType}</td>
+                        <td className="pr-6 py-4 whitespace-nowrap">{item.ipAddress}</td>
+                        <td className="pr-6 py-4 whitespace-nowrap">{new Date(item.timestamp).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' })}, {new Date(item.timestamp).toLocaleTimeString('en-PH', { hour: 'numeric', minute: 'numeric' })}</td>
+
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -138,7 +124,7 @@ const SAAuditReport = () => {
         </SidebarProvider>
       </div>
     </>
-  )
+  );
 }
 
 export default SAAuditReport;

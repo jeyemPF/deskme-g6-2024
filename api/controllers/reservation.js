@@ -5,6 +5,7 @@ import ReservationHistory from "../models/ReservationHistory.js";
 import { scheduleJob } from 'node-schedule';
 import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation } from "../utils/emailService.js";
 import AuditTrail from "../models/AuditTrail.js";
+import { formatInTimeZone,  format } from 'date-fns-tz';
 
 
 
@@ -22,14 +23,24 @@ export const createReservation = async (req, res, next) => {
             return res.status(404).json({ message: "User or desk not found" });
         }
 
+        // Convert the provided date and time to UTC using the local time zone
+        const timeZone = 'Asia/Manila';
+        const reservationStartTime = new Date(`${date}T${startTime}:00`);
+        const reservationEndTime = new Date(`${date}T${endTime}:00`);
+
+        // Format the date and time to the desired format
+        const formattedDate = format(new Date(date), "EEEE, MMMM d yyyy 'PH Standard Time'");
+        const formattedStartTime = formatInTimeZone(reservationStartTime, timeZone, 'hh:mm aaaa') + ' PH Standard Time';
+        const formattedEndTime = formatInTimeZone(reservationEndTime, timeZone, 'hh:mm aaaa') + ' PH Standard Time';
+
         // Check if the desk is already reserved during the requested time slot
         const existingReservation = await Reservation.findOne({
             desk: desk,
             date,
             $or: [
-                { startTime: { $lt: endTime }, endTime: { $gt: startTime } }, 
-                { startTime: { $gte: startTime, $lt: endTime } }, 
-                { endTime: { $gt: startTime, $lte: endTime } } 
+                { startTime: { $lt: reservationEndTime }, endTime: { $gt: reservationStartTime } },
+                { startTime: { $gte: reservationStartTime, $lt: reservationEndTime } },
+                { endTime: { $gt: reservationStartTime, $lte: reservationEndTime } }
             ]
         });
 
@@ -51,8 +62,8 @@ export const createReservation = async (req, res, next) => {
             user: user,
             desk: desk,
             date,
-            startTime,
-            endTime,
+            startTime: reservationStartTime,
+            endTime: reservationEndTime,
             status: 'APPROVED',
             officeEquipment: desk.officeEquipment
         });
@@ -60,7 +71,7 @@ export const createReservation = async (req, res, next) => {
         const savedReservation = await newReservation.save();
 
         // Schedule a job to update the desk status when the reservation end time has passed
-        scheduleJob('updateDeskStatus', endTime, async () => {
+        scheduleJob('updateDeskStatus', reservationEndTime, async () => {
             desk.status = 'available';
             await desk.save();
         });
@@ -74,27 +85,32 @@ export const createReservation = async (req, res, next) => {
         // Log the audit trail
         await AuditTrail.create({
             actionType: 'reservation',
-            userId: userId,
-            deskId: deskId,
+            userId,
+            deskId,
             ipAddress: req.ip
         });
 
         // Log the details to the console
         console.log("Audit trail created for reservation:", {
-            userId: userId,
-            deskId: deskId,
-            ipAddress: req.ip
+            userId,
+            deskId,
+            ipAddress: req.ip,
+            formattedDate,
+            formattedStartTime,
+            formattedEndTime
         });
 
         // Send response back to the client
-        res.status(200).json({ message: 'Reservation successful' });
+        res.status(200).json({
+            message: 'Reservation successful',
+            formattedDate,
+            formattedStartTime,
+            formattedEndTime
+        });
     } catch (err) {
         next(err);
     }
 };
-
-
-
 
 
 export const cancelReservation = async (req, res, next) => {

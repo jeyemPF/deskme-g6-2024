@@ -16,7 +16,6 @@ import switchsRoute from './routes/switchs.js';
 import otpRoutes from './routes/otpRoutes.js';
 import auditTrailsRoute from './routes/auditTrails.js';
 
-
 dotenv.config();
 
 const app = express();
@@ -25,7 +24,6 @@ const io = new Server(server, {
   cors: {
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    credentials: true,
   },
 });
 
@@ -88,18 +86,6 @@ app.use((err, req, res, next) => {
     status: errorStatus,
     message: errorMessage,
     stack: err.stack,
-  });
-});
-
-// Socket.io connection handler
-io.on('connection', (socket) => {
-  console.log('A user connected');
-  socket.on('avatarUpdated', (data) => {
-    io.emit('avatarUpdated', data);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
   });
 });
 
