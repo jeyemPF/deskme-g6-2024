@@ -174,7 +174,7 @@ const sendMagicLink = async (user, res) => {
                         </tr>
                         <tr>
                             <td style="border: 1px solid #ddd; padding: 8px;"><strong>Area:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.area}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.desk.area}</td>
                         </tr>
                     </table>
                     <br/>
