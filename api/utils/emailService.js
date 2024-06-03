@@ -301,5 +301,45 @@ const mailOtpSender = async (email, title, body) => {
 
 
 
+//   assign role
 
-export { transporter,mailOtpSender, sendCancellationConfirmationEmail ,getEmailContentCancellation,sendReservationConfirmationEmail, getEmailContentReservation, getEmailContent, emailContents, generateMailGenerator, sendRegistrationConfirmationEmail,sendPasswordResetEmail, sendMagicLink  };
+const sendRoleAssignmentEmail = async (email, username, role, password) => {
+    const mailGenerator = generateMailGenerator();
+    const emailContent = {
+        body: {
+            name: username,
+            intro: `Welcome to DeskMe! You have been assigned the role of <strong>${role}</strong>. Your password is: ${password}`,
+            action: {
+                instructions: 'To get started, please log in to your account:',
+                button: {
+                    color: '#000000',
+                    text: 'Log in to DeskMe',
+                    link: 'http://localhost:3000/login' // Update this link to your login page
+                }
+            },
+            outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
+        }
+    };
+
+    const emailBody = mailGenerator.generate(emailContent);
+    const emailText = mailGenerator.generatePlaintext(emailContent);
+
+    try {
+        await transporter.sendMail({
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Role Assignment - DeskMe',
+            html: emailBody, // HTML content
+            text: emailText // Plaintext content
+        });
+
+        console.log("Role assignment email sent successfully.");
+    } catch (err) {
+        console.error("Error sending role assignment email:", err);
+        throw err; // Rethrow the error to be handled by the caller
+    }
+};
+
+
+
+export { transporter,mailOtpSender, sendRoleAssignmentEmail, sendCancellationConfirmationEmail ,getEmailContentCancellation,sendReservationConfirmationEmail, getEmailContentReservation, getEmailContent, emailContents, generateMailGenerator, sendRegistrationConfirmationEmail,sendPasswordResetEmail, sendMagicLink  };

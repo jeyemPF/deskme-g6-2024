@@ -1,6 +1,5 @@
 import express from "express"
 import { deleteUser,
-        getUsers,
         createAdminUser,
         deleteAllUser,
         createOfficeManager,
@@ -13,6 +12,7 @@ import { deleteUser,
         countUsersRole,
         countNotUsers,
         countAllUsers,
+        createAdminAndOfficeManager,
         
          }  from "../controllers/user.js";
 
@@ -74,6 +74,9 @@ router.post("/admin", verifySuperAdmin, createAdminUser);
 
 // Only super admins can create Office Manager users
 router.post("/office-manager", verifySuperAdmin, createOfficeManager);
+
+// Create both admin and Office Manager
+router.post("/authorized-user", verifySuperAdmin, createAdminAndOfficeManager);
 
 // Bulk delete for all users 
 router.delete("/", verifySuperAdmin, deleteAllUser);

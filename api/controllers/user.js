@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs"
 import cloudinary from "../config/cloudinary.js";
 import { io } from "../index.js";
+import { sendRoleAssignmentEmail } from "../utils/emailService.js";
 
 
 
@@ -112,6 +113,51 @@ export const createAdminUser = async (req, res, next) => {
         next(err);
     }
 };
+
+
+export const createAdminAndOfficeManager = async (req, res, next) => {
+  try {
+    const { username, email, password, role } = req.body;
+
+    // Validate input data
+    if (!username || !email || !password || !role) {
+        return res.status(400).json({ message: "Username, email, password, and role are required" });
+    }
+
+    // Validate the role
+    if (role !== 'admin' && role !== 'officemanager') {
+        return res.status(400).json({ message: "Invalid role. Role must be 'admin' or 'officemanager'" });
+    }
+
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+        return res.status(400).json({ message: "User with this email already exists" });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user with the specified role
+    const newUser = new User({
+        username,
+        email,
+        password: hashedPassword,
+        role
+    });
+
+    // Save the new user to the database
+    await newUser.save();
+
+    // Send role assignment email
+    await sendRoleAssignmentEmail(email, username, role, password);
+
+    res.status(201).json({ message: `${role.charAt(0).toUpperCase() + role.slice(1)} user created successfully` });
+} catch (err) {
+    // Handle errors
+    next(err);
+}
+}
 
 // CREATING OFFICER MANAGERS
 export const createOfficeManager = async (req, res, next) => {
