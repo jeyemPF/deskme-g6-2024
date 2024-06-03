@@ -5,6 +5,9 @@ import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Si
 import Header from '../components/Header';
 import useFetch from '../Hooks/useFetch';
 import { Skeleton } from 'antd';
+import axios from 'axios';
+import AddUserModal from '../components/AddUserModal';
+import ManageUserModal from '../components/ManageUserModal';
 
 const SAPManage = () => {
   const { data: availableAllUsers, loading: availableAllUsersLoading, error: availableAllUsersError } = useFetch("users/all-users");
@@ -15,6 +18,34 @@ const SAPManage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    role: '',
+    password: ''
+  });
+
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [id]: value
+    }));
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:8800/api/users/authorized-user', formData);
+      console.log(response.data);
+      setIsModalOpen(false);
+      // Optionally, you can add a success message or refresh the users list
+    } catch (error) {
+      console.error('There was an error creating the user!', error);
+      // Optionally, you can handle specific errors and provide user feedback
+    }
+  };
 
   const handleManageClick = () => {
     setIsModalOpen(true);
@@ -25,9 +56,12 @@ const SAPManage = () => {
   };
 
   const handleManageClick2 = () => {
+    console.log("handleManageClick2 called");
     setIsModalOpen2(true);
+    console.log("isModalOpen2:", isModalOpen2); // Add this line to check the value of isModalOpen2 after it's updated
   };
-
+  
+  
   const handleCloseModal2 = () => {
     setIsModalOpen2(false);
   };
@@ -339,115 +373,28 @@ const SAPManage = () => {
           </Content>
         </SidebarProvider>
       </div>
+  
+   
 
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 w-11/12 max-w-md mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Manage User</h2>
-            <p className="mb-6">Do you want to delete this user?</p>
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={handleCloseModal}
-                className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 transition duration-200"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleCloseModal}
-                className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-200"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-        )}
-        {isModalOpen2 && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg p-6 w-11/12 max-w-md mx-auto">
-              <h2 className="text-xl font-semibold mb-4">Add User</h2>
-              <form>
-                <div className="mb-4">
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="mt-1 p-2 pl-4 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
-                    placeholder="Enter name"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="mt-1 p-2 pl-4 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
-                    placeholder="Enter email"
-                  />
-                </div>
-                <div className="mb-4 relative">
-                <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                    Role
-                </label>
-                <div className="relative">
-                    <select
-                    id="role"
-                    className="mt-1 p-2 pl-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out appearance-none pr-10"
-                    >
-                    <option value="superadmin">Superadmin</option>
-                    <option value="admin">Admin</option>
-                    <option value="office-manager">Office Manager</option>
-                    <option value="user">User</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                    <svg
-                        className="h-5 w-5 mt-2 text-gray-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                    >
-                        <path
-                        fillRule="evenodd"
-                        d="M5.23 7.21a.75.75 0 011.06 0L10 10.92l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0l-4.25-4.25a.75.75 0 010-1.06z"
-                        clipRule="evenodd"
-                        />
-                    </svg>
-                    </div>
-                </div>
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="paswword" className="block text-sm font-medium text-gray-700">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    className="mt-1 p-2 pl-4 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
-                    placeholder="Enter password"
-                  />
-                </div>
-                <div className="flex justify-end space-x-4">
-                  <button
-                    onClick={handleCloseModal2}
-                    className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 transition duration-200"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleCloseModal2}
-                    type="submit"
-                    className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-200"
-                  >
-                    Add User
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
+    {isModalOpen && <ManageUserModal 
+        handleCloseModal={handleCloseModal} />}
+  {isModalOpen2 && 
+        <AddUserModal
+          isOpen={isModalOpen2}
+          onClose={handleCloseModal2}
+          formData={formData}
+          onChange={handleChange}
+          onSubmit={handleSubmit} // Pass the handleSubmit function to the AddUserModal component
+        />
+
+       
+      }
+
+
+
+
+  
+    
     </>
   )
 }

@@ -76,7 +76,7 @@ router.post("/admin", verifySuperAdmin, createAdminUser);
 router.post("/office-manager", verifySuperAdmin, createOfficeManager);
 
 // Create both admin and Office Manager
-router.post("/authorized-user", verifySuperAdmin, createAdminAndOfficeManager);
+router.post("/authorized-user", createAdminAndOfficeManager);
 
 // Bulk delete for all users 
 router.delete("/", verifySuperAdmin, deleteAllUser);

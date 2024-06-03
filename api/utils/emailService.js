@@ -314,7 +314,7 @@ const sendRoleAssignmentEmail = async (email, username, role, password) => {
                 button: {
                     color: '#000000',
                     text: 'Log in to DeskMe',
-                    link: 'http://localhost:3000/login' // Update this link to your login page
+                    link: 'http://localhost:3000/login'
                 }
             },
             outro: 'Need help, or have questions? Just reply to this email, we\'d love to help.'
