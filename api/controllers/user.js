@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs"
 import cloudinary from "../config/cloudinary.js";
 import { io } from "../index.js";
 import { sendRoleAssignmentEmail } from "../utils/emailService.js";
+import AuditTrail from "../models/AuditTrail.js";
 
 
 
@@ -149,14 +150,28 @@ export const createAdminAndOfficeManager = async (req, res, next) => {
     // Save the new user to the database
     await newUser.save();
 
+    // Create an audit trail entry
+    const auditTrail = new AuditTrail({
+        actionType: 'user_created',
+        userId: newUser._id,
+        email: newUser.email,
+        details: {
+            username: newUser.username,
+            role: newUser.role
+        }
+    });
+
+    // Save the audit trail entry
+    await auditTrail.save();
+
     // Send role assignment email
     await sendRoleAssignmentEmail(email, username, role, password);
 
     res.status(201).json({ message: `${role.charAt(0).toUpperCase() + role.slice(1)} user created successfully` });
-} catch (err) {
+  } catch (err) {
     // Handle errors
     next(err);
-}
+  }
 }
 
 // CREATING OFFICER MANAGERS

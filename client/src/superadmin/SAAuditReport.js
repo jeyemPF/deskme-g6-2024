@@ -130,7 +130,7 @@ const SAAuditReport = () => {
       </thead>
       <tbody className="text-gray-600 divide-y text-center text-sm">
         {/* Reverse the order of items before mapping */}
-        {currentItems.slice().reverse().map((item, idx) => (
+        {currentItems.slice().map((item, idx) => (
           <tr key={idx}>
             <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.email : 'N/A'}</td>
             <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.role : 'N/A'}</td>
