@@ -8,11 +8,6 @@ import { Skeleton } from 'antd'
 
 const SAManageBooking = () => {
 
-  const { data: availableUsers, loading: availableUsersLoading, error: availableUsersError } = useFetch("users/get-all-users");
-
-  const isLoading = availableUsersLoading;
-  const isError = availableUsersError;
-
 const [isModalOpen, setIsModalOpen] = useState(false);
 
 const handleManageClick = () => {
@@ -102,32 +97,24 @@ const handleCloseModal = () => {
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Manage Bookings</h1>
-            { isLoading ? (
-              <>
-                <Skeleton height={120} count={4} />
-              </>
-            ) : isError ? (
-              <div>Error: {availableUsersError?.message}</div>
-            ) :(
-              <>
+      
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: 100</span>
+                  <span className="text-xl font-semibold">Total: 1</span>
                   <span className="text-sm font-normal">All Bookings</span>
                 </div>
                 <ScrollText className="w-10 h-10 ml-10" />
               </div>
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total:{availableUsers}</span>
+                  <span className="text-xl font-semibold">Total:0</span>
                   <span className="text-sm font-normal">Pending Books</span>
                 </div>
                 <FileCog className="w-10 h-10 ml-10" />
               </div>
             </div>
-              </>
-            )}
+   
             <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
               <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
               <div className="flex justify-end items-center">

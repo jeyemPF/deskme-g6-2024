@@ -60,21 +60,19 @@ export const deleteAllUser = async (req, res, next) => {
 
 export const countUsersRole = async (req, res, next) => {
   try {
-      const userCount = await User.countDocuments({ role: 'user' });
-
-      res.status(200).json({ userCount });
+    const userCount = await User.countDocuments({ role: 'user' });
+    res.status(200).json({ userCount });
   } catch (err) {
-      next(err);
+    next(err);
   }
 };
 
 export const countNotUsers = async (req, res, next) => {
   try {
-      const nonUserCount = await User.countDocuments({ role: { $ne: 'user' } });
-
-      res.status(200).json({ nonUserCount });
+    const nonUserCount = await User.countDocuments({ role: { $ne: 'user' } });
+    res.status(200).json({ nonUserCount });
   } catch (err) {
-      next(err);
+    next(err);
   }
 };
 
@@ -324,3 +322,15 @@ export const updateProfile = async (req, res) => {
           next(error);
         }
       };
+
+
+
+      export const countAllUsers = async (req, res, next) => {
+        try {
+          const totalCount = await User.countDocuments({});
+          res.status(200).json({ totalCount });
+        } catch (err) {
+          next(err);
+        }
+      };
+      

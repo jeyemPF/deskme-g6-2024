@@ -12,6 +12,7 @@ import { deleteUser,
         getSelf,
         countUsersRole,
         countNotUsers,
+        countAllUsers,
         
          }  from "../controllers/user.js";
 
@@ -96,7 +97,9 @@ router.put("/toggle-reservation-emails-for-all-users",verifyOfficeManager, toggl
 // COUNT 
 
 // count all users
-router.get("/get-all-users", countUsersRole)
-router.get("/get-all-non-users", countNotUsers)
+router.get("/get-users", countUsersRole);
+router.get("/user-authorized", countNotUsers);
+router.get("/all-users", countAllUsers);
+
 
 export default router

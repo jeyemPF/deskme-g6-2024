@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { LayoutDashboard, Layers, Users, BookCopy, Settings, LogOut, Flag, NotebookTabs, UserCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
@@ -7,11 +7,11 @@ import useFetch from '../Hooks/useFetch';
 import { Skeleton } from 'antd';
 
 const SAPManage = () => {
-  // Correct destructuring to include error
-  const { data: availableUsers, loading: availableUsersLoading, error: availableUsersError } = useFetch("users/get-all-users");
+  const { data: availableAllUsers, loading: availableAllUsersLoading, error: availableAllUsersError } = useFetch("users/all-users");
+  const { data: authorizedUsers, loading: authorizedUsersLoading, error: authorizedUsersError } = useFetch("users/user-authorized");
 
-  const isLoading = availableUsersLoading;
-  const isError = !!availableUsersError; // Ensure this is a boolean
+  const isLoading = availableAllUsersLoading || authorizedUsersLoading;
+  const isError = availableAllUsersError || authorizedUsersError;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
@@ -110,24 +110,22 @@ const SAPManage = () => {
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Manage Users | Role-Access</h1>
             {isLoading ? (
-              <>
-                <Skeleton height={120} count={4} />
-              </>
+              <Skeleton height={120} count={4} />
             ) : isError ? (
-              <div>Error: {availableUsersError?.message}</div>
+              <div>Error: {availableAllUsersError?.message || authorizedUsersError?.message}</div>
             ) : (
               <>
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-pink-50 to-pink-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: 334</span>
+                      <span className="text-xl font-semibold">Total: {availableAllUsers}</span>
                       <span className="text-sm font-normal">Privilege Users</span>
                     </div>
                     <UserCog className="w-10 h-10 ml-10" />
                   </div>
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-teal-50 to-teal-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: {availableUsers}</span>
+                      <span className="text-xl font-semibold">Total: {authorizedUsers}</span>
                       <span className="text-sm font-normal">Users</span>
                     </div>
                     <Users className="w-10 h-10 ml-10" />
