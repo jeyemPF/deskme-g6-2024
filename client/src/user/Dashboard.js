@@ -23,6 +23,10 @@ const Dashboard = () => {
     navigate('/managebooking');
   };
 
+  const handleHelp = () => {
+    navigate('/help');
+  }
+
   const onPanelChange = (value, mode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
   };
@@ -62,7 +66,7 @@ const Dashboard = () => {
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
             <hr className="my-3" />
             <SidebarItem icon={<Settings size={20} />} text="Settings" />
-            <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
+            <SidebarItem icon={<LifeBuoy size={20}  />} text="Help"  onClick={handleHelp}  />
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>
