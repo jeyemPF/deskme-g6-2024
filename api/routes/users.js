@@ -100,8 +100,8 @@ router.put("/toggle-reservation-emails-for-all-users",verifyOfficeManager, toggl
 // COUNT 
 
 // count all users
-router.get("/get-users", countUsersRole);
-router.get("/user-authorized", countNotUsers);
+router.get("/count-user-role", countUsersRole);
+router.get("/count-not-user", countNotUsers);
 router.get("/all-users", countAllUsers);
 
 

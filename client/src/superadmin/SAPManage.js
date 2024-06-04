@@ -8,13 +8,19 @@ import { Skeleton } from 'antd';
 import axios from 'axios';
 import AddUserModal from '../components/AddUserModal';
 import ManageUserModal from '../components/ManageUserModal';
+import useFetchCreatedUsers from '../Hooks/useFetchCreatedUser';
+import useUserCount from '../Hooks/useUserCount';
+import useNonUserCount from '../Hooks/useNonUserCount';
 
 const SAPManage = () => {
-  const { data: availableAllUsers, loading: availableAllUsersLoading, error: availableAllUsersError } = useFetch("users/all-users");
-  const { data: authorizedUsers, loading: authorizedUsersLoading, error: authorizedUsersError } = useFetch("users/user-authorized");
 
-  const isLoading = availableAllUsersLoading || authorizedUsersLoading;
-  const isError = availableAllUsersError || authorizedUsersError;
+  const { data: createdUsers, loading: createdUsersLoading, error: createdUsersError } = useFetchCreatedUsers();
+
+  const { userCount, loading: userCountLoading, error: userCountError } = useUserCount();
+  const { nonUserCount, loading: nonUserCountLoading, error: nonUserCountError } = useNonUserCount();
+
+  const isLoading = userCountLoading || userCountError;
+  const isError = nonUserCountLoading || nonUserCountError;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
@@ -97,17 +103,27 @@ const SAPManage = () => {
     {
       reservation_id: 1,
       name: "Peter Sthanlie Rayos",
-      status: "Superadmin"
+      role: "Superadmin"
     },
     {
       reservation_id: 2,
       name: "John Carlo Diga",
-      status: "Admin"
+      role: "Admin"
     },
     {
       reservation_id: 3,
       name: "Algen Rey Ubang",
-      status: "Office Manager"
+      role: "Office Manager"
+    },
+    {
+      reservation_id: 3,
+      name: "Algen Rey Ubang",
+      role: "Office Manager"
+    },
+    {
+      reservation_id: 3,
+      name: "Algen Rey Ubang",
+      role: "Office Manager"
     },
   ];
 
@@ -115,12 +131,12 @@ const SAPManage = () => {
     {
       reservation_id: 1,
       name: "Mhayumie",
-      status: "User"
+      role: "User"
     },
     {
       reservation_id: 2,
       name: "Brianski",
-      status: "User"
+      role: "User"
     },
   ];
 
@@ -146,20 +162,21 @@ const SAPManage = () => {
             {isLoading ? (
               <Skeleton height={120} count={4} />
             ) : isError ? (
-              <div>Error: {availableAllUsersError?.message || authorizedUsersError?.message}</div>
+              <div>Error: {isError.message}</div>
             ) : (
               <>
+
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-pink-50 to-pink-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: {availableAllUsers}</span>
+                      <span className="text-xl font-semibold">Total: {nonUserCount}</span>
                       <span className="text-sm font-normal">Privilege Users</span>
                     </div>
                     <UserCog className="w-10 h-10 ml-10" />
                   </div>
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-teal-50 to-teal-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: {authorizedUsers}</span>
+                      <span className="text-xl font-semibold">Total: {userCount}</span>
                       <span className="text-sm font-normal">Users</span>
                     </div>
                     <Users className="w-10 h-10 ml-10" />
@@ -184,14 +201,14 @@ const SAPManage = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                      {
-                        tableItems.map((item, idx) => (
-                          <tr key={idx}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
+                    {
+                        createdUsers && createdUsers.map((user, index) => (
+                          <tr key={user._id}>
+                            <td className="pr-6 py-4 whitespace-nowrap">{index + 1}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{user.username}</td>
                             <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                {item.status}
+                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${user.role === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+                                {user.role}
                               </span>
                             </td>
                             <td className="whitespace-nowrap text-center">
@@ -302,8 +319,8 @@ const SAPManage = () => {
                             <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
                             <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
                             <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                {item.status}
+                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.role === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+                                {item.role}
                               </span>
                             </td>
                             <td className="whitespace-nowrap text-center">
