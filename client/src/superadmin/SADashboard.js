@@ -12,7 +12,7 @@ const SADashboard = () => {
   const { data: availableDeskData, loading: availableDeskLoading, error: availableDeskError } = useFetch("reservations/available-desk");
   const { data: deskCountData, loading: deskCountLoading, error: deskCountError } = useFetch("desks/count");
   const { data: deskCountReservedData, loading: deskCountReservedLoading, error: deskCountReservedError } = useFetch("desks/count-reserved");
-  const { data: deskCountUnavailableData, loading: deskCountUnavailableLoading, error: deskCountUnavailableError } = useFetch(  "desks/count-unavailable");
+  const { data: deskCountUnavailableData, loading: deskCountUnavailableLoading, error: deskCountUnavailableError } = useFetch("desks/count-unavailable");
 
     const navigate = useNavigate();
 
