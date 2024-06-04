@@ -8,6 +8,9 @@ const AddUserModal = ({ isOpen, onClose }) => {
     role: '',
     password: ''
   });
+  const [error, setError] = useState('');
+
+  const validRoles = ['admin', 'officemanager', 'user'];
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -19,13 +22,19 @@ const AddUserModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validRoles.includes(formData.role)) {
+      setError('Invalid role. Please enter a valid role: admin, officemanager, or user.');
+      return;
+    }
+
     try {
       const response = await axios.post('http://localhost:8800/api/users/authorized-user', formData);
       console.log(response.data);
       onClose(); // Close the modal on successful submission
       // Optionally, you can add a success message or refresh the users list
     } catch (error) {
-      // Error handling
+      setError('Failed to add user. Please try again.'); // Set error message if submission fails
+      console.error(error);
     }
   };
 
@@ -34,10 +43,11 @@ const AddUserModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 ${isOpen ? '' : 'hidden'}`}>
       <div className="bg-white rounded-lg p-6 w-11/12 max-w-md mx-auto">
         <h2 className="text-xl font-semibold mb-4">Add User</h2>
         <form onSubmit={handleSubmit}>
+          {error && <div className="mb-4 text-red-500">{error}</div>}
           <div className="mb-4">
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">
               Username
