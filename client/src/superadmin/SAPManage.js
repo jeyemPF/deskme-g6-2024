@@ -1,20 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { LayoutDashboard, Layers, Users, BookCopy, Settings, LogOut, Flag, NotebookTabs, UserCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
 import Header from '../components/Header';
 import useFetch from '../Hooks/useFetch';
 import { Skeleton } from 'antd';
+import axios from 'axios';
+import AddUserModal from '../components/AddUserModal';
+import ManageUserModal from '../components/ManageUserModal';
+import useFetchCreatedUsers from '../Hooks/useFetchCreatedUser';
+import useUserCount from '../Hooks/useUserCount';
+import useNonUserCount from '../Hooks/useNonUserCount';
 
 const SAPManage = () => {
-  // Correct destructuring to include error
-  const { data: availableUsers, loading: availableUsersLoading, error: availableUsersError } = useFetch("users/get-all-users");
 
-  const isLoading = availableUsersLoading;
-  const isError = !!availableUsersError; // Ensure this is a boolean
+  const { data: createdUsers, loading: createdUsersLoading, error: createdUsersError } = useFetchCreatedUsers();
+
+  const { userCount, loading: userCountLoading, error: userCountError } = useUserCount();
+  const { nonUserCount, loading: nonUserCountLoading, error: nonUserCountError } = useNonUserCount();
+
+  const isLoading = userCountLoading || userCountError;
+  const isError = nonUserCountLoading || nonUserCountError;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    role: '',
+    password: ''
+  });
+
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [id]: value
+    }));
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:8800/api/users/authorized-user', formData);
+      console.log(response.data);
+      setIsModalOpen(false);
+      // Optionally, you can add a success message or refresh the users list
+    } catch (error) {
+      console.error('There was an error creating the user!', error);
+      // Optionally, you can handle specific errors and provide user feedback
+    }
+  };
+
+// Separate users with roles "Office Manager" and "Admin"
+const adminAndOfficeManagerUsers = createdUsers ? createdUsers.filter(user => user && (user.role === 'admin' || user.role === 'officemanager')) : [];
+const normalUsers = createdUsers ? createdUsers.filter(user => user && user.role !== 'admin' && user.role !== 'officemanager') : [];
+
+
 
   const handleManageClick = () => {
     setIsModalOpen(true);
@@ -25,9 +68,12 @@ const SAPManage = () => {
   };
 
   const handleManageClick2 = () => {
+    console.log("handleManageClick2 called");
     setIsModalOpen2(true);
+    console.log("isModalOpen2:", isModalOpen2); // Add this line to check the value of isModalOpen2 after it's updated
   };
-
+  
+  
   const handleCloseModal2 = () => {
     setIsModalOpen2(false);
   };
@@ -59,37 +105,6 @@ const SAPManage = () => {
     navigate('/superaudit');
   };
 
-  const tableItems = [
-    {
-      reservation_id: 1,
-      name: "Peter Sthanlie Rayos",
-      status: "Superadmin"
-    },
-    {
-      reservation_id: 2,
-      name: "John Carlo Diga",
-      status: "Admin"
-    },
-    {
-      reservation_id: 3,
-      name: "Algen Rey Ubang",
-      status: "Office Manager"
-    },
-  ];
-
-  const tableItems2 = [
-    {
-      reservation_id: 1,
-      name: "Mhayumie",
-      status: "User"
-    },
-    {
-      reservation_id: 2,
-      name: "Brianski",
-      status: "User"
-    },
-  ];
-
   return (
     <>
       <Header />
@@ -110,24 +125,23 @@ const SAPManage = () => {
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Manage Users | Role-Access</h1>
             {isLoading ? (
-              <>
-                <Skeleton height={120} count={4} />
-              </>
+              <Skeleton height={120} count={4} />
             ) : isError ? (
-              <div>Error: {availableUsersError?.message}</div>
+              <div>Error: {isError.message}</div>
             ) : (
               <>
+
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-pink-50 to-pink-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: 334</span>
+                      <span className="text-xl font-semibold">Total: {nonUserCount}</span>
                       <span className="text-sm font-normal">Privilege Users</span>
                     </div>
                     <UserCog className="w-10 h-10 ml-10" />
                   </div>
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-teal-50 to-teal-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: {availableUsers}</span>
+                      <span className="text-xl font-semibold">Total: {userCount}</span>
                       <span className="text-sm font-normal">Users</span>
                     </div>
                     <Users className="w-10 h-10 ml-10" />
@@ -152,24 +166,24 @@ const SAPManage = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                      {
-                        tableItems.map((item, idx) => (
-                          <tr key={idx}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                {item.status}
-                              </span>
-                            </td>
-                            <td className="whitespace-nowrap text-center">
-                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                                Manage
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      }
+                    {
+  adminAndOfficeManagerUsers.map((user, index) => (
+    <tr key={user._id}>
+      <td className="pr-6 py-4 whitespace-nowrap">{index + 1}</td>
+      <td className="pr-6 py-4 whitespace-nowrap">{user.username}</td>
+      <td className="pr-6 py-4 whitespace-nowrap">
+        <span className={`px-3 py-2 rounded-full font-semibold text-xs ${user.role === "admin" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+          {user.role}
+        </span>
+      </td>
+      <td className="whitespace-nowrap text-center">
+        <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+          Manage
+        </button>
+      </td>
+    </tr>
+  ))
+}
                     </tbody>
                   </table>
                 </div>
@@ -264,24 +278,25 @@ const SAPManage = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                      {
-                        tableItems2.map((item, idx) => (
-                          <tr key={idx}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                {item.status}
-                              </span>
-                            </td>
-                            <td className="whitespace-nowrap text-center">
-                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                                Manage
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      }
+                    {
+  normalUsers.map((user, index) => (
+    <tr key={user._id}>
+      <td className="pr-6 py-4 whitespace-nowrap">{index + 1}</td>
+      <td className="pr-6 py-4 whitespace-nowrap">{user.username}</td>
+      <td className="pr-6 py-4 whitespace-nowrap">
+        <span className={`px-3 py-2 rounded-full font-semibold text-xs ${user.role === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+          {user.role}
+        </span>
+      </td>
+      <td className="whitespace-nowrap text-center">
+        <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+          Manage
+        </button>
+      </td>
+    </tr>
+  ))
+}
+
                     </tbody>
                   </table>
                 </div>
@@ -341,115 +356,28 @@ const SAPManage = () => {
           </Content>
         </SidebarProvider>
       </div>
+  
+   
 
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 w-11/12 max-w-md mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Manage User</h2>
-            <p className="mb-6">Do you want to delete this user?</p>
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={handleCloseModal}
-                className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 transition duration-200"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleCloseModal}
-                className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-200"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-        )}
-        {isModalOpen2 && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg p-6 w-11/12 max-w-md mx-auto">
-              <h2 className="text-xl font-semibold mb-4">Add User</h2>
-              <form>
-                <div className="mb-4">
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="mt-1 p-2 pl-4 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
-                    placeholder="Enter name"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="mt-1 p-2 pl-4 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
-                    placeholder="Enter email"
-                  />
-                </div>
-                <div className="mb-4 relative">
-                <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                    Role
-                </label>
-                <div className="relative">
-                    <select
-                    id="role"
-                    className="mt-1 p-2 pl-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out appearance-none pr-10"
-                    >
-                    <option value="superadmin">Superadmin</option>
-                    <option value="admin">Admin</option>
-                    <option value="office-manager">Office Manager</option>
-                    <option value="user">User</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                    <svg
-                        className="h-5 w-5 mt-2 text-gray-500"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                    >
-                        <path
-                        fillRule="evenodd"
-                        d="M5.23 7.21a.75.75 0 011.06 0L10 10.92l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0l-4.25-4.25a.75.75 0 010-1.06z"
-                        clipRule="evenodd"
-                        />
-                    </svg>
-                    </div>
-                </div>
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="paswword" className="block text-sm font-medium text-gray-700">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    className="mt-1 p-2 pl-4 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
-                    placeholder="Enter password"
-                  />
-                </div>
-                <div className="flex justify-end space-x-4">
-                  <button
-                    onClick={handleCloseModal2}
-                    className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 transition duration-200"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleCloseModal2}
-                    type="submit"
-                    className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-200"
-                  >
-                    Add User
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
+    {isModalOpen && <ManageUserModal 
+        handleCloseModal={handleCloseModal} />}
+  {isModalOpen2 && 
+        <AddUserModal
+          isOpen={isModalOpen2}
+          onClose={handleCloseModal2}
+          formData={formData}
+          onChange={handleChange}
+          onSubmit={handleSubmit} // Pass the handleSubmit function to the AddUserModal component
+        />
+
+       
+      }
+
+
+
+
+  
+    
     </>
   )
 }

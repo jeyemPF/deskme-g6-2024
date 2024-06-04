@@ -6,8 +6,8 @@ const Footer = () => {
             <footer
             className="text-center text-neutral-700 lg:text-left">
             <div
-                className="flex items-center justify-center border-t-2 border-b-2 border-neutral-700 p-6 lg:justify-between dark:border-neutral-300">
-                <div className="mr-12 hidden lg:block font-semibold">
+                className="flex items-center justify-center border-b-[1px] border-neutral-700 p-6 lg:justify-between dark:border-neutral-300">
+                <div className="mr-12 hidden lg:block font-medium">
                 <span className='dark:text-neutral-300'>Get connected with us on social networks:</span>
                 </div>
                 {/* <!-- Social network icons container --> */}
@@ -51,10 +51,10 @@ const Footer = () => {
                 {/* <!-- DeskMe section --> */}
                 <div className="">
                     <h6
-                    className="mb-4 text-2xl flex items-center justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
+                    className="mb-1 text-2xl flex items-center justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
                     DESKME
                     </h6>
-                    <p className='text-neutral-700 dark:text-neutral-300'>
+                    <p className='text-neutral-700 font-normal dark:text-neutral-300'>
                     Streamline your workspace experience with our intuitive booking system. 
                     We ensures your workspace is ready when you are.
                     </p>
@@ -166,8 +166,8 @@ const Footer = () => {
             </div>
 
             {/* <!--Copyright section--> */}
-            <div className="p-6 text-center border-t-2 border-neutral-700 dark:text-neutral-300 dark:border-neutral-300">
-                <span>© 2023 DeskMe, All right reserved. </span>
+            <div className="p-6 text-center border-t-[1px] border-neutral-700 dark:text-neutral-300 dark:border-neutral-300">
+                <span>© 2023 Deskme, All right reserved. </span>
             </div>
             </footer>
         </div>

@@ -26,6 +26,25 @@ export const getAuditTrails = async (req, res, next) => {
 };
 
 
+export const getCreatedUsers = async (req, res, next) => {
+    try {
+        // Define the action type for user creation
+        const actionType = 'user_created';
+
+        // Find audit trails where actionType is 'user_created'
+        const auditTrails = await AuditTrail.find({ actionType })
+            .populate('userId', 'username email role')  // Populate user details
+            .exec();
+
+        // Extract user details from the audit trails
+        const createdUsers = auditTrails.map(trail => trail.userId);
+
+        res.status(200).json(createdUsers);
+    } catch (err) {
+        next(err);
+    }
+};
+
 export const deleteAllAuditTrails = async (req, res, next) => {
     try {
         await AuditTrail.deleteMany();

@@ -2,6 +2,8 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs"
 import cloudinary from "../config/cloudinary.js";
 import { io } from "../index.js";
+import { sendRoleAssignmentEmail } from "../utils/emailService.js";
+import AuditTrail from "../models/AuditTrail.js";
 
 
 
@@ -60,21 +62,19 @@ export const deleteAllUser = async (req, res, next) => {
 
 export const countUsersRole = async (req, res, next) => {
   try {
-      const userCount = await User.countDocuments({ role: 'user' });
-
-      res.status(200).json({ userCount });
+    const userCount = await User.countDocuments({ role: 'user' });
+    res.status(200).json({ userCount });
   } catch (err) {
-      next(err);
+    next(err);
   }
 };
 
 export const countNotUsers = async (req, res, next) => {
   try {
-      const nonUserCount = await User.countDocuments({ role: { $ne: 'user' } });
-
-      res.status(200).json({ nonUserCount });
+    const nonUserCount = await User.countDocuments({ role: { $ne: 'user' } });
+    res.status(200).json({ nonUserCount });
   } catch (err) {
-      next(err);
+    next(err);
   }
 };
 
@@ -113,6 +113,66 @@ export const createAdminUser = async (req, res, next) => {
         // Handle errors
         next(err);
     }
+};
+
+
+export const createAdminAndOfficeManager = async (req, res, next) => {
+  try {
+    const { username, email, password, role } = req.body;
+
+    // Validate input data
+    if (!username || !email || !password || !role) {
+      return res.status(400).json({ message: "Username, email, password, and role are required" });
+    }
+
+    // Validate the role
+    const validRoles = ['admin', 'officemanager', 'user']; // Add other roles as needed
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({ message: `Invalid role. Role must be one of the following: ${validRoles.join(', ')}` });
+    }
+
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User with this email already exists" });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user with the specified role
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+      role
+    });
+
+    // Save the new user to the database
+    await newUser.save();
+
+    // Create an audit trail entry
+    const auditTrail = new AuditTrail({
+      actionType: 'user_created',
+      userId: newUser._id,
+      email: newUser.email,
+      details: {
+        username: newUser.username,
+        role: newUser.role
+      }
+    });
+
+    // Save the audit trail entry
+    await auditTrail.save();
+
+    // Send role assignment email
+    await sendRoleAssignmentEmail(email, username, role, password);
+
+    res.status(201).json({ message: `${role.charAt(0).toUpperCase() + role.slice(1)} user created successfully` });
+  } catch (err) {
+    // Handle errors
+    next(err);
+  }
 };
 
 // CREATING OFFICER MANAGERS
@@ -324,3 +384,15 @@ export const updateProfile = async (req, res) => {
           next(error);
         }
       };
+
+
+
+      export const countAllUsers = async (req, res, next) => {
+        try {
+          const totalCount = await User.countDocuments({});
+          res.status(200).json({ totalCount });
+        } catch (err) {
+          next(err);
+        }
+      };
+      

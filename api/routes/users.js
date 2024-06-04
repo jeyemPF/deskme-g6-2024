@@ -1,6 +1,5 @@
 import express from "express"
 import { deleteUser,
-        getUsers,
         createAdminUser,
         deleteAllUser,
         createOfficeManager,
@@ -12,6 +11,8 @@ import { deleteUser,
         getSelf,
         countUsersRole,
         countNotUsers,
+        countAllUsers,
+        createAdminAndOfficeManager,
         
          }  from "../controllers/user.js";
 
@@ -74,6 +75,9 @@ router.post("/admin", verifySuperAdmin, createAdminUser);
 // Only super admins can create Office Manager users
 router.post("/office-manager", verifySuperAdmin, createOfficeManager);
 
+// Create both admin and Office Manager
+router.post("/authorized-user", createAdminAndOfficeManager);
+
 // Bulk delete for all users 
 router.delete("/", verifySuperAdmin, deleteAllUser);
 
@@ -96,7 +100,9 @@ router.put("/toggle-reservation-emails-for-all-users",verifyOfficeManager, toggl
 // COUNT 
 
 // count all users
-router.get("/get-all-users", countUsersRole)
-router.get("/get-all-non-users", countNotUsers)
+router.get("/count-user-role", countUsersRole);
+router.get("/count-not-user", countNotUsers);
+router.get("/all-users", countAllUsers);
+
 
 export default router
