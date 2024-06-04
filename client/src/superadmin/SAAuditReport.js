@@ -97,16 +97,16 @@ const SAAuditReport = () => {
         <SidebarProvider>
           <Sidebar>
             <SidebarItem icon={<LayoutDashboard size={20} onClick={handleDashboardClick} />} text="Dashboard" />
-            <SidebarItem icon={<BookCopy size={20} onClick={handleBookingClick} />} text="Booking" />
-            <SidebarItem icon={<Layers size={20} onClick={handleManageBookingClick} />} text="Manage Bookings" />
-            <SidebarItem icon={<Users size={20} onClick={handlePrivManageClick} />} text="Manage Roles" />
-            <SidebarItem icon={<Flag size={20} onClick={handleReportClick} />} text="Reports" />
-            <hr className="my-3" />
-            <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails" active />
-            <SidebarItem icon={<Settings size={20} />} text="Settings" />
-            <hr className="my-3" />
-            <SidebarItem icon={<LogOut size={20} onClick={handleSignOutClick} />} text="Sign Out" />
-          </Sidebar>
+            <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
+          <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
+          <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
+          <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick}/>
+          <hr className="my-3" />
+          <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails"/>
+          <SidebarItem icon={<Settings size={20} />} text="Settings" />
+          <hr className="my-3" />
+          <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
+        </Sidebar>
           <Content>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8 mt-6">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-pink-50 to-pink-200 border-[1px] border-neutral-100 shadow-sm">

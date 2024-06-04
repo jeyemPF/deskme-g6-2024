@@ -41,8 +41,8 @@ const SADashboard = () => {
   const onPanelChange = (value, mode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
   };
-
-  const isLoading = availableDeskLoading || deskCountLoading || deskCountReservedLoading || deskCountUnavailableLoading;
+ 
+  const isLoading = availableDeskLoading || deskCountLoading || deskCountUnavailableLoading || deskCountReservedLoading;
   const isError = availableDeskError || deskCountError || deskCountReservedError || deskCountUnavailableError;
 
 
@@ -65,24 +65,26 @@ const SADashboard = () => {
         </Sidebar>
         <Content>
         <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Dashboard</h1>
-                { isLoading ? (
-                  <>
-                   <Skeleton height={120} count={4} />
-                  </>
-                ) : isError ? (
-                  <div>Error: {availableDeskError?.message || deskCountError?.message || deskCountReservedError?.message || deskCountUnavailableError?.message  }</div>
-                ) : (
-                  <>
+                
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
                 
+                {deskCountUnavailableLoading ? (
+                      <Skeleton active paragraph={{ rows: 2 }} />
+                    ) : (
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
-                    <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: {deskCountReservedData}</span>
-                      <span className="text-sm font-normal">All Bookings</span>
-                    </div>
+              
+                      <div className='flex flex-col'>
+                        <span className="text-xl font-semibold">Total: {deskCountReservedData}</span>
+                        <span className="text-sm font-normal">All Bookings</span>
+                      </div>
+                   
                     <ScrollText className="w-10 h-10 ml-10" />
                   </div>
+                )}
 
+                {availableDeskLoading  ? (
+                      <Skeleton active paragraph={{ rows: 2 }} />
+                    ) : (
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-blue-50 to-blue-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
                       <span className="text-xl font-semibold">Total: {availableDeskData}</span>
@@ -90,7 +92,10 @@ const SADashboard = () => {
                     </div>
                     <MonitorCheck className="w-10 h-10 ml-10" />
                   </div>
-
+                )}
+                { deskCountUnavailableLoading ? (
+                      <Skeleton active paragraph={{ rows: 2 }} />
+                    ) : (
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-red-50 to-red-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
                       <span className="text-xl font-semibold">Total: {deskCountUnavailableData}</span>
@@ -98,7 +103,11 @@ const SADashboard = () => {
                     </div>
                     <MonitorX className="w-10 h-10 md:ml-10 sm:ml-5" />
                   </div>
+                    )}
 
+                    {deskCountLoading ? (
+                      <Skeleton active paragraph={{ rows: 2 }} />
+                    ) : (
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-yellow-50 to-yellow-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
                       <span className="text-xl font-semibold">Total: {deskCountData}</span>
@@ -106,9 +115,9 @@ const SADashboard = () => {
                     </div>
                     <GalleryVerticalEnd className="w-10 h-10 ml-10" />
                   </div>
+                  )}
                 </div>
-                </>
-            )}
+
 
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mt-6">
                   <div className="border-[1px] border-neutral-100 rounded-lg shadow-sm bg-white">
