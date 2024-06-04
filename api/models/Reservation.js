@@ -4,15 +4,9 @@ import { officeEquipmentEnum } from '../utils/officeEquipment.js';
 const { Schema } = mongoose;
 
 const ReservationSchema = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-    },
     desk: {
         type: Schema.Types.ObjectId,
         ref: 'Desk',
-        required: true,
     },
     date: {
         type: Date,

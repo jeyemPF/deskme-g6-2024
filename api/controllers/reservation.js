@@ -6,21 +6,24 @@ import { scheduleJob } from 'node-schedule';
 import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation } from "../utils/emailService.js";
 import AuditTrail from "../models/AuditTrail.js";
 import { formatInTimeZone,  format } from 'date-fns-tz';
+import mongoose from "mongoose";
 
 
 
 export const createReservation = async (req, res, next) => {
     try {
-        const { userId, deskId } = req.params;
+        const { deskId } = req.params;
         const { date, startTime, endTime } = req.body;
 
-        // Find the user and desk based on their IDs
-        const user = await User.findById(userId);
-        const desk = await Desk.findById(deskId);
+        // Convert deskId to ObjectId
+        const deskObjectId = mongoose.Types.ObjectId(deskId);
 
-        // Check if user and desk exist
-        if (!user || !desk) {
-            return res.status(404).json({ message: "User or desk not found" });
+        // Find the desk based on its ID
+        const desk = await Desk.findById(deskObjectId);
+
+        // Check if desk exists
+        if (!desk) {
+            return res.status(404).json({ message: "Desk not found" });
         }
 
         // Convert the provided date and time to UTC using the local time zone
@@ -35,7 +38,7 @@ export const createReservation = async (req, res, next) => {
 
         // Check if the desk is already reserved during the requested time slot
         const existingReservation = await Reservation.findOne({
-            desk: desk,
+            desk: deskObjectId,
             date,
             $or: [
                 { startTime: { $lt: reservationEndTime }, endTime: { $gt: reservationStartTime } },
@@ -59,8 +62,7 @@ export const createReservation = async (req, res, next) => {
 
         // Create a new reservation instance with status 'APPROVED'
         const newReservation = new Reservation({
-            user: user,
-            desk: desk,
+            desk: deskObjectId,
             date,
             startTime: reservationStartTime,
             endTime: reservationEndTime,

@@ -6,7 +6,7 @@ import {verifyOfficeManager } from '../utils/verifyToken.js'
 const router = express.Router();
 
 // Routes for reservations
-router.post('/:userId/:deskId', createReservation);
+router.post('/reservations/:deskId', createReservation);    
 
 // cancel reservation
 router.delete('/cancel-reservation/:reservationId' , cancelReservation);
