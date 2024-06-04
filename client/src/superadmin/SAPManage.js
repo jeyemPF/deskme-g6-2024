@@ -53,6 +53,12 @@ const SAPManage = () => {
     }
   };
 
+// Separate users with roles "Office Manager" and "Admin"
+const adminAndOfficeManagerUsers = createdUsers ? createdUsers.filter(user => user && (user.role === 'admin' || user.role === 'officemanager')) : [];
+const normalUsers = createdUsers ? createdUsers.filter(user => user && user.role !== 'admin' && user.role !== 'officemanager') : [];
+
+
+
   const handleManageClick = () => {
     setIsModalOpen(true);
   };
@@ -98,47 +104,6 @@ const SAPManage = () => {
   const handleAuditClick = () => {
     navigate('/superaudit');
   };
-
-  const tableItems = [
-    {
-      reservation_id: 1,
-      name: "Peter Sthanlie Rayos",
-      role: "Superadmin"
-    },
-    {
-      reservation_id: 2,
-      name: "John Carlo Diga",
-      role: "Admin"
-    },
-    {
-      reservation_id: 3,
-      name: "Algen Rey Ubang",
-      role: "Office Manager"
-    },
-    {
-      reservation_id: 3,
-      name: "Algen Rey Ubang",
-      role: "Office Manager"
-    },
-    {
-      reservation_id: 3,
-      name: "Algen Rey Ubang",
-      role: "Office Manager"
-    },
-  ];
-
-  const tableItems2 = [
-    {
-      reservation_id: 1,
-      name: "Mhayumie",
-      role: "User"
-    },
-    {
-      reservation_id: 2,
-      name: "Brianski",
-      role: "User"
-    },
-  ];
 
   return (
     <>
@@ -202,23 +167,23 @@ const SAPManage = () => {
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
                     {
-                        createdUsers && createdUsers.map((user, index) => (
-                          <tr key={user._id}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{index + 1}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{user.username}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${user.role === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                {user.role}
-                              </span>
-                            </td>
-                            <td className="whitespace-nowrap text-center">
-                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                                Manage
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      }
+  adminAndOfficeManagerUsers.map((user, index) => (
+    <tr key={user._id}>
+      <td className="pr-6 py-4 whitespace-nowrap">{index + 1}</td>
+      <td className="pr-6 py-4 whitespace-nowrap">{user.username}</td>
+      <td className="pr-6 py-4 whitespace-nowrap">
+        <span className={`px-3 py-2 rounded-full font-semibold text-xs ${user.role === "admin" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+          {user.role}
+        </span>
+      </td>
+      <td className="whitespace-nowrap text-center">
+        <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+          Manage
+        </button>
+      </td>
+    </tr>
+  ))
+}
                     </tbody>
                   </table>
                 </div>
@@ -313,24 +278,25 @@ const SAPManage = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                      {
-                        tableItems2.map((item, idx) => (
-                          <tr key={idx}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.role === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                {item.role}
-                              </span>
-                            </td>
-                            <td className="whitespace-nowrap text-center">
-                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                                Manage
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      }
+                    {
+  normalUsers.map((user, index) => (
+    <tr key={user._id}>
+      <td className="pr-6 py-4 whitespace-nowrap">{index + 1}</td>
+      <td className="pr-6 py-4 whitespace-nowrap">{user.username}</td>
+      <td className="pr-6 py-4 whitespace-nowrap">
+        <span className={`px-3 py-2 rounded-full font-semibold text-xs ${user.role === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+          {user.role}
+        </span>
+      </td>
+      <td className="whitespace-nowrap text-center">
+        <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+          Manage
+        </button>
+      </td>
+    </tr>
+  ))
+}
+
                     </tbody>
                   </table>
                 </div>

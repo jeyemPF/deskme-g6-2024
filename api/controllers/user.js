@@ -122,18 +122,19 @@ export const createAdminAndOfficeManager = async (req, res, next) => {
 
     // Validate input data
     if (!username || !email || !password || !role) {
-        return res.status(400).json({ message: "Username, email, password, and role are required" });
+      return res.status(400).json({ message: "Username, email, password, and role are required" });
     }
 
     // Validate the role
-    if (role !== 'admin' && role !== 'officemanager') {
-        return res.status(400).json({ message: "Invalid role. Role must be 'admin' or 'officemanager'" });
+    const validRoles = ['admin', 'officemanager', 'user']; // Add other roles as needed
+    if (!validRoles.includes(role)) {
+      return res.status(400).json({ message: `Invalid role. Role must be one of the following: ${validRoles.join(', ')}` });
     }
 
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-        return res.status(400).json({ message: "User with this email already exists" });
+      return res.status(400).json({ message: "User with this email already exists" });
     }
 
     // Hash the password
@@ -141,10 +142,10 @@ export const createAdminAndOfficeManager = async (req, res, next) => {
 
     // Create a new user with the specified role
     const newUser = new User({
-        username,
-        email,
-        password: hashedPassword,
-        role
+      username,
+      email,
+      password: hashedPassword,
+      role
     });
 
     // Save the new user to the database
@@ -152,13 +153,13 @@ export const createAdminAndOfficeManager = async (req, res, next) => {
 
     // Create an audit trail entry
     const auditTrail = new AuditTrail({
-        actionType: 'user_created',
-        userId: newUser._id,
-        email: newUser.email,
-        details: {
-            username: newUser.username,
-            role: newUser.role
-        }
+      actionType: 'user_created',
+      userId: newUser._id,
+      email: newUser.email,
+      details: {
+        username: newUser.username,
+        role: newUser.role
+      }
     });
 
     // Save the audit trail entry
@@ -172,7 +173,7 @@ export const createAdminAndOfficeManager = async (req, res, next) => {
     // Handle errors
     next(err);
   }
-}
+};
 
 // CREATING OFFICER MANAGERS
 export const createOfficeManager = async (req, res, next) => {
