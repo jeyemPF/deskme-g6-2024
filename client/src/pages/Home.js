@@ -130,7 +130,7 @@ return (
 
                 <div className="mt-8 flex flex-wrap justify-center gap-4">
                   <button onClick={handleClick}
-                    className="block w-full rounded bg-neutral-900 dark:bg-neutral-300 px-12 py-3 text-sm font-medium text-white dark:text-black shadow hover:bg-neutral-700 dark:hover:bg-neutral-100 focus:outline-none focus:ring active:bg-neutral-500 sm:w-auto"
+                    className="block w-full rounded bg-neutral-900 dark:bg-neutral-300 px-12 py-3 text-sm font-medium text-white dark:text-black shadow hover:bg-neutral-700 dark:hover:bg-neutral-100 active:bg-neutral-500 sm:w-auto"
                     href="#"
                   >
                     Get Started
@@ -197,7 +197,7 @@ return (
               </div>
 
               <div className='flex justify-center pb-10 md:flex-row sm:flex-col sm:items-center md:space-y-0 sm:space-y-4 xl:gap-28 lg:gap-10 md:gap-5'>
-                <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-[1px] rounded text-neutral-700 border-neutral-700 shadow-lg dark:text-neutral-300 dark:border-neutral-300'>
+                <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-[1px] rounded-lg text-neutral-700 dark:bg-neutral-800 border-neutral-700 shadow-lg dark:text-neutral-300 dark:border-neutral-300'>
                   <div className='text-7xl transition duration-300 transform hover:scale-105 text-black dark:text-white'><PiRocketFill /></div>
                   <div className='text-xl font-bold p-3 text-black-700 dark:text-neutral-200'>24/7 Online</div>
                   <div className='text-sm font-base text-black-500'>
@@ -205,13 +205,13 @@ return (
                   </div>
                 </div>
 
-                <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-[1px] rounded text-neutral-700 border-neutral-700 shadow-lg dark:text-neutral-300 dark:border-neutral-300'>
+                <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-[1px] rounded-lg text-neutral-700 dark:bg-neutral-800 border-neutral-700 shadow-lg dark:text-neutral-300 dark:border-neutral-300'>
                   <div className='text-7xl transition duration-300 transform hover:scale-105 text-black dark:text-white'><PiBookBookmarkFill /></div>
                   <div className='text-xl font-bold p-3 text-black-700 dark:text-neutral-200'>Fast Booking</div>
                   <div className='text-sm font-base text-black-500'>"Quick and easy! Fast booking, because your time matters."</div>
                 </div>
 
-                <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-[1px] rounded text-neutral-700 border-neutral-700 shadow-lg dark:text-neutral-300 dark:border-neutral-300'>
+                <div className='flex flex-col justify-center items-center box-border h-64 w-64 p-4 border-[1px] rounded-lg text-neutral-700 dark:bg-neutral-800 border-neutral-700 shadow-lg dark:text-neutral-300 dark:border-neutral-300'>
                   <div className='text-7xl transition duration-300 transform hover:scale-105 text-black dark:text-white'><PiCloudArrowUpFill /></div>
                   <div className='text-xl font-bold p-3 text-black-700 dark:text-neutral-200'>Cloud Storage</div>
                   <div className='text-sm font-base text-black-500'>"Sky high storage, lightning-fast access your data's new home in the cloud!"</div>
@@ -369,7 +369,7 @@ return (
                                       <p className="dark:text-neutral-300">
                                           {item.desc}
                                       </p>
-                                      <button className='px-3 py-3 rounded-lg w-full font-semibold text-sm duration-150 text-white bg-neutral-600 hover:bg-neutral-500 active:bg-neutral-700'>
+                                      <button className='px-3 py-3 rounded-lg w-full font-semibold text-sm duration-150 text-white bg-neutral-900 dark:bg-neutral-700 hover:bg-neutral-500 dark:hover:bg-neutral-500 active:bg-neutral-700'>
                                           Get Started
                                       </button>
                                   </div>
