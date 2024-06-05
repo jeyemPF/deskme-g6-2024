@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import deskmap from '../assets/deskmap.png';
 import Desk1 from '../assets/Desk1.jpeg';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
 import { LayoutDashboard, Layers, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Booking = () => {
   const [hoveredArea, setHoveredArea] = useState(null);
+  const [selectedDesk, setSelectedDesk] = useState(null);
+  const [tableItems, setTableItems] = useState([]);
+
+  useEffect(() => {
+    fetchTableItems();
+  }, []);
+
+  const fetchTableItems = async () => {
+    try {
+      const response = await axios.get('http://localhost:8800/api/desks/get-all-desks/');
+      setTableItems(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const [bookingData, setBookingData] = useState({
     userId: '',
     deskId: '',
@@ -49,7 +66,12 @@ const Booking = () => {
     { desk: 22, top: 81, left: 54.5, width: 9.5, height: 16 },
     { desk: 23, top: 81, left: 63.5, width: 9.5, height: 16 },
     { desk: 24, top: 81, left: 73, width: 9.5, height: 16 },
-  ];
+];
+
+// Filter desks 1-7 from the areas array
+
+
+// Filter desks 8-24 from the areas array
   const handleMouseEnter = (index) => {
     setHoveredArea(index);
   };
@@ -58,15 +80,16 @@ const Booking = () => {
     setHoveredArea(null);
   };
 
-  const handleAreaClick = (desk) => {
-    const selectedDeskDetails = {
-      desk: desk,
-      picture: deskmap, // Assuming 'Desk1' is replaced with the deskmap image
-      amenities: ['Ergonomic chair', 'Monitor', 'Power outlets'],
-    };
-    setBookingData({ ...bookingData, deskId: desk });
-    setIsAreaClicked(true);
+
+  const handleAreaClick = async (deskId) => {
+    try {
+      const response = await axios.get(`http://localhost:8800/api/desks/get-all-desks/${deskId}`);
+      setSelectedDesk(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
 
   const [isOn, setIsOn] = useState(false);
 
@@ -87,18 +110,18 @@ const Booking = () => {
     navigate('/managebooking');
   }
 
-  const tableItems = [
-    {
-      desk_id: 1,
-      area: "Left Wing",
-      status: "Pending",
-    },
-    {
-      desk_id: 2,
-      area: "Right Wing",
-      status: "Pending",
-    }
-  ];
+  // const tableItems = [
+  //   {
+  //     desk_id: 1,
+  //     area: "Left Wing",
+  //     status: "Pending",
+  //   },
+  //   {
+  //     desk_id: 2,
+  //     area: "Right Wing",
+  //     status: "Pending",
+  //   }
+  // ];
 
   return (
     <>
@@ -117,6 +140,18 @@ const Booking = () => {
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
+
+            {selectedDesk && (
+  <>
+    <p className="font-bold">Selected Desk:</p>
+    <p>Desk Number: {selectedDesk.title}</p>
+    <p>Area: {selectedDesk.area}</p>
+    <p>Status: {selectedDesk.status}</p>
+    <p>Office Equipment: {selectedDesk.officeEquipment.join(', ')}</p>
+    {console.log('Selected Desk:', selectedDesk)}
+  </>
+)}
+
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
@@ -150,19 +185,17 @@ const Booking = () => {
                           </tr>
                         </thead>
                         <tbody className="text-gray-600 divide-y text-center text-sm">
-                          {
-                            tableItems.map((item, idx) => (
-                              <tr key={idx}>
-                                <td className="pr-6 py-4 whitespace-nowrap">{item.desk_id}</td>
+                        {tableItems.map((item, idx) => (
+                            <tr key={idx} onClick={() => handleAreaClick(item._id)}>
+                                <td className="pr-6 py-4 whitespace-nowrap">{item.title}</td>
                                 <td className="pr-6 py-4 whitespace-nowrap">{item.area}</td>
                                 <td className="pr-6 py-4 whitespace-nowrap">
-                                  <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                    {item.status}
-                                  </span>
+                                    <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "available" ? "text-green-600 bg-green-50" : (item.status === "reserved" ? "text-blue-600 bg-blue-50" : "text-red-600 bg-red-50")}`}>
+                                        {item.status}
+                                    </span>
                                 </td>
-                              </tr>
-                            ))
-                          }
+                            </tr>
+                        ))}
                         </tbody>
                       </table>
                     </div>
@@ -225,22 +258,22 @@ const Booking = () => {
                 <h1 className="lg:text-xl md:pl-2 sm:pl-0 font-bold mb-4">Desk Map</h1>
                 <div className="relative w-full">
                   <img src={imageUrl} alt="mapper" className="w-full" />
-                  {areas.map((area, index) => (
-                    <div
-                      key={index}
-                      className="absolute cursor-pointer"
-                      style={{
-                        top: `${area.top}%`,
-                        left: `${area.left}%`,
-                        width: `${area.width}%`,
-                        height: `${area.height}%`,
-                        backgroundColor: hoveredArea === index ? 'rgba(0, 128, 0, 0.3)' : 'transparent',
-                      }}
-                      onMouseEnter={() => handleMouseEnter(index)}
-                      onMouseLeave={handleMouseLeave}
-                      onClick={() => handleAreaClick(area.desk)}
-                    ></div>
-                  ))}
+                   {areas.map((area, index) => (
+                        <div
+                          key={index}
+                          className="absolute cursor-pointer"
+                          style={{
+                            top: `${area.top}%`,
+                            left: `${area.left}%`,
+                            width: `${area.width}%`,
+                            height: `${area.height}%`,
+                            backgroundColor: hoveredArea === index ? 'rgba(0, 128, 0, 0.3)' : 'transparent',
+                          }}
+                          onMouseEnter={() => handleMouseEnter(index)}
+                          onMouseLeave={handleMouseLeave}
+                          onClick={() => handleAreaClick(area.desk)} // Pass deskId to handleAreaClick
+                        ></div>
+                      ))}
                 </div>
                 <h1 className="lg:text-xl md:pl-2 sm:pl-0 font-bold mt-4 mb-4 gap-4">Note:</h1>
                 <span className="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700 md:ml-2 mr-3">
@@ -313,31 +346,30 @@ const Booking = () => {
                     <img src={Desk1} className='rounded-md'/>
                   </div>
                   <div className="mb-5 flex flex-wrap">
-                    <span className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mr-3 mb-2">
-                        Chair
+                  {selectedDesk && selectedDesk.officeEquipment && selectedDesk.officeEquipment.map((equipment, index) => (
+                    <span key={index} className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mr-3 mb-2">
+                      {equipment}
                     </span>
-                    <span className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mr-3 mb-2">
-                        Laptop
-                    </span>
-                    <span className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mb-2">
-                        Computer Table
-                    </span>
-                  </div>
+                  ))}
+                </div>
+
                   <form>
-                    <div className="mb-4 flex">
-                      <div className="w-1/2 mr-2">
-                        <label htmlFor="deskId" className="block text-sm font-medium text-gray-700">Desk ID:</label>
-                        <input
-                          type="text"
-                          id="deskId"
-                          name="deskId"
-                          readOnly="readonly"
-                          value={bookingData.deskId}
-                          onChange={(e) => setBookingData({ ...bookingData, deskId: e.target.value })}
-                          className={`mt-1 p-2 border ${emptyFields.deskId ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                          disabled="disableonly"
-                        />
-                      </div>
+                  <div className="mb-4 flex">
+                        <div className="w-1/2 mr-2">
+                          <label htmlFor="deskId" className="block text-sm font-medium text-gray-700">Desk ID:</label>
+                          <input
+                            type="text"
+                            id="deskId"
+                            name="deskId"
+                            readOnly
+                            value={selectedDesk && selectedDesk.title ? selectedDesk.title : ''}
+                            onChange={(e) => setBookingData({ ...selectedDesk, title: e.target.value })}
+                            className={`mt-1 p-2 border ${emptyFields.deskId ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                            disabled
+                          />
+                        </div>
+
+
                       <div className="w-1/2 ml-2">
                         <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date:</label>
                         <input
@@ -376,7 +408,7 @@ const Booking = () => {
                           disabled={!isAreaClicked}
                         />
                       </div>
-                    </div>
+                    </div> 
                     <div className="flex justify-end">
                       <button type="button" className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-normal py-2 px-4 rounded">Cancel</button>
                       <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-normal py-2 px-4 rounded ml-2" disabled={!isAreaClicked}>Book</button>

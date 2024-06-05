@@ -6,21 +6,28 @@ import { scheduleJob } from 'node-schedule';
 import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation } from "../utils/emailService.js";
 import AuditTrail from "../models/AuditTrail.js";
 import { formatInTimeZone,  format } from 'date-fns-tz';
+import mongoose from "mongoose";
 
 
 
 export const createReservation = async (req, res, next) => {
     try {
-        const { userId, deskId } = req.params;
+        // Retrieve the user ID from the authenticated user's token or session
+        const userId = req.user.id;
+        const { deskId } = req.params;
         const { date, startTime, endTime } = req.body;
 
-        // Find the user and desk based on their IDs
-        const user = await User.findById(userId);
+        // Validate deskId
+        if (!mongoose.Types.ObjectId.isValid(deskId)) {
+            return res.status(400).json({ message: "Invalid desk ID" });
+        }
+
+        // Find the desk based on its ID
         const desk = await Desk.findById(deskId);
 
-        // Check if user and desk exist
-        if (!user || !desk) {
-            return res.status(404).json({ message: "User or desk not found" });
+        // Check if the desk exists
+        if (!desk) {
+            return res.status(404).json({ message: "Desk not found" });
         }
 
         // Convert the provided date and time to UTC using the local time zone
@@ -35,7 +42,7 @@ export const createReservation = async (req, res, next) => {
 
         // Check if the desk is already reserved during the requested time slot
         const existingReservation = await Reservation.findOne({
-            desk: desk,
+            desk: desk._id,
             date,
             $or: [
                 { startTime: { $lt: reservationEndTime }, endTime: { $gt: reservationStartTime } },
@@ -59,8 +66,8 @@ export const createReservation = async (req, res, next) => {
 
         // Create a new reservation instance with status 'APPROVED'
         const newReservation = new Reservation({
-            user: user,
-            desk: desk,
+            user: userId, // Assign the authenticated user's ID
+            desk: desk._id,
             date,
             startTime: reservationStartTime,
             endTime: reservationEndTime,
@@ -83,7 +90,8 @@ export const createReservation = async (req, res, next) => {
         });
 
         // Send reservation confirmation email if the user wants to receive emails
-        if (user.receiveReservationEmails) {
+        const user = await User.findById(userId);
+        if (user && user.receiveReservationEmails) {
             const emailBody = getEmailContentReservation(user.username, savedReservation);
             await sendReservationConfirmationEmail(user.email, emailBody);
         }
@@ -117,7 +125,6 @@ export const createReservation = async (req, res, next) => {
         next(err);
     }
 };
-
 
 export const cancelReservation = async (req, res, next) => {
     try {

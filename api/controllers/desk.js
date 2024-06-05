@@ -1,6 +1,7 @@
 import Desk from "../models/Desk.js";
 import Reservation from "../models/Reservation.js";
 import { officeEquipmentEnum } from "../utils/officeEquipment.js";
+import mongoose from "mongoose";
 
 
 
@@ -142,3 +143,91 @@ export const countUnavailableDesks = async (req, res, next) => {
         next(err);
     }
 };
+
+
+export const getAllDesks = async (req, res, next) => {
+    try {
+      // Find all desks from all wings
+      const desks = await Desk.find({ area: { $in: ['Left wing', 'Center Wing', 'Right Wing'] } });
+  
+      if (!desks || desks.length === 0) {
+        return res.status(404).json({ message: 'No desks found in any wing' });
+      }
+  
+      res.status(200).json(desks);
+    } catch (err) {
+      next(err);
+    }
+  }
+  
+
+
+  export const getAllDeskAtLeftWing = async (req, res, next) => {
+    try {
+        // Find all desks in the left wing
+        const desks = await Desk.find({ area: 'Left wing' });
+    
+        if (!desks) {
+          return res.status(404).json({ message: 'No desks found in the left wing' });
+        }
+    
+        res.status(200).json(desks);
+      } catch (err) {
+        next(err);
+      }
+  }
+
+
+  export const getAllDeskAtLeftWingDetails = async (req, res, next) => {
+    try {
+        const deskId = req.params.deskId;
+        
+        // Check if deskId is a valid ObjectId or convert it to ObjectId
+        const isValidObjectId = mongoose.Types.ObjectId.isValid(deskId);
+        const query = isValidObjectId ? { _id: mongoose.Types.ObjectId(deskId), area: 'Left wing' } : { title: `Desk ${deskId}`, area: 'Left wing' };
+    
+        // Find the desk with the specified ID or desk number in the left wing
+        const desk = await Desk.findOne(query);
+    
+        if (!desk) {
+          return res.status(404).json({ message: 'Desk not found in the left wing' });
+        }
+    
+        res.status(200).json(desk);
+      } catch (err) {
+        next(err);
+      }
+  }
+
+
+  export const getAllDesksDetails = async (req, res, next) => {
+    try {
+      const deskId = req.params.deskId;
+  
+      // Check if deskId is a valid ObjectId or convert it to ObjectId
+      const isValidObjectId = mongoose.Types.ObjectId.isValid(deskId);
+  
+      let query;
+      
+      if (isValidObjectId) {
+        // If deskId is a valid ObjectId, query by _id and area
+        query = { _id: mongoose.Types.ObjectId(deskId), area: { $in: ['Left wing', 'Center Wing', 'Right Wing'] } };
+      } else {
+        // If deskId is not a valid ObjectId, assume it's a desk number and query by title and area
+        query = { title: `Desk ${deskId}`, area: { $in: ['Left wing', 'Center Wing', 'Right Wing'] } };
+      }
+  
+      const desk = await Desk.findOne(query);
+  
+      if (!desk) {
+        return res.status(404).json({ message: 'Desk not found in the Map' });
+      }
+  
+      res.status(200).json(desk);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  
+  

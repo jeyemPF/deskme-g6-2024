@@ -1,12 +1,12 @@
 import express from 'express';
 
 import {deleteAllReservations, createReservation, getAllReservations, approveReservations, cancelReservation, getReservationCount, getAvailableDeskCount, getPendingReservations, getPendingReservationsCount, addFeedback, getReservationFeedback } from '../controllers/reservation.js';
-import {verifyOfficeManager } from '../utils/verifyToken.js'
+import {protect, verifyOfficeManager } from '../utils/verifyToken.js'
 
 const router = express.Router();
 
 // Routes for reservations
-router.post('/:userId/:deskId', createReservation);
+router.post('/book/:deskId', protect, createReservation);
 
 // cancel reservation
 router.delete('/cancel-reservation/:reservationId' , cancelReservation);
