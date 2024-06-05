@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
-import { IoMenuSharp } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import Switcher from '../components/Switcher';
+import Logo from '../assets/Logo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [state, setState] = useState(false);
+
+  const navigate = useNavigate();
+
+  const navigation = [
+    { title: "Home", path: "/" },
+    { title: "About", path: "/about" },
+    { title: "Services", path: "/services" },
+    { title: "Contact Us", path: "/contact" },
+  ];
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -15,74 +25,71 @@ const Navbar = () => {
     location.reload();
   };
 
-  const navigate = useNavigate();
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
   const handleClick = () => {
-    navigate('/Login');
+    navigate('/login');
   };
-  
 
   return (
-    <div className="bg-neutral-50">
-      <nav className="bg-neutral-50 w-full start-0 dark:bg-neutral-900">
-        <div className="flex flex-col-reverse items-center justify-between max-w-screen-navbar mx-auto">
-
-          <div className="flex justify-end md:items-center sm:justify-between w-full navbar:w-auto gap-48">
-          <h1 onClick={handleClickH1} className="flex w-full max-w-60 font-black lg:w-60 lg:p-12 lg:text-4xl md:w-52 md:p-8 md:text-2xl sm:w-32 sm:p-5 sm:text-xl cursor-pointer text-neutral-900 dark:text-white">DESKME</h1> 
-
-            <ul className="hidden navbar:flex gap-14 pt-1">
-              <li className="font-medium">
-                <a href="/" className="relative text-neutral-800 hover:text-neutral-800 transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-neutral-700 after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-50 dark:text-neutral-300 dark:transition-colors dark:duration-300 dark:after:absolute dark:after:bottom-0 dark:after:left-0 dark:after:w-full dark:after:h-0.5 dark:after:bg-neutral-300 dark:after:origin-left dark:after:scale-x-0 dark:after:transition-transform dark:after:duration-300 dark:hover:after:scale-x-50">Home</a>
-              </li>
-              <li className="font-medium">
-                <a href="/about" className="relative text-neutral-800 hover:text-neutral-800 transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-neutral-700 after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-50 dark:text-neutral-300 dark:transition-colors dark:duration-300 dark:after:absolute dark:after:bottom-0 dark:after:left-0 dark:after:w-full dark:after:h-0.5 dark:after:bg-neutral-300 dark:after:origin-left dark:after:scale-x-0 dark:after:transition-transform dark:after:duration-300 dark:hover:after:scale-x-50">About us</a>
-              </li>
-              <li className="font-medium">
-                <a href="/services" className="relative text-neutral-800 hover:text-neutral-800 transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-neutral-700 after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-50 dark:text-neutral-300 dark:transition-colors dark:duration-300 dark:after:absolute dark:after:bottom-0 dark:after:left-0 dark:after:w-full dark:after:h-0.5 dark:after:bg-neutral-300 dark:after:origin-left dark:after:scale-x-0 dark:after:transition-transform dark:after:duration-300 dark:hover:after:scale-x-50">Services</a>
-              </li>
-              <li className="font-medium">
-                <a href="/contact" className="relative text-neutral-800 hover:text-neutral-800 transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-neutral-700 after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-50 dark:text-neutral-300 dark:transition-colors dark:duration-300 dark:after:absolute dark:after:bottom-0 dark:after:left-0 dark:after:w-full dark:after:h-0.5 dark:after:bg-neutral-300 dark:after:origin-left dark:after:scale-x-0 dark:after:transition-transform dark:after:duration-300 dark:hover:after:scale-x-50">Contact Us</a>
-              </li>
-            </ul>
-
-            <div className="flex navbar:hidden gap-1 -ml-10">
-              <button className="text-neutral-700 text-xl pt-1"><Switcher /></button>
-              <button className="text-neutral-700 text-2xl pt-1 dark:text-neutral-300" onClick={toggleMenu}>
-                <IoMenuSharp />
-              </button>
-            </div>
-
-            <div className="hidden navbar:flex gap-2 lg:ml-auto">
-              <button className="text-neutral-700 text-xl">
-              </button>
-              <button className="text-neutral-700 text-2xl"><Switcher /></button>
-              <p></p>
-              <button onClick={handleClick} className="hidden md:block text-neutral-700 bg-white font-medium rounded-lg border-[1px] border-neutral-700 text-sm px-6 py-2.5 hover:bg-neutral-700 hover:text-white transition-colors duration-300 dark:text-neutral-300 dark:bg-neutral-900 dark:border-neutral-300 dark:hover:bg-neutral-300 dark:hover:text-neutral-700 dark:transition-colors dark:duration-300">Login</button>
-            </div>
+    <nav className="bg-neutral-50 dark:bg-neutral-900 w-full md:static md:text-sm border-b-[1px] border-neutral-200 dark:border-neutral-400">
+      <div className="items-center px-4 max-w-screen-xl mx-auto md:flex md:px-8">
+        <div className="flex items-center justify-between py-3 md:py-5 md:block">
+          <a onClick={handleClickH1} className="flex items-center">
+            <img
+              className='cursor-pointer'
+              onClick={handleClickH1}
+              src={Logo}
+              width={40}
+              height={45}
+              alt="Deskme Logo"
+            />
+            <h1 className="font-extrabold md:text-3xl sm:text-lg cursor-pointer text-neutral-700 dark:text-neutral-100 ml-2">DESKME</h1>
+          </a>
+          <div className="md:hidden">
+            <button className="text-gray-500 dark:text-neutral-300 hover:text-gray-800"
+                onClick={() => setState(!state)}
+            >
+              {state ? (
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
-      </nav>
-
-      {isOpen && (
-        <div className="navbar:hidden sm:bg-neutral-50 sm:w-full sm:h-full sm:justify-center sm:items-center sm:pt-3 sm:pb-5 sm:border-b sm:border-black dark:bg-neutral-900 dark:border-white">
-          <ul className="flex flex-col items-center">
-            <li className="my-2 mx-4 font-bold">
-              <a href="/" className="relative text-black hover:text-black transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-black after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-50 dark:text-white dark:transition-colors dark:duration-300 dark:after:absolute dark:after:bottom-0 dark:after:left-0 dark:after:w-full dark:after:h-0.5 dark:after:bg-white dark:after:origin-left dark:after:scale-x-0 dark:after:transition-transform dark:after:duration-300 dark:hover:after:scale-x-50">Home</a>
-            </li>
-            <li className="my-2 mx-4 font-bold">
-              <a href="/about" className="relative text-black hover:text-black transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-black after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-50 dark:text-white dark:transition-colors dark:duration-300 dark:after:absolute dark:after:bottom-0 dark:after:left-0 dark:after:w-full dark:after:h-0.5 dark:after:bg-white dark:after:origin-left dark:after:scale-x-0 dark:after:transition-transform dark:after:duration-300 dark:hover:after:scale-x-50">About us</a>
-            </li>
-            <li className="my-2 mx-4 font-bold">
-              <a href="/services" className="relative text-black hover:text-black transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-black after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-50 dark:text-white dark:transition-colors dark:duration-300 dark:after:absolute dark:after:bottom-0 dark:after:left-0 dark:after:w-full dark:after:h-0.5 dark:after:bg-white dark:after:origin-left dark:after:scale-x-0 dark:after:transition-transform dark:after:duration-300 dark:hover:after:scale-x-50">Services</a>
-            </li>
-            <li className="my-2 mx-4 font-bold">
-              <a href="/contact" className="relative text-black hover:text-black transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-black after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-50 dark:text-white dark:transition-colors dark:duration-300 dark:after:absolute dark:after:bottom-0 dark:after:left-0 dark:after:w-full dark:after:h-0.5 dark:after:bg-white dark:after:origin-left dark:after:scale-x-0 dark:after:transition-transform dark:after:duration-300 dark:hover:after:scale-x-50">Contact Us</a>
-            </li>
-            <button onClick={handleClick} className="text-white bg-black font-bold rounded-lg border-2 border-black shadow-lg text-sm px-6 py-2.5 mt-2 hover:bg-white hover:text-black transition-colors duration-300 dark:text-black dark:bg-white dark:border-white dark:hover:bg-neutral-900 dark:hover:text-white dark:transition-colors dark:duration-300">Login</button>
+        <div className={`flex-1 pb-3 mt-8 md:block md:pb-0 md:mt-0 ${state ? 'block' : 'hidden'}`}>
+          <ul className="justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
+            {navigation.map((item, idx) => (
+              <li key={idx} className="text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-neutral-500">
+                <button onClick={() => handleNavigation(item.path)} className="block">
+                  {item.title}
+                </button>
+              </li>
+            ))}
+            <span className='hidden w-[0.5px] h-4 bg-gray-300 dark:bg-gray-400 md:block'></span>
+            <div className='space-y-3 items-center gap-x-6 md:flex md:space-y-0'>
+              <li>
+                <button className="block py-3 text-center text-neutral-700 hover:text-neutral-950 border rounded-lg md:border-none">
+                  <Switcher />
+                </button>
+              </li>
+              <li>
+                <button onClick={handleClick} className="block py-3 px-4 font-medium text-center text-white dark:text-black bg-neutral-900 dark:bg-neutral-300 hover:bg-neutral-700 dark:hover:bg-neutral-100 active:bg-neutral-700 dark:active:bg-neutral-100 active:shadow-none rounded shadow md:inline">
+                  Sign in
+                </button>
+              </li>
+            </div>
           </ul>
         </div>
-      )}
-    </div>
+      </div>
+    </nav>
   );
 };
 

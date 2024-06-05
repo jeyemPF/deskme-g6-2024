@@ -5,7 +5,10 @@ const FAQ = () => {
   return (
     <div className="flex justify-center mt-1">
     <div className="p-4 mx-1 rounded-lg w-[75%] ">
-    <h1 className="font-bold text-2xl pb-5 text-center dark:text-neutral-100">Frequently Asked Questions:</h1>
+    <h1 className="font-bold text-3xl pb-5 text-center dark:text-neutral-100">Frequently Asked Questions:</h1>
+      <p className="text-gray-600 max-w-lg mx-auto text-md text-center -mt-3 dark:text-neutral-300">
+        Answered all frequently asked questions, Still confused? <br /> feel free to contact us.
+      </p>
       <Accordion
         title="How do I book a hot desk?"
         answer=" Simply log in first to our Hotdesk Booking system with your credentials, after logging in go to booking and then select your desired date and time, and choose an available hot desk location."
