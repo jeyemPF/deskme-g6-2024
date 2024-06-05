@@ -6,6 +6,7 @@ import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Si
 import { LayoutDashboard, Layers, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ReservationForm from '../components/ReservationForm';
 
 const Booking = () => {
   const [hoveredArea, setHoveredArea] = useState(null);
@@ -13,7 +14,7 @@ const Booking = () => {
   const [tableItems, setTableItems] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 4;
 
 
   useEffect(() => {
@@ -30,7 +31,6 @@ const Booking = () => {
   };
 
   const [bookingData, setBookingData] = useState({
-    userId: '',
     deskId: '',
     date: '',
     startTime: '',
@@ -203,7 +203,7 @@ const Booking = () => {
                       <table className="w-full table-auto">
                         <thead className="text-gray-900 font-medium text-lg border-b text-center">
                           <tr>
-                            <th className="py-3 pr-6">ID</th>
+                            <th className="py-3 pr-6">Desk</th>
                             <th className="py-3 pr-6">Area</th>
                             <th className="py-3 pr-6">Status</th>
                           </tr>
@@ -378,68 +378,11 @@ const Booking = () => {
                     </span>
                   ))}
                 </div>
-
-                  <form>
-                  <div className="mb-4 flex">
-                        <div className="w-1/2 mr-2">
-                          <label htmlFor="deskId" className="block text-sm font-medium text-gray-700">Desk ID:</label>
-                          <input
-                            type="text"
-                            id="deskId"
-                            name="deskId"
-                            readOnly
-                            value={selectedDesk && selectedDesk.title ? selectedDesk.title : ''}
-                            onChange={(e) => setBookingData({ ...selectedDesk, title: e.target.value })}
-                            className={`mt-1 p-2 border ${emptyFields.deskId ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                            disabled
-                          />
-                        </div>
-
-
-                      <div className="w-1/2 ml-2">
-                        <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date:</label>
-                        <input
-                          type="date"
-                          id="date"
-                          name="date"
-                          value={bookingData.date}
-                          onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
-                          className={`mt-1 p-2 border ${emptyFields.date ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                          disabled={!isAreaClicked}
-                        />
-                      </div>
-                    </div>
-                    <div className="mb-10 flex">
-                      <div className="w-1/2 mr-2">
-                        <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">Start Time:</label>
-                        <input
-                          type="time"
-                          id="startTime"
-                          name="startTime"
-                          value={bookingData.startTime}
-                          onChange={(e) => setBookingData({ ...bookingData, startTime: e.target.value })}
-                          className={`mt-1 p-2 border ${emptyFields.startTime ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                          disabled={!isAreaClicked}
-                        />
-                      </div>
-                      <div className="w-1/2 ml-2">
-                        <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time:</label>
-                        <input
-                          type="time"
-                          id="endTime"
-                          name="endTime"
-                          value={bookingData.endTime}
-                          onChange={(e) => setBookingData({ ...bookingData, endTime: e.target.value })}
-                          className={`mt-1 p-2 border ${emptyFields.endTime ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                          disabled={!isAreaClicked}
-                        />
-                      </div>
-                    </div> 
-                    <div className="flex justify-end">
-                      <button type="button" className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-normal py-2 px-4 rounded">Cancel</button>
-                      <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-normal py-2 px-4 rounded ml-2" disabled={!isAreaClicked}>Book</button>
-                    </div>
-                  </form>
+                <ReservationForm 
+                  selectedDesk={selectedDesk}
+                  isAreaClicked={isAreaClicked}
+                  setBookingData={setBookingData}
+                  emptyFields={emptyFields} />
                 </div>
               </div>
             </div>
