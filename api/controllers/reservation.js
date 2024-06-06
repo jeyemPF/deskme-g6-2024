@@ -311,7 +311,7 @@ export const getUserBookingHistory = async (req, res, next) => {
 
         // Fetch reservations associated with the authenticated user
         const bookings = await Reservation.find({ user: userId })
-            .populate('desk', 'name area officeEquipment') // Optionally populate desk details
+            .populate('desk', 'title area ') // Optionally populate desk details
             .select('date startTime endTime status'); // Select required fields
 
         res.status(200).json({ success: true, bookings });
@@ -319,3 +319,20 @@ export const getUserBookingHistory = async (req, res, next) => {
         next(err);
     }
 };
+
+export const countUserReservations = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+
+        // Fetch reservations associated with the provided user ID
+        const reservations = await Reservation.find({ user: userId });
+
+        // Count the number of reservations
+        const totalCount = reservations.length;
+
+        res.status(200).json({ success: true, totalCount });
+    } catch (error) {
+        next(error);
+    }
+};
+

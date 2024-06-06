@@ -65,11 +65,12 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!validateFields()) return;
-
+  
     setLoading(true);
     try {
       const response = await axios.post('http://localhost:8800/api/auth/login', { email, password });
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userId', response.data.user._id); // Store the user ID
       sessionStorage.setItem('userCredentials', JSON.stringify(response.data));
       
       const userRole = response.data.user.role;
@@ -87,7 +88,7 @@ const Login = () => {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className='flex flex-col items-center justify-center mt-32'>
       <div className='border-[1px] border-neutral-700 rounded-lg shadow-lg w-full max-w-md p-8'>
