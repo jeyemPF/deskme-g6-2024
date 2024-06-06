@@ -37,8 +37,8 @@ const Dashboard = () => {
     navigate('/booking');
   };
 
-  const handleManageBookingClick = () => {
-    navigate('/managebooking');
+  const handleMyBookingClick = () => {
+    navigate('/mybooking');
   };
 
   const onPanelChange = (value, mode) => {
@@ -82,7 +82,7 @@ const Dashboard = () => {
           <Sidebar>
             <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
-            <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
+            <SidebarItem icon={<Layers size={20} />} text="My Bookings" onClick={handleMyBookingClick} />
             <hr className="my-3" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
             <hr className="my-3" />

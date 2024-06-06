@@ -304,3 +304,18 @@ export const getAllReservations = async (req, res, next) => {
         next(err);
     }
 };
+
+export const getUserBookingHistory = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+
+        // Fetch reservations associated with the authenticated user
+        const bookings = await Reservation.find({ user: userId })
+            .populate('desk', 'name area officeEquipment') // Optionally populate desk details
+            .select('date startTime endTime status'); // Select required fields
+
+        res.status(200).json({ success: true, bookings });
+    } catch (err) {
+        next(err);
+    }
+};

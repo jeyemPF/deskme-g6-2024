@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
 import Header from '../components/Header'
 
-const ManageBooking = () => {
+const MyBooking = () => {
 const [isModalOpen, setIsModalOpen] = useState(false);
 
 const handleManageClick = () => {
@@ -43,7 +43,7 @@ const handleCloseModal = () => {
           <Sidebar>
             <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick} />
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
-            <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" active />
+            <SidebarItem icon={<Layers size={20} />} text="My Bookings" active />
             <hr className="my-3" />
             <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
@@ -51,7 +51,7 @@ const handleCloseModal = () => {
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>
           <Content>
-            <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Manage Bookings</h1>
+            <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>My Bookings</h1>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
@@ -215,4 +215,4 @@ const handleCloseModal = () => {
   )
 }
 
-export default ManageBooking
+export default MyBooking

@@ -113,9 +113,9 @@ const Booking = () => {
   const handleDashboardClick = () => {
     navigate('/dashboard');
   };
-  const handleManageBookingClick = () => {
-    navigate('/managebooking');
-  }
+  const handleMyBookingClick = () => {
+    navigate('/mybooking');
+  };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -142,7 +142,7 @@ const Booking = () => {
           <Sidebar>
             <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick} />
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" active />
-            <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
+            <SidebarItem icon={<Layers size={20} />} text="My Bookings" onClick={handleMyBookingClick} />
             <hr className="my-3" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
             <hr className="my-3" />

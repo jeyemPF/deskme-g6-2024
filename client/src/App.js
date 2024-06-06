@@ -24,6 +24,7 @@ import SAAuditReport from './superadmin/SAAuditReport';
 import OMDashboard from './officemanager/OMDashboard';
 import OMBooking from './officemanager/OMBooking';
 import OMManageBooking from './officemanager/OMManageBooking';
+import MyBooking from '../src/user/ManageBooking';
 
 function App() {
   return (
@@ -39,7 +40,7 @@ function App() {
         <Route path="/authenticatesuccess" element={<AuthenticateSuccess />} />
         <Route path='/dashboard' element={<Dashboard />} /> 
         <Route path='/booking' element={<Booking />} />
-        <Route path='/managebooking' element={<ManageBooking />} />
+        <Route path='/mybooking' element={<MyBooking />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
         <Route path='/newpassword/:token/:id' element={<NewPassword />} />
         <Route path='/admindashboard' element={<ADashboard />} />
