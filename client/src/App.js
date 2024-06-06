@@ -24,6 +24,7 @@ import SAAuditReport from './superadmin/SAAuditReport';
 import OMDashboard from './officemanager/OMDashboard';
 import OMBooking from './officemanager/OMBooking';
 import OMManageBooking from './officemanager/OMManageBooking';
+import Error from './components/Error';
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
         <Route path='/officedashboard' element={<OMDashboard />} />
         <Route path='/officebooking' element={<OMBooking />} />
         <Route path='/officemanagebooking' element={<OMManageBooking />} />
+        <Route path='/error' element={<Error />} />
       </Routes>
     </Router> 
   </div>
