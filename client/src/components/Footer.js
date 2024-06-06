@@ -2,175 +2,161 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <div>
-            <footer
-            className="text-center text-neutral-700 lg:text-left">
-            <div
-                className="flex items-center justify-center border-b-[1px] border-neutral-700 p-6 lg:justify-between dark:border-neutral-300">
-                <div className="mr-12 hidden lg:block font-medium">
-                <span className='dark:text-neutral-300'>Get connected with us on social networks:</span>
-                </div>
-                {/* <!-- Social network icons container --> */}
-                <div className="flex justify-center">
-                <a className="mr-6 text-neutral-700 transition duration-300 transform hover:scale-150 cursor-pointer dark:text-neutral-300">
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    fill="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                        d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-                    </svg>
-                </a>
-                <a className="mr-6 text-neutral-700 transition duration-300 transform hover:scale-150 cursor-pointer dark:text-neutral-300">
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    fill="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                        d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
-                    </svg>
-                </a>
-                <a className="text-neutral-700 transition duration-300 transform hover:scale-150 cursor-pointer dark:text-neutral-300">
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    fill="currentColor"
-                    viewBox="0 0 24 24">
-                    <path
-                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                    </svg>
-                </a>
-                </div>
-            </div>
+    <footer className="bg-neutral-50 dark:bg-neutral-900 lg:grid lg:grid-cols-5 border-t-[1px] border-neutral-200 dark:border-neutral-300">
+        <div className="relative block h-20 lg:col-span-2 lg:h-full">
+            <img
+            src="https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover border-r-[1px] border-neutral-200"
+            />
+        </div>
 
-            {/* <!-- Main container div: holds the entire content of the footer, including four sections (TW Elements, Products, Useful links, and Contact), with responsive styling and appropriate padding/margins. --> */}
-            <div className="mx-6 py-10 text-center md:text-left">
-                <div className="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-5">
-                {/* <!-- DeskMe section --> */}
-                <div className="">
-                    <h6
-                    className="mb-1 text-2xl flex items-center justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
-                    DESKME
-                    </h6>
-                    <p className='text-neutral-700 font-normal dark:text-neutral-300'>
-                    Streamline your workspace experience with our intuitive booking system. 
-                    We ensures your workspace is ready when you are.
-                    </p>
-                </div>
-                {/* <!-- Useful links section --> */}
-                <div className="">
-                    <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
-                    Quick links
-                    </h6>
-                    <p className="mb-4">
-                    <a className="text-neutral-700 dark:text-neutral-300 hover:underline underline-offset-2 cursor-pointer"
-                    >Home</a>
-                    </p>
-                    <p className="mb-4">
-                    <a className="text-neutral-700 dark:text-neutral-300 hover:underline underline-offset-2 cursor-pointer"
-                    >About us</a>
-                    </p>
-                    <p className="mb-4">
-                    <a className="text-neutral-700 dark:text-neutral-300 hover:underline underline-offset-2 cursor-pointer"
-                    >Services</a>
-                    </p>
-                    <p>
-                    <a className="text-neutral-700 dark:text-neutral-300 hover:underline underline-offset-2 cursor-pointer"
-                    >Contact Us</a>
-                    </p>
-                </div>
-                {/* <!-- Company section --> */}
-                <div className="">
-                    <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
-                    Company
-                    </h6>
-                    <p className="mb-4">
-                    <a className="text-neutral-700 dark:text-neutral-300 hover:underline underline-offset-2 cursor-pointer"
-                    >Pricing</a>
-                    </p>
-                    <p className="mb-4">
-                    <a className="text-neutral-700 dark:text-neutral-300 hover:underline underline-offset-2 cursor-pointer"
-                    >Terms & Conditions</a>
-                    </p>
-                    <p className="mb-4">
-                    <a className="text-neutral-700 dark:text-neutral-300 hover:underline underline-offset-2 cursor-pointer"
-                    >Privacy Policy</a>
-                    </p>
-                </div>
-                {/* <!-- Contact section --> */}
-                <div>
-                    <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
-                    Contact
-                    </h6>
-                    <p className="mb-4 flex items-center justify-center md:justify-start text-neutral-700 dark:text-neutral-300">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="mr-3 h-5 w-5">
-                        <path
-                        d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
-                        <path
-                        d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
-                    </svg>
-                    Apalit, Pampanga 2016
-                    </p>
-                    <p className="mb-4 flex items-center justify-center md:justify-start text-neutral-700 dark:text-neutral-300">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="mr-3 h-5 w-5">
-                        <path
-                        d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
-                        <path
-                        d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
-                    </svg>
-                    deskme@gmail.com
-                    </p>
-                    <p className="mb-4 flex items-center justify-center md:justify-start text-neutral-700 dark:text-neutral-300">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="mr-3 h-5 w-5">
+        <div className="px-4 py-16 sm:px-6 lg:col-span-3 lg:px-8">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+            <div>
+                <p>
+                <span className="text-xs uppercase tracking-wide text-neutral-700 dark:text-neutral-300"> Call us </span>
+
+                <a href="#" className="block text-2xl font-medium text-gray-900 dark:text-neutral-100 hover:opacity-75 sm:text-3xl">
+                    +63 921-341-6588
+                </a>
+                </p>
+
+                <ul className="mt-8 space-y-1 text-sm text-gray-700 dark:text-neutral-300">
+                <li>Monday to Friday: 10am - 5pm</li>
+                <li>Weekend: 10am - 3pm</li>
+                </ul>
+
+                <ul className="mt-8 flex gap-6">
+                <li>
+                    <a
+                    href="#"
+                    rel="noreferrer"
+                    target="_blank"
+                    className="text-gray-700 dark:text-neutral-300 transition hover:opacity-75"
+                    >
+                    <span className="sr-only">Facebook</span>
+
+                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path
                         fillRule="evenodd"
-                        d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z"
-                        clipRule="evenodd" />
+                        d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                        clipRule="evenodd"
+                        />
                     </svg>
-                    +63 0143 1103
-                    </p>
-                </div>
-                {/* <!-- Special thanks section --> */}
-                <div className="">
-                    <h6
-                    className="mb-4 flex justify-center font-bold md:justify-start text-neutral-700 dark:text-white">
-                    Help
-                    </h6>
-                    <p className="mb-4">
-                    <a className="text-neutral-700 dark:text-neutral-300 hover:underline underline-offset-2 cursor-pointer"
-                    >FAQs and Guides</a>
-                    </p>
-                    <p className="mb-4">
-                    <a className="text-neutral-700 dark:text-neutral-300 hover:underline underline-offset-2 cursor-pointer"
-                    >Customer Support</a>
-                    </p>
-                </div>
-                </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                    href="#"
+                    rel="noreferrer"
+                    target="_blank"
+                    className="text-gray-700 dark:text-neutral-300 transition hover:opacity-75"
+                    >
+                    <span className="sr-only">Instagram</span>
+
+                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                        fillRule="evenodd"
+                        d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                        clipRule="evenodd"
+                        />
+                    </svg>
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                    href="#"
+                    rel="noreferrer"
+                    target="_blank"
+                    className="text-gray-700 dark:text-neutral-300 transition hover:opacity-75"
+                    >
+                    <span className="sr-only">GitHub</span>
+
+                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                        fillRule="evenodd"
+                        d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                        clipRule="evenodd"
+                        />
+                    </svg>
+                    </a>
+                </li>
+                </ul>
             </div>
 
-            {/* <!--Copyright section--> */}
-            <div className="p-6 text-center border-t-[1px] border-neutral-700 dark:text-neutral-300 dark:border-neutral-300">
-                <span>© 2023 Deskme, All right reserved. </span>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                <p className="font-medium text-gray-900 dark:text-neutral-100">Services</p>
+
+                <ul className="mt-6 space-y-4 text-sm">
+                    <li>
+                    <a href="#" className="text-gray-700 dark:text-neutral-300 transition hover:opacity-75"> Authentication </a>
+                    </li>
+
+                    <li>
+                    <a href="#" className="text-gray-700 dark:text-neutral-300 transition hover:opacity-75"> Notifications </a>
+                    </li>
+
+                    <li>
+                    <a href="#" className="text-gray-700 dark:text-neutral-300 transition hover:opacity-75"> Booking Calendar</a>
+                    </li>
+
+                    <li>
+                    <a href="#" className="text-gray-700 dark:text-neutral-300 transition hover:opacity-75"> Accommodation Listings </a>
+                    </li>
+
+                    <li>
+                    <a href="#" className="text-gray-700 dark:text-neutral-300 transition hover:opacity-75"> Customer Support </a>
+                    </li>
+                </ul>
+                </div>
+
+                <div>
+                <p className="font-medium text-gray-900 dark:text-neutral-100">Company</p>
+
+                <ul className="mt-6 space-y-4 text-sm">
+                    <li>
+                    <a href="#" className="text-gray-700 dark:text-neutral-300 transition hover:opacity-75"> Guide </a>
+                    </li>
+
+                    <li>
+                    <a href="#" className="text-gray-700 dark:text-neutral-300 transition hover:opacity-75"> Meet the Team </a>
+                    </li>
+
+                    <li>
+                    <a href="#" className="text-gray-700 dark:text-neutral-300 transition hover:opacity-75"> Contact us </a>
+                    </li>
+                </ul>
+                </div>
             </div>
-            </footer>
+            </div>
+
+            <div className="mt-12 border-t border-gray-200 dark:border-gray-300 pt-12">
+            <div className="sm:flex sm:items-center sm:justify-between">
+                <ul className="flex flex-wrap gap-4 text-xs">
+                <li>
+                    <a href="#" className="text-gray-500 dark:text-neutral-400 transition hover:opacity-75"> Terms & Conditions </a>
+                </li>
+
+                <li>
+                    <a href="#" className="text-gray-500 dark:text-neutral-400 transition hover:opacity-75"> Privacy Policy </a>
+                </li>
+
+                <li>
+                    <a href="#" className="text-gray-500 dark:text-neutral-400 transition hover:opacity-75"> Cookies </a>
+                </li>
+                </ul>
+
+                <p className="mt-8 text-xs text-gray-500 dark:text-neutral-400 sm:mt-0">
+                &copy; 2023. Deskme. All rights reserved.
+                </p>
+            </div>
+            </div>
         </div>
+        </footer>
   )
 }
 export default Footer
