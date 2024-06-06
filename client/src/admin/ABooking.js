@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
 import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../Hooks/useFetch';
 import { Skeleton } from "antd";  
+import axios from 'axios';
+import { format } from 'date-fns';
 
 const ABooking = () => {
+  const [reservationHistory, setReservationHistory] = useState([]);
   const [isOn, setIsOn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -14,6 +17,18 @@ const ABooking = () => {
 
   const isLoading = reservationPendingLoading;
   const isError = reservationPendingError;
+
+  useEffect(() => {
+    const fetchReservationHistory = async () => {
+      try {
+        const response = await axios.get('http://localhost:8800/api/reservations/reservation-history');
+        setReservationHistory(response.data);
+      } catch (error) {
+        console.error('Error fetching reservation history:', error);
+      }
+    };
+    fetchReservationHistory();
+  }, []);
 
   const handleToggle = () => {
     setIsOn(!isOn);
@@ -146,17 +161,17 @@ const ABooking = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                      {
-                        tableItems.map((item, idx) => (
-                          <tr key={idx}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_date}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.start_time}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.end_time}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                {item.status}
+                    {
+                      reservationHistory.map((reservation, index) => (
+                        <tr key={index}>
+                          <td className="pr-6 py-4 whitespace-nowrap">{index + 1}</td> {/* Sequential ID */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.username}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td> {/* Format date */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td> {/* Format start time */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td> {/* Format end time */}
+                          <td className="pr-6 py-4 whitespace-nowrap">
+                            <span className={`px-3 py-2 rounded-full font-semibold text-xs ${reservation.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+                              {reservation.status}
                               </span>
                             </td>
                             <td className="whitespace-nowrap text-center">

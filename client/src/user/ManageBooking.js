@@ -1,27 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy,  LogOut, FileCog, ScrollText } from "lucide-react";
+import React, { useState } from 'react';
+import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog, ScrollText } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
 import Header from '../components/Header'
-import axios from 'axios';
-import { format } from 'date-fns';
-
 
 const ManageBooking = () => {
-const [reservationHistory, setReservationHistory] = useState([]);
 const [isModalOpen, setIsModalOpen] = useState(false);
-
-useEffect(() => {
-  const fetchReservationHistory = async () => {
-    try {
-      const response = await axios.get('http://localhost:8800/api/reservations/reservation-history');
-      setReservationHistory(response.data);
-    } catch (error) {
-      console.error('Error fetching reservation history:', error);
-    }
-  };
-  fetchReservationHistory();
-}, []);
 
 const handleManageClick = () => {
     setIsModalOpen(true);
@@ -61,7 +45,7 @@ const handleCloseModal = () => {
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" active />
             <hr className="my-3" />
-          
+            <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
@@ -115,7 +99,7 @@ const handleCloseModal = () => {
                   <table className="w-full table-auto mt-2">
                     <thead className="text-gray-900 font-medium text-lg border-b text-center">
                       <tr>
-                        <th className="py-3 pr-6">Id</th>
+                        <th className="py-3 pr-6">ID</th>
                         <th className="py-3 pr-6">Name</th>
                         <th className="py-3 pr-6">Date</th>
                         <th className="py-3 pr-6">Time-In</th>
@@ -124,22 +108,27 @@ const handleCloseModal = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                    {
-                      reservationHistory.map((reservation, index) => (
-                        <tr key={index}>
-                          <td className="pr-6 py-4 whitespace-nowrap">{index + 1}</td> {/* Sequential ID */}
-                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.username}</td>
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td> {/* Format date */}
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td> {/* Format start time */}
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td> {/* Format end time */}
-                          <td className="pr-6 py-4 whitespace-nowrap">
-                            <span className={`px-3 py-2 rounded-full font-semibold text-xs ${reservation.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                              {reservation.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))
-                    }
+                      {
+                        tableItems.map((item, idx) => (
+                          <tr key={idx}>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_date}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.start_time}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.end_time}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">
+                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+                                {item.status}
+                              </span>
+                            </td>
+                            <td className="whitespace-nowrap text-center">
+                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                                Manage
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      }
                     </tbody>
                   </table>
                 </div>
@@ -157,7 +146,7 @@ const handleCloseModal = () => {
                         fill="currentColor"
                       >
                         <path
-                          fillRule="evenodd"  
+                          fillRule="evenodd"
                           d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                           clipRule="evenodd"
                         />
