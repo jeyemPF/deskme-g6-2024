@@ -1,16 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import deskmap from '../assets/deskmap.png';
 import Desk1 from '../assets/Desk1.jpeg';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
-import { LayoutDashboard, Layers, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
+import { LayoutDashboard, Layers, BookCopy, LifeBuoy, LogOut, FileCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+<<<<<<< HEAD
+=======
+import ReservationForm from '../components/ReservationForm';
+>>>>>>> 4d5dea425cfdcd0e3b65b4e584d1d671bf264695
 
 const Booking = () => {
   const [hoveredArea, setHoveredArea] = useState(null);
+  const [selectedDesk, setSelectedDesk] = useState(null);
+  const [tableItems, setTableItems] = useState([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
+
+
+  useEffect(() => {
+    fetchTableItems();
+  }, []);
+
+  const fetchTableItems = async () => {
+    try {
+      const response = await axios.get('http://localhost:8800/api/desks/get-all-desks/');
+      setTableItems(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const [bookingData, setBookingData] = useState({
-    userId: '',
     deskId: '',
     date: '',
     startTime: '',
@@ -50,7 +73,11 @@ const Booking = () => {
     { desk: 22, top: 81, left: 54.5, width: 9.5, height: 16 },
     { desk: 23, top: 81, left: 63.5, width: 9.5, height: 16 },
     { desk: 24, top: 81, left: 73, width: 9.5, height: 16 },
-  ];
+];
+
+
+
+// Filter desks 8-24 from the areas array
   const handleMouseEnter = (index) => {
     setHoveredArea(index);
   };
@@ -59,6 +86,7 @@ const Booking = () => {
     setHoveredArea(null);
   };
 
+<<<<<<< HEAD
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { deskId, date, startTime, endTime } = bookingData;
@@ -94,7 +122,18 @@ const Booking = () => {
     };
     setBookingData({ ...bookingData, deskId: desk });
     setIsAreaClicked(true);
+=======
+
+  const handleAreaClick = async (deskId) => {
+    try {
+      const response = await axios.get(`http://localhost:8800/api/desks/get-all-desks/${deskId}`);
+      setSelectedDesk(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+>>>>>>> 4d5dea425cfdcd0e3b65b4e584d1d671bf264695
   };
+  
 
 
   const [isOn, setIsOn] = useState(false);
@@ -106,28 +145,36 @@ const Booking = () => {
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
+    // Clear session storage
+    sessionStorage.removeItem('userCredentials');
+    // Navigate to login page
     navigate('/login');
   };
+
 
   const handleDashboardClick = () => {
     navigate('/dashboard');
   };
-  const handleManageBookingClick = () => {
-    navigate('/managebooking');
-  }
+  const handleMyBookingClick = () => {
+    navigate('/mybooking');
+  };
 
-  const tableItems = [
-    {
-      desk_id: 1,
-      area: "Left Wing",
-      status: "Pending",
-    },
-    {
-      desk_id: 2,
-      area: "Right Wing",
-      status: "Pending",
-    }
-  ];
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = tableItems.slice(indexOfFirstItem, indexOfLastItem);
+
+  const nextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const isLastPage = indexOfLastItem >= tableItems.length;
+  const isFirstPage = currentPage === 1;
+
+
 
   return (
     <>
@@ -137,9 +184,8 @@ const Booking = () => {
           <Sidebar>
             <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick} />
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" active />
-            <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
+            <SidebarItem icon={<Layers size={20} />} text="My Bookings" onClick={handleMyBookingClick} />
             <hr className="my-3" />
-            <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
@@ -173,78 +219,78 @@ const Booking = () => {
                       <table className="w-full table-auto">
                         <thead className="text-gray-900 font-medium text-lg border-b text-center">
                           <tr>
-                            <th className="py-3 pr-6">ID</th>
+                            <th className="py-3 pr-6">Desk</th>
                             <th className="py-3 pr-6">Area</th>
                             <th className="py-3 pr-6">Status</th>
                           </tr>
                         </thead>
                         <tbody className="text-gray-600 divide-y text-center text-sm">
-                          {
-                            tableItems.map((item, idx) => (
-                              <tr key={idx}>
-                                <td className="pr-6 py-4 whitespace-nowrap">{item.desk_id}</td>
+                        {currentItems.map((item, idx) => (
+                            <tr key={idx} onClick={() => handleAreaClick(item._id)}>
+                                <td className="pr-6 py-4 whitespace-nowrap">{item.title}</td>
                                 <td className="pr-6 py-4 whitespace-nowrap">{item.area}</td>
                                 <td className="pr-6 py-4 whitespace-nowrap">
-                                  <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                    {item.status}
-                                  </span>
+                                    <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "available" ? "text-green-600 bg-green-50" : (item.status === "reserved" ? "text-blue-600 bg-blue-50" : "text-red-600 bg-red-50")}`}>
+                                        {item.status}
+                                    </span>
                                 </td>
-                              </tr>
-                            ))
-                          }
+                            </tr>
+                        ))}
+
                         </tbody>
                       </table>
                     </div>
                     <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
-                      <li>
-                        <a
-                          href="#"
-                          className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                        >
-                          <span className="sr-only">Prev Page</span>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-3 w-3"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </a>
-                      </li>
+                    <li>
+    <button
+        onClick={prevPage}
+        disabled={isFirstPage}
+        className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+    >
+        <span className="sr-only">Prev Page</span>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3 w-3"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+        >
+            <path
+                fillRule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clipRule="evenodd"
+            />
+        </svg>
+    </button>
+</li>
 
-                      <li>
-                        <a
-                          href="#"
-                          className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
-                        >
-                          1
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="#"
+                  <li>
+                      <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
+                          {currentPage}
+                      </span>
+                  </li>
+
+                  <li>
+                      <button
+                          onClick={nextPage}
+                          disabled={isLastPage}
                           className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                        >
+                      >
                           <span className="sr-only">Next Page</span>
                           <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-3 w-3"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-3 w-3"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
                           >
-                            <path
-                              fillRule="evenodd"
-                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                              clipRule="evenodd"
-                            />
+                              <path
+                                  fillRule="evenodd"
+                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                  clipRule="evenodd"
+                              />
                           </svg>
-                        </a>
-                      </li>
+                      </button>
+                  </li>
+
                     </ol>
                 </div>
               </div>
@@ -254,22 +300,22 @@ const Booking = () => {
                 <h1 className="lg:text-xl md:pl-2 sm:pl-0 font-bold mb-4">Desk Map</h1>
                 <div className="relative w-full">
                   <img src={imageUrl} alt="mapper" className="w-full" />
-                  {areas.map((area, index) => (
-                    <div
-                      key={index}
-                      className="absolute cursor-pointer"
-                      style={{
-                        top: `${area.top}%`,
-                        left: `${area.left}%`,
-                        width: `${area.width}%`,
-                        height: `${area.height}%`,
-                        backgroundColor: hoveredArea === index ? 'rgba(0, 128, 0, 0.3)' : 'transparent',
-                      }}
-                      onMouseEnter={() => handleMouseEnter(index)}
-                      onMouseLeave={handleMouseLeave}
-                      onClick={() => handleAreaClick(area.desk)}
-                    ></div>
-                  ))}
+                   {areas.map((area, index) => (
+                        <div
+                          key={index}
+                          className="absolute cursor-pointer"
+                          style={{
+                            top: `${area.top}%`,
+                            left: `${area.left}%`,
+                            width: `${area.width}%`,
+                            height: `${area.height}%`,
+                            backgroundColor: hoveredArea === index ? 'rgba(0, 128, 0, 0.3)' : 'transparent',
+                          }}
+                          onMouseEnter={() => handleMouseEnter(index)}
+                          onMouseLeave={handleMouseLeave}
+                          onClick={() => handleAreaClick(area.desk)} // Pass deskId to handleAreaClick
+                        ></div>
+                      ))}
                 </div>
                 <h1 className="lg:text-xl md:pl-2 sm:pl-0 font-bold mt-4 mb-4 gap-4">Note:</h1>
                 <span className="inline-flex items-center justify-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-emerald-700 md:ml-2 mr-3">
@@ -342,9 +388,11 @@ const Booking = () => {
                     <img src={Desk1} className='rounded-md'/>
                   </div>
                   <div className="mb-5 flex flex-wrap">
-                    <span className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mr-3 mb-2">
-                        Chair
+                  {selectedDesk && selectedDesk.officeEquipment && selectedDesk.officeEquipment.map((equipment, index) => (
+                    <span key={index} className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mr-3 mb-2">
+                      {equipment}
                     </span>
+<<<<<<< HEAD
                     <span className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mr-3 mb-2">
                         Laptop
                     </span>
@@ -411,6 +459,15 @@ const Booking = () => {
           <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-normal py-2 px-4 rounded ml-2" disabled={!isAreaClicked}>Book</button>
         </div>
       </form>
+=======
+                  ))}
+                </div>
+                <ReservationForm 
+                  selectedDesk={selectedDesk}
+                  isAreaClicked={isAreaClicked}
+                  setBookingData={setBookingData}
+                  emptyFields={emptyFields} />
+>>>>>>> 4d5dea425cfdcd0e3b65b4e584d1d671bf264695
                 </div>
               </div>
             </div>

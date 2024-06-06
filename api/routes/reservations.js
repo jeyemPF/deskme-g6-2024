@@ -1,11 +1,12 @@
 import express from 'express';
 
-import {deleteAllReservations, createReservation, getAllReservations, approveReservations, cancelReservation, getReservationCount, getAvailableDeskCount, getPendingReservations, getPendingReservationsCount, addFeedback, getReservationFeedback } from '../controllers/reservation.js';
-import {verifyOfficeManager } from '../utils/verifyToken.js'
+import {deleteAllReservations, createReservation, getAllReservations, approveReservations, cancelReservation, getReservationCount, getAvailableDeskCount, getPendingReservations, getPendingReservationsCount, addFeedback, getReservationFeedback, getUserBookingHistory, countUserReservations } from '../controllers/reservation.js';
+import {protect, verifyOfficeManager, verifyUser } from '../utils/verifyToken.js'
 
 const router = express.Router();
 
 // Routes for reservations
+router.post('/book/:deskId', protect, createReservation);
 router.post('/reservations/:deskId', createReservation);    
 
 // cancel reservation
@@ -15,7 +16,7 @@ router.delete('/cancel-reservation/:reservationId' , cancelReservation);
 router.delete('/', verifyOfficeManager, deleteAllReservations);
 
 // get the all reservation History
-router.get("/reservation-history", verifyOfficeManager, getAllReservations)
+router.get("/reservation-history", getAllReservations)
 
 // toggle the reservation approved 
 router.put('/reservations/approve', verifyOfficeManager , approveReservations);
@@ -36,6 +37,10 @@ router.get("/pending-counts", getPendingReservationsCount)
 router.post("/:reservationId", addFeedback);
 
 router.get('/:reservationId', getReservationFeedback); 
+
+router.get('/my-booking-history/:userId', protect, getUserBookingHistory);
+
+router.get("/self-count-reservations/:userId", protect, countUserReservations )
 
 
 

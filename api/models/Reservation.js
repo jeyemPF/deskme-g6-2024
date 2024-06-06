@@ -41,7 +41,7 @@ const ReservationSchema = new Schema({
     feedback: {
         type: String,
         default: '',
-  },
+    },
     
 }, { timestamps: true });
 

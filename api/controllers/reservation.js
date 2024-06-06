@@ -6,36 +6,45 @@ import { scheduleJob } from 'node-schedule';
 import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation } from "../utils/emailService.js";
 import AuditTrail from "../models/AuditTrail.js";
 import { formatInTimeZone,  format } from 'date-fns-tz';
-
+import mongoose from "mongoose";
+import {  isValid, parseISO } from 'date-fns';
 
 
 export const createReservation = async (req, res, next) => {
     try {
-        const { userId, deskId } = req.params;
+        const userId = req.user.id;
+        const { deskId } = req.params;
         const { date, startTime, endTime } = req.body;
 
-        // Find the user and desk based on their IDs
-        const user = await User.findById(userId);
-        const desk = await Desk.findById(deskId);
+        // Validate deskId
+        if (!mongoose.Types.ObjectId.isValid(deskId)) {
+            return res.status(400).json({ message: "Invalid desk ID" });
+        }
 
-        // Check if user and desk exist
-        if (!user || !desk) {
-            return res.status(404).json({ message: "User or desk not found" });
+        // Find the desk based on its ID
+        const desk = await Desk.findById(deskId);
+        if (!desk) {
+            return res.status(404).json({ message: "Desk not found" });
+        }
+
+        // Validate and parse date and time
+        const reservationDate = new Date(`${date}T00:00:00`);
+        const reservationStartTime = new Date(`${date}T${startTime}:00`);
+        const reservationEndTime = new Date(`${date}T${endTime}:00`);
+
+        if (!isValid(reservationDate) || !isValid(reservationStartTime) || !isValid(reservationEndTime)) {
+            return res.status(400).json({ message: "Invalid date or time format" });
         }
 
         // Convert the provided date and time to UTC using the local time zone
         const timeZone = 'Asia/Manila';
-        const reservationStartTime = new Date(`${date}T${startTime}:00`);
-        const reservationEndTime = new Date(`${date}T${endTime}:00`);
-
-        // Format the date and time to the desired format
-        const formattedDate = format(new Date(date), "EEEE, MMMM d yyyy 'PH Standard Time'");
+        const formattedDate = format(reservationDate, "EEEE, MMMM d yyyy 'PH Standard Time'");
         const formattedStartTime = formatInTimeZone(reservationStartTime, timeZone, 'hh:mm aaaa') + ' PH Standard Time';
         const formattedEndTime = formatInTimeZone(reservationEndTime, timeZone, 'hh:mm aaaa') + ' PH Standard Time';
 
         // Check if the desk is already reserved during the requested time slot
         const existingReservation = await Reservation.findOne({
-            desk: desk,
+            desk: desk._id,
             date,
             $or: [
                 { startTime: { $lt: reservationEndTime }, endTime: { $gt: reservationStartTime } },
@@ -48,7 +57,6 @@ export const createReservation = async (req, res, next) => {
             return res.status(400).json({ message: "The desk is already reserved for the requested time slot" });
         }
 
-        // Check if the desk's status is 'reserved'
         if (desk.status === 'reserved') {
             return res.status(400).json({ message: "The desk is currently reserved" });
         }
@@ -57,24 +65,21 @@ export const createReservation = async (req, res, next) => {
         desk.status = 'reserved';
         await desk.save();
 
-        // Create a new reservation instance with status 'APPROVED'
         const newReservation = new Reservation({
-            user: user,
-            desk: desk,
+            user: userId,
+            desk: desk._id,
             date,
             startTime: reservationStartTime,
             endTime: reservationEndTime,
             status: 'APPROVED',
-            area: desk.area, // Include the area field from the desk
+            area: desk.area,
             officeEquipment: desk.officeEquipment
         });
 
         const savedReservation = await newReservation.save();
 
-        // Schedule a job to update the desk status when the reservation end time has passed
         scheduleJob(`updateDeskStatus_${desk._id}`, reservationEndTime, async () => {
             try {
-                // Update the desk status to 'available'
                 desk.status = 'available';
                 await desk.save();
             } catch (error) {
@@ -82,13 +87,13 @@ export const createReservation = async (req, res, next) => {
             }
         });
 
-        // Send reservation confirmation email if the user wants to receive emails
-        if (user.receiveReservationEmails) {
+        
+        const user = await User.findById(userId);
+        if (user && user.receiveReservationEmails) {
             const emailBody = getEmailContentReservation(user.username, savedReservation);
             await sendReservationConfirmationEmail(user.email, emailBody);
         }
 
-        // Log the audit trail
         await AuditTrail.create({
             actionType: 'reservation',
             userId,
@@ -96,7 +101,6 @@ export const createReservation = async (req, res, next) => {
             ipAddress: req.ip
         });
 
-        // Log the details to the console
         console.log("Audit trail created for reservation:", {
             userId,
             deskId,
@@ -106,7 +110,6 @@ export const createReservation = async (req, res, next) => {
             formattedEndTime
         });
 
-        // Send response back to the client
         res.status(200).json({
             message: 'Reservation successful',
             formattedDate,
@@ -117,7 +120,6 @@ export const createReservation = async (req, res, next) => {
         next(err);
     }
 };
-
 
 export const cancelReservation = async (req, res, next) => {
     try {
@@ -169,6 +171,7 @@ export const deleteAllReservations = async (req, res, next) => {
 };
 
 
+<<<<<<< HEAD
 // Controller function to fetch all reservations
 export const getAllReservations = async (req, res, next) => {
     try {
@@ -181,6 +184,8 @@ export const getAllReservations = async (req, res, next) => {
 
 
 
+=======
+>>>>>>> 4d5dea425cfdcd0e3b65b4e584d1d671bf264695
 export const approveReservations = async () => {
     try {
         // Update the status of all pending reservations to "APPROVED"
@@ -301,3 +306,48 @@ export const getReservationFeedback = async (req, res, next) => {
         next(err);
     }
 };
+
+export const getAllReservations = async (req, res, next) => {
+    try {
+        // Fetch all reservations along with user details and avatar
+        const reservations = await Reservation.find()
+            .populate('user', 'username email')
+            .select('date startTime endTime status deskTitle deskArea officeEquipment feedback'); // Select the required fields
+
+        res.status(200).json(reservations);
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const getUserBookingHistory = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+
+        // Fetch reservations associated with the authenticated user
+        const bookings = await Reservation.find({ user: userId })
+            .populate('desk', 'title area ') // Optionally populate desk details
+            .select('date startTime endTime status'); // Select required fields
+
+        res.status(200).json({ success: true, bookings });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const countUserReservations = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+
+        // Fetch reservations associated with the provided user ID
+        const reservations = await Reservation.find({ user: userId });
+
+        // Count the number of reservations
+        const totalCount = reservations.length;
+
+        res.status(200).json({ success: true, totalCount });
+    } catch (error) {
+        next(error);
+    }
+};
+

@@ -1,5 +1,5 @@
     import express from "express";
-    import {  countReservedDesks, countUnavailableDesks, createDesk, createMultipleDesksCenterWing, createMultipleDesksLeftWing, createMultipleDesksRightWing, deleteAllDesks, getDeskCount  } from "../controllers/desk.js";
+    import {  countReservedDesks, countUnavailableDesks, createDesk, createMultipleDesksCenterWing, createMultipleDesksLeftWing, createMultipleDesksRightWing, deleteAllDesks, getAllDeskAtLeftWing, getAllDeskAtLeftWingDetails, getAllDesks, getAllDesksDetails, getAvailableDesksDetails, getDeskCount  } from "../controllers/desk.js";
     import { verifyAdmin } from "../utils/verifyToken.js";
 
     const router = express.Router();
@@ -30,6 +30,16 @@
      router.get('/count-reserved', countReservedDesks);
 
      router.get('/count-unavailable', countUnavailableDesks);
+
+     router.get('/get-all-desks', getAllDesks);
+
+     router.get('/get-desk-left-wing', getAllDeskAtLeftWing)
+
+     router.get('/get-desk-details/:deskId', getAllDeskAtLeftWingDetails)
+
+     router.get('/get-all-desks/:deskId', getAllDesksDetails);
+
+     router.get('/get-desk-available', getAvailableDesksDetails);
 
 
 
