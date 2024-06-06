@@ -63,7 +63,11 @@ const MyBooking = () => {
   };
 
   const handleSignOutClick = () => {
+
     sessionStorage.removeItem('userCredentials');
+    localStorage.removeItem("userCredentials");
+    localStorage.clear("userCredentials");
+    sessionStorage.clear("userCredentials");
     navigate('/login');
   };
 
