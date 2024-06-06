@@ -19,38 +19,45 @@ const ReservationForm = ({ selectedDesk, isAreaClicked, emptyFields }) => {
     };
   
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-          // Make API request to book the desk
-          const token = localStorage.getItem('token');
-          const response = await axios.post(
-            `http://localhost:8800/api/reservations/book/${selectedDesk._id}`, 
-            bookingData,
-            {
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-              }
+      e.preventDefault();
+      setLoading(true);
+      try {
+        // Make API request to book the desk
+        const token = localStorage.getItem('token');
+        const response = await axios.post(
+          `http://localhost:8800/api/reservations/book/${selectedDesk._id}`, 
+          bookingData,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
             }
-          );
-          console.log('Reservation successful:', response.data);
-          
-          // Reset form fields after successful booking
-          setBookingData({
-            deskId: selectedDesk && selectedDesk._id ? selectedDesk._id : '',
-            deskTitle: selectedDesk && selectedDesk.title ? selectedDesk.title : '',
-            deskArea: selectedDesk && selectedDesk.area ? selectedDesk.area : '',
-            date: '',
-            startTime: '',
-            endTime: '',
-          });
-          // Handle any success UI updates or redirects here
-        } catch (error) {
+          }
+        );
+        console.log('Reservation successful:', response.data);
+        
+        // Reset form fields after successful booking
+        setBookingData({
+          deskId: selectedDesk && selectedDesk._id ? selectedDesk._id : '',
+          deskTitle: selectedDesk && selectedDesk.title ? selectedDesk.title : '',
+          deskArea: selectedDesk && selectedDesk.area ? selectedDesk.area : '',
+          date: '',
+          startTime: '',
+          endTime: '',
+        });
+        // Handle any success UI updates or redirects here
+      } catch (error) {
+        if (error.response.status === 409) {
+          // Desk is already reserved, display a message to the user
+          setError('There is another reservation for this desk. Please select another desk.');
+        } else {
+          // Other errors
           setError(error.response.data.message);
         }
-        setLoading(false);
-      };
+      }
+      setLoading(false);
+    };
+  
       
 
   return (

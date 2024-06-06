@@ -297,13 +297,15 @@ export const getAllReservations = async (req, res, next) => {
         // Fetch all reservations along with user details and avatar
         const reservations = await Reservation.find()
             .populate('user', 'username email')
-            .select('date startTime endTime status deskTitle deskArea officeEquipment feedback'); // Select the required fields
+            .populate('desk', 'title area') // Populate the desk field to include title and area
+            .select('date startTime endTime status desk deskTitle deskArea officeEquipment feedback'); // Select the required fields
 
         res.status(200).json(reservations);
     } catch (err) {
         next(err);
     }
 };
+
 
 export const getUserBookingHistory = async (req, res, next) => {
     try {
