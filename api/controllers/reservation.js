@@ -6,24 +6,21 @@ import { scheduleJob } from 'node-schedule';
 import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation } from "../utils/emailService.js";
 import AuditTrail from "../models/AuditTrail.js";
 import { formatInTimeZone,  format } from 'date-fns-tz';
-import mongoose from "mongoose";
 
 
 
 export const createReservation = async (req, res, next) => {
     try {
-        const { deskId } = req.params;
+        const { userId, deskId } = req.params;
         const { date, startTime, endTime } = req.body;
 
-        // Convert deskId to ObjectId
-        const deskObjectId = mongoose.Types.ObjectId(deskId);
+        // Find the user and desk based on their IDs
+        const user = await User.findById(userId);
+        const desk = await Desk.findById(deskId);
 
-        // Find the desk based on its ID
-        const desk = await Desk.findById(deskObjectId);
-
-        // Check if desk exists
-        if (!desk) {
-            return res.status(404).json({ message: "Desk not found" });
+        // Check if user and desk exist
+        if (!user || !desk) {
+            return res.status(404).json({ message: "User or desk not found" });
         }
 
         // Convert the provided date and time to UTC using the local time zone
@@ -38,7 +35,7 @@ export const createReservation = async (req, res, next) => {
 
         // Check if the desk is already reserved during the requested time slot
         const existingReservation = await Reservation.findOne({
-            desk: deskObjectId,
+            desk: desk,
             date,
             $or: [
                 { startTime: { $lt: reservationEndTime }, endTime: { $gt: reservationStartTime } },
@@ -62,7 +59,8 @@ export const createReservation = async (req, res, next) => {
 
         // Create a new reservation instance with status 'APPROVED'
         const newReservation = new Reservation({
-            desk: deskObjectId,
+            user: user,
+            desk: desk,
             date,
             startTime: reservationStartTime,
             endTime: reservationEndTime,
@@ -174,7 +172,7 @@ export const deleteAllReservations = async (req, res, next) => {
 // Controller function to fetch all reservations
 export const getAllReservations = async (req, res, next) => {
     try {
-        const reservations = await Reservation.find();
+        const reservations = await Reservation.find().populate('user').populate('desk');
         res.json(reservations);
     } catch (error) {
         next(error);

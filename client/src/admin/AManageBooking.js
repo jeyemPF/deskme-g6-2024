@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog, ScrollText } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
-import Header from '../components/Header'
+import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
+import Header from '../components/Header';
+import useFetch from '../Hooks/useFetch';
 
 const AManageBooking = () => {
-const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-const handleManageClick = () => {
+  const handleManageClick = () => {
     setIsModalOpen(true);
-    };
-const handleCloseModal = () => {
+  };
+  
+  const handleCloseModal = () => {
     setIsModalOpen(false);
-    };
+  };
 
   const navigate = useNavigate();
 
@@ -23,7 +25,6 @@ const handleCloseModal = () => {
     navigate('/login');
   };
 
-
   const handleBookingClick = () => {
     navigate('/adminbooking');
   };
@@ -31,6 +32,7 @@ const handleCloseModal = () => {
   const handleDashboardClick = () => {
     navigate('/admindashboard');
   };
+
   const handleReportClick = () => {
     navigate('/adminreports');
   };
@@ -70,6 +72,12 @@ const handleCloseModal = () => {
     },
   ];
 
+  const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
+  const { data: reservationTotalData, loading: reservationTotalLoading, error: reservationTotalError } = useFetch("reservations/count-reservation");
+
+  const isLoading = reservationPendingLoading || reservationTotalLoading;
+  const isError = reservationPendingError || reservationTotalError;
+
   return (
     <>
       <Header />
@@ -91,14 +99,14 @@ const handleCloseModal = () => {
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: 4</span>
+                  <span className="text-xl font-semibold">Total: {reservationTotalData}</span>
                   <span className="text-sm font-normal">All Bookings</span>
                 </div>
                 <ScrollText className="w-10 h-10 ml-10" />
               </div>
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: 4</span>
+                  <span className="text-xl font-semibold">Total: {reservationPendingData}</span>
                   <span className="text-sm font-normal">Pending Books</span>
                 </div>
                 <FileCog className="w-10 h-10 ml-10" />
@@ -106,30 +114,30 @@ const handleCloseModal = () => {
             </div>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
               <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
-              <div className="flex justify-end items-center">
-                <div className="relative w-60 max-w-md">
+                <div className="flex justify-end items-center">
+                  <div className="relative w-60 max-w-md">
                     <input
-                    type="text"
-                    className="w-full p-2 pr-10 pl-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
-                    placeholder="Search bookings"
+                      type="text"
+                      className="w-full p-2 pr-10 pl-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
+                      placeholder="Search bookings"
                     />
                     <div className="absolute right-0 top-0 flex items-center h-full pr-4">
-                    <svg
+                      <svg
                         className="w-5 h-5 text-gray-500"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg"
-                    >
+                      >
                         <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
                         />
-                    </svg>
+                      </svg>
                     </div>
-                </div>
+                  </div>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full table-auto mt-2">
@@ -246,9 +254,9 @@ const handleCloseModal = () => {
             </div>
           </div>
         </div>
-        )}
+      )}
     </>
-  )
-}
+  );
+};
 
-export default AManageBooking
+export default AManageBooking;
