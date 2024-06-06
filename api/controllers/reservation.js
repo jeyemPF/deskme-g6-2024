@@ -171,18 +171,6 @@ export const deleteAllReservations = async (req, res, next) => {
 };
 
 
-// Controller function to fetch all reservations
-export const getAllReservations = async (req, res, next) => {
-    try {
-        const reservations = await Reservation.find();
-        res.json(reservations);
-    } catch (error) {
-        next(error);
-    }
-};
-
-
-
 export const approveReservations = async () => {
     try {
         // Update the status of all pending reservations to "APPROVED"
@@ -299,6 +287,19 @@ export const getReservationFeedback = async (req, res, next) => {
 
         // Return the feedback
         res.status(200).json({ feedback: reservation.feedback });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const getAllReservations = async (req, res, next) => {
+    try {
+        // Fetch all reservations along with user details and avatar
+        const reservations = await Reservation.find()
+            .populate('user', 'username email')
+            .select('date startTime endTime status deskTitle deskArea officeEquipment feedback'); // Select the required fields
+
+        res.status(200).json(reservations);
     } catch (err) {
         next(err);
     }

@@ -15,7 +15,7 @@ router.delete('/cancel-reservation/:reservationId' , cancelReservation);
 router.delete('/', verifyOfficeManager, deleteAllReservations);
 
 // get the all reservation History
-router.get("/reservation-history", verifyOfficeManager, getAllReservations)
+router.get("/reservation-history", getAllReservations)
 
 // toggle the reservation approved 
 router.put('/reservations/approve', verifyOfficeManager , approveReservations);

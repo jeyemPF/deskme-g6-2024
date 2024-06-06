@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import deskmap from '../assets/deskmap.png';
 import Desk1 from '../assets/Desk1.jpeg';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
-import { LayoutDashboard, Layers, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
+import { LayoutDashboard, Layers, BookCopy, LifeBuoy, LogOut, FileCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReservationForm from '../components/ReservationForm';
@@ -144,7 +144,6 @@ const Booking = () => {
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" active />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
             <hr className="my-3" />
-            <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />

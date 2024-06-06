@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, ScrollText } from "lucide-react";
+import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, LogOut, ScrollText } from "lucide-react";
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,6 @@ import axios from 'axios';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [availableDesks, setAvailableDesks] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [desksPerPage] = useState(5);
@@ -19,10 +18,10 @@ const Dashboard = () => {
       try {
         const response = await axios.get('http://localhost:8800/api/desks/get-desk-available/');
         setAvailableDesks(response.data);
-        setLoading(false);
+        
       } catch (err) {
         setError(err.message);
-        setLoading(false);
+        
       }
     };
 
@@ -67,13 +66,7 @@ const Dashboard = () => {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   const totalPages = Math.ceil(availableDesks.length / desksPerPage);
   const pageNumbers = [];
@@ -91,7 +84,6 @@ const Dashboard = () => {
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
             <hr className="my-3" />
-            <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
@@ -143,7 +135,6 @@ const Dashboard = () => {
                   <table className="w-full table-auto mt-2">
                     <thead className="text-gray-900 font-medium text-lg border-b text-center">
                       <tr>
-                        <th className="py-3 pr-6">ID</th>
                         <th className="py-3 pr-6">Name</th>
                         <th className="py-3 pr-6">Area</th>
                         <th className="py-3 pr-6">Status</th>
@@ -153,7 +144,6 @@ const Dashboard = () => {
                     {
                     currentDesks.map((desk, idx) => (
                       <tr key={idx}>
-                        <td className="pr-6 py-4 whitespace-nowrap">{idx + 1}</td>
                         <td className="pr-6 py-4 whitespace-nowrap">{desk.title}</td>
                         <td className="pr-6 py-4 whitespace-nowrap">{desk.area}</td>
                         <td className="pr-6 py-4 whitespace-nowrap">
