@@ -87,6 +87,7 @@ export const createReservation = async (req, res, next) => {
             }
         });
 
+        
         const user = await User.findById(userId);
         if (user && user.receiveReservationEmails) {
             const emailBody = getEmailContentReservation(user.username, savedReservation);

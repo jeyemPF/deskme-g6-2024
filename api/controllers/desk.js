@@ -229,5 +229,36 @@ export const getAllDesks = async (req, res, next) => {
     }
   }
 
+  export const getAvailableDesksDetails = async (req, res, next) => {
+    try {
+      // Define the query to find desks with status 'available'
+      const query = { 
+        status: 'available',
+        area: { $in: ['Left wing', 'Center Wing', 'Right Wing'] }
+      };
+  
+      // Define the projection to include the title, office equipment, area, and status
+      const projection = {
+        title: 1,
+        officeEquipment: 1,
+        area: 1,
+        status: 1
+      };
+  
+      // Find desks that match the query and projection
+      const desks = await Desk.find(query, projection);
+  
+      if (desks.length === 0) {
+        return res.status(404).json({ message: 'No available desks found in the Map' });
+      }
+  
+      res.status(200).json(desks);
+    } catch (err) {
+      next(err);
+    }
+  }
+  
+  
+
   
   

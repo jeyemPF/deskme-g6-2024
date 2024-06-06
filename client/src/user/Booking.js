@@ -72,7 +72,6 @@ const Booking = () => {
     { desk: 24, top: 81, left: 73, width: 9.5, height: 16 },
 ];
 
-// Filter desks 1-7 from the areas array
 
 
 // Filter desks 8-24 from the areas array
@@ -118,18 +117,6 @@ const Booking = () => {
     navigate('/managebooking');
   }
 
-  // const tableItems = [
-  //   {
-  //     desk_id: 1,
-  //     area: "Left Wing",
-  //     status: "Pending",
-  //   },
-  //   {
-  //     desk_id: 2,
-  //     area: "Right Wing",
-  //     status: "Pending",
-  //   }
-  // ];
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = tableItems.slice(indexOfFirstItem, indexOfLastItem);
@@ -164,18 +151,6 @@ const Booking = () => {
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
-
-            {selectedDesk && (
-  <>
-    <p className="font-bold">Selected Desk:</p>
-    <p>Desk Number: {selectedDesk.title}</p>
-    <p>Area: {selectedDesk.area}</p>
-    <p>Status: {selectedDesk.status}</p>
-    <p>Office Equipment: {selectedDesk.officeEquipment.join(', ')}</p>
-    {console.log('Selected Desk:', selectedDesk)}
-  </>
-)}
-
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>

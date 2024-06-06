@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, ScrollText } from "lucide-react";
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
 import Header from '../components/Header';
@@ -8,20 +8,30 @@ import axios from 'axios';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [availableDesks, setAvailableDesks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [desksPerPage] = useState(5);
 
-  const handleSignOutClick = async () => {
-    try {
-      // Call the logout endpoint
-      await axios.post('http://localhost:8800/api/auth/logout', null, { withCredentials: true });
+  useEffect(() => {
+    const fetchAvailableDesks = async () => {
+      try {
+        const response = await axios.get('http://localhost:8800/api/desks/get-desk-available/');
+        setAvailableDesks(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
 
-      // Clear session storage
-      sessionStorage.removeItem('userCredentials');
+    fetchAvailableDesks();
+  }, []);
 
-      // Navigate to the login page
-      navigate('/login');
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
+  const handleSignOutClick = () => {
+    sessionStorage.removeItem('userCredentials');
+    navigate('/login');
   };
 
   const handleBookingClick = () => {
@@ -36,29 +46,40 @@ const Dashboard = () => {
     console.log(value.format('YYYY-MM-DD'), mode);
   };
 
-  const tableItems = [
-    {
-      desk_id: 1,
-      name: "Desk 1A",
-      status: "Available",
-      officeEquipment: "Chair, Laptop, Mhayumie",
-      area: "Left Wing"
-    },
-    {
-      desk_id: 2,
-      name: "Desk 1B",
-      status: "Available",
-      officeEquipment: "Sofa, Computer",
-      area: "Right Wing"
-    },
-    {
-      desk_id: 3,
-      name: "Desk 1C",
-      status: "Available",
-      officeEquipment: "Sofa",
-      area: "Center"
-    },
-  ];
+  const indexOfLastDesk = currentPage * desksPerPage;
+  const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
+  const currentDesks = availableDesks.slice(indexOfFirstDesk, indexOfLastDesk);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === Math.ceil(availableDesks.length / desksPerPage);
+
+  const nextPage = () => {
+    if (!isLastPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (!isFirstPage) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  const totalPages = Math.ceil(availableDesks.length / desksPerPage);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
 
   return (
     <>
@@ -124,80 +145,80 @@ const Dashboard = () => {
                       <tr>
                         <th className="py-3 pr-6">ID</th>
                         <th className="py-3 pr-6">Name</th>
-                        <th className="py-3 pr-6">Office Equipments</th>
                         <th className="py-3 pr-6">Area</th>
                         <th className="py-3 pr-6">Status</th>
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                      {
-                        tableItems.map((item, idx) => (
-                          <tr key={idx}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.desk_id}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.officeEquipment}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.area}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                {item.status}
-                              </span>
-                            </td>
-                          </tr>
-                        ))
-                      }
+                    {
+                    currentDesks.map((desk, idx) => (
+                      <tr key={idx}>
+                        <td className="pr-6 py-4 whitespace-nowrap">{idx + 1}</td>
+                        <td className="pr-6 py-4 whitespace-nowrap">{desk.title}</td>
+                        <td className="pr-6 py-4 whitespace-nowrap">{desk.area}</td>
+                        <td className="pr-6 py-4 whitespace-nowrap">
+                          <span className={`px-3 py-2 rounded-full font-semibold text-xs ${desk.status === "available" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+                            {desk.status}
+                          </span>
+                        </td>
+
+                      </tr>
+                    ))
+                  }
+
                     </tbody>
                   </table>
                 </div>
                 <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
-                  <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Prev Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
-                  </li>
+                    <li>
+                        <button
+                            onClick={prevPage}
+                            disabled={isFirstPage}
+                            className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                        >
+                            <span className="sr-only">Prev Page</span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-3 w-3"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+                        </button>
+                    </li>
 
-                  <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
-                    >
-                      1
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Next Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
-                  </li>
+                    <li>
+                        <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
+                            {currentPage}
+                        </span>
+                    </li>
+
+                    <li>
+                        <button
+                            onClick={nextPage}
+                            disabled={isLastPage}
+                            className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                        >
+                            <span className="sr-only">Next Page</span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-3 w-3"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+                        </button>
+                    </li>
                 </ol>
               </div>
             </div>
