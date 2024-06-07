@@ -11,18 +11,18 @@ function AuthenticateSuccess() {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center mt-36'>
-      <div className='border-[1px] border-black rounded-lg shadow-lg w-full max-w-md p-8'>
+    <div className='min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900'>
+      <div className='w-full max-w-md p-8 bg-white dark:bg-neutral-800 rounded-lg shadow-lg border border-neutral-700 dark:border-neutral-200'>
         <div className='mt-2'>
           <div className='flex flex-col items-center'>
-            <p className='text-8xl pb-5'><PiShieldCheckBold /></p>
-            <h1 className='text-4xl font-black'>Authentication</h1>
-            <h1 className='text-4xl font-black'>Success!</h1>
+            <p className='text-8xl pb-5 dark:text-neutral-200'><PiShieldCheckBold /></p>
+            <h1 className='text-4xl font-black text-neutral-700 dark:text-neutral-200'>Authentication</h1>
+            <h1 className='text-4xl font-black text-neutral-700 dark:text-neutral-200'>Success!</h1>
           </div>
           <div className='pt-6 text-center'>
-            <h1 className='text-sm font-normal text-center'>Your security is our priority, and now you're all set to enjoy our services with added protection. </h1>
+            <h1 className='text-sm font-normal text-center text-neutral-700 dark:text-neutral-200'>Your security is our priority, and now you're all set to enjoy our services with added protection. </h1>
             <div className='pt-10 pb-5'>
-              <button onClick={handleClick} type="submit" className="text-black bg-white font-semibold rounded-2xl border-[1px] border-neutral-700 text-base py-3 w-44 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto hover:bg-neutral-700 hover:text-white transition-colors duration-300">Done</button>
+              <button onClick={handleClick} type="submit" className="bg-white dark:bg-neutral-700 text-neutral-700 dark:text-white font-semibold rounded-2xl border border-neutral-700 dark:border-neutral-200 py-3 w-full hover:bg-neutral-700 hover:text-white dark:hover:bg-neutral-500 dark:hover:text-neutral-200 transition-colors duration-300">Done</button>
             </div>
           </div>
         </div>

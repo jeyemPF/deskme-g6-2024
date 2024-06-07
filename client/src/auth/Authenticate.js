@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { HiOutlineXMark } from "react-icons/hi2";
 import { PiShieldWarningBold } from "react-icons/pi";   
 import { useNavigate } from 'react-router-dom';
+import Switcher from "../components/Switcher";
 
 function Authenticate() {
   const [code, setCode] = useState('');
@@ -26,17 +27,20 @@ function Authenticate() {
 
 
   return (
-    <div className='flex flex-col items-center justify-center mt-32'>
-      <div className='border-[1px] border-black rounded-lg shadow-lg w-full max-w-md p-8'>
+    <div className='min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900'>
+      <div className='w-full max-w-md p-8 bg-white dark:bg-neutral-800 rounded-lg shadow-lg border border-neutral-700 dark:border-neutral-200'>
+      <div className='hidden'>
+            <Switcher />
+      </div>
       <div>
           <div className="flex flex-col items-center">
-            <p className="text-8xl pb-5"><PiShieldWarningBold /></p>
-            <h1 className="text-3xl font-black text-neutral-800">Authenticate</h1>
-            <h1 className="text-3xl font-black text-neutral-800">Your Account</h1>
+            <p className="text-8xl pb-5 dark:text-neutral-200"><PiShieldWarningBold /></p>
+            <h1 className="text-3xl font-black text-neutral-700 dark:text-neutral-200">Authenticate</h1>
+            <h1 className="text-3xl font-black text-neutral-700 dark:text-neutral-200">Your Account</h1>
           </div>
 
           <div className="pt-3">
-            <h1 className="text-center text-xs font-light pb-3">Please confirm your account by entering <br /> the authorization code sent to example@gmail.com.</h1>
+            <h1 className="text-center text-xs font-light pb-3 text-neutral-700 dark:text-neutral-200">Please confirm your account by entering <br /> the authorization code sent to example@gmail.com.</h1>
             <form onSubmit={handleSubmit} className="text-center pt-1">
             {Array.from({ length: 5 }, (_, index) => (
               <input
@@ -47,11 +51,11 @@ function Authenticate() {
                 placeholder={``}
                 className="border-b border-black py-3 px-2 w-10 h-10 mx-1 text-center"
               />))}
-              <h1 className="font-normal text-sm pt-8">
+              <h1 className="font-normal text-sm pt-8 text-neutral-700 dark:text-neutral-200  ">
                 It may take a minute to receive your code. <br />
                 Haven't received it? <a className="text-blue-500 hover:underline" href="/">Resend a new code.</a></h1>
               <br />
-              <button onClick={handleClick} type="submit" className="text-black bg-white font-semibold rounded-2xl border-[1px] border-neutral-700 text-base py-3 w-72 max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl mx-auto mb-2 hover:bg-neutral-700 hover:text-white transition-colors duration-300">Submit</button>
+              <button onClick={handleClick} type="submit" className="bg-white dark:bg-neutral-700 text-neutral-700 dark:text-white font-semibold rounded-2xl border border-neutral-700 dark:border-neutral-200 py-3 w-full hover:bg-neutral-700 hover:text-white dark:hover:bg-neutral-500 dark:hover:text-neutral-200 transition-colors duration-300">Submit</button>
             </form>
           </div>
         </div>
