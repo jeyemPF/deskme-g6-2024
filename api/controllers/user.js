@@ -307,6 +307,9 @@ export const updateProfile = async (req, res) => {
     // Save the updated user
     await user.save();
 
+    // Emit an event to notify about the profile update
+    io.emit('profileUpdated', { userId: user._id, avatar: user.avatar, username: user.username, role: user.role });
+
     return res.status(200).json({ success: true, user, message: "Profile updated successfully!" });
   } catch (error) {
     return res.status(500).json({
@@ -315,6 +318,7 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
+
     // export const updateUserEmailPreference = async (req, res, next) => {
     //     try {
     //     const { id } = req.params;

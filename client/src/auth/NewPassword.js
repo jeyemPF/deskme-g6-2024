@@ -3,6 +3,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 import { useNavigate, useParams } from 'react-router-dom';
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import axios from 'axios';
+import Switcher from '../components/Switcher';
 
 const InputField = ({ type, name, placeholder, value, onChange, icon, error }) => {
   return (

@@ -63,9 +63,12 @@ const Header = () => {
     }
   };
 
-  const handleAvatarUpdate = (newAvatar) => {
+  const handleAvatarUpdate = (newAvatar, newUsername) => {
     setAvatar(newAvatar);
+    setUsername(newUsername);
+   
   };
+  
 
   return (
     <div>

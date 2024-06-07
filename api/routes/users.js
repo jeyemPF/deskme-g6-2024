@@ -85,7 +85,7 @@ router.delete("/", verifySuperAdmin, deleteAllUser);
 router.patch("/self/avatar", protect, upload.single("avatar"), uploadAvatar);
 
 // updating profile
-router.put('/update-profile',verifyUser, upload.single('avatar'), updateProfile);
+router.put('/update-profile/:userId',protect, upload.single('avatar'), updateProfile);
 
 // Update the receiving email of users
 router.put("/email-preference", updateAllUsersEmailPreference);
