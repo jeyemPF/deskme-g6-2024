@@ -7,6 +7,10 @@ import { LayoutDashboard, Layers, BookCopy, LifeBuoy, LogOut, FileCog } from "lu
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReservationForm from '../components/ReservationForm';
+import useFetch from '../Hooks/useFetch';
+import { Skeleton } from "antd";  
+
+
 
 const Booking = () => {
   const [hoveredArea, setHoveredArea] = useState(null);
@@ -15,6 +19,11 @@ const Booking = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+  
+
+  const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
+  const isLoading = reservationPendingLoading;
+  const isError = reservationPendingError;
 
 
   useEffect(() => {
@@ -157,13 +166,23 @@ const Booking = () => {
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
+            { isLoading ? ( 
+            <>
+            <Skeleton height={120} count={4} />
+            </>
+            ) : isError ? (
+              <div>Error: {reservationPendingError ?.message } </div>
+            ) : (
+              <>
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: 2</span>
+                  <span className="text-xl font-semibold">Total: {reservationPendingData}</span>
                   <span className="text-sm font-normal">Pending Books</span>
                 </div>
                 <FileCog className="w-10 h-10 ml-10" />
               </div>
+              </>
+             )}
 
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8 -mt-2">
               <div className="border-[1px] border-neutral-100 rounded-lg shadow-sm bg-white p-5">

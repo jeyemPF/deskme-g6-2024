@@ -11,14 +11,13 @@ const Error = () => {
   }, []);
 
   const handleClick = () => {
-    // Retrieve the previous page's URL from sessionStorage
-    const previousPage = sessionStorage.getItem('previousPage');
-    if (previousPage) {
-      navigate(previousPage);
-    } else {
-      // If the previous page's URL is not found, navigate to the home page
+    sessionStorage.removeItem('userCredentials');
+    sessionStorage.removeItem('userCredentials');
+    localStorage.removeItem("userCredentials");
+    localStorage.clear("userCredentials");
+    sessionStorage.clear("userCredentials");
       navigate('/');
-    }
+  
   };
 
   return (

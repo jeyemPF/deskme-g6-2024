@@ -177,6 +177,7 @@ const Dashboard = () => {
                     {
                     currentDesks.map((desk, idx) => (
                       <tr key={idx}>
+                      
                         <td className="pr-6 py-4 whitespace-nowrap">{desk.title}</td>
                         <td className="pr-6 py-4 whitespace-nowrap">{desk.area}</td>
                         <td className="pr-6 py-4 whitespace-nowrap">
