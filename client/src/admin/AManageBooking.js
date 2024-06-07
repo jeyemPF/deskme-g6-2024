@@ -72,8 +72,8 @@ const AManageBooking = () => {
     },
   ];
 
-  const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
-  const { data: reservationTotalData, loading: reservationTotalLoading, error: reservationTotalError } = useFetch("reservations/count-reservation");
+  const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch('http://localhost:8800/api/reservations/pending-counts');
+  const { data: reservationTotalData, loading: reservationTotalLoading, error: reservationTotalError } = useFetch('http://localhost:8800/api/reservations/count-reservation');
 
   const isLoading = reservationPendingLoading || reservationTotalLoading;
   const isError = reservationPendingError || reservationTotalError;

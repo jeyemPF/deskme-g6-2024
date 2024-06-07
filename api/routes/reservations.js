@@ -40,7 +40,7 @@ router.get('/:reservationId', getReservationFeedback);
 
 router.get('/my-booking-history/:userId', protect, getUserBookingHistory);
 
-router.get("/self-count-reservations/:userId", protect, countUserReservations )
+router.get("/self-count-reservations/:userId", protect, countUserReservations);
 
 
 

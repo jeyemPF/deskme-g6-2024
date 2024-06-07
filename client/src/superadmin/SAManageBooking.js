@@ -8,8 +8,8 @@ import { Skeleton } from 'antd'
 
 const SAManageBooking = () => {
 
-  const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
-  const { data: deskCountReservedData, loading: deskCountReservedLoading, error: deskCountReservedError } = useFetch("desks/count-reserved");
+  const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch('http://localhost:8800/api/reservations/pending-counts');
+  const { data: deskCountReservedData, loading: deskCountReservedLoading, error: deskCountReservedError } = useFetch('http://localhost:8800/api/reservations/count-reservation');
 
   const isLoading = reservationPendingLoading || deskCountReservedLoading;
   const isError = reservationPendingError || deskCountReservedError;

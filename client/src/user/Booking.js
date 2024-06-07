@@ -6,10 +6,7 @@ import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Si
 import { LayoutDashboard, Layers, BookCopy, LifeBuoy, LogOut, FileCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-<<<<<<< HEAD
-=======
 import ReservationForm from '../components/ReservationForm';
->>>>>>> 4d5dea425cfdcd0e3b65b4e584d1d671bf264695
 
 const Booking = () => {
   const [hoveredArea, setHoveredArea] = useState(null);
@@ -86,43 +83,6 @@ const Booking = () => {
     setHoveredArea(null);
   };
 
-<<<<<<< HEAD
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { deskId, date, startTime, endTime } = bookingData;
-    if (!deskId || !date || !startTime || !endTime) {
-      setEmptyFields({
-        deskId: !deskId,
-        date: !date,
-        startTime: !startTime,
-        endTime: !endTime,
-      });
-      return;
-    }
-
-    try {
-      const response = await axios.post(`http://localhost:8800/api/reservations/${deskId}`, {
-        date,
-        startTime,
-        endTime,
-      });
-
-     console.log('Desk booked successfully', response.data);
-      // Reset booking data or navigate to another page if needed
-    } catch (error) {
-      console.log('Error booking desk', error.response ? error.response.data : error.message);
-    }
-  };
-
-  const handleAreaClick = (desk) => {
-    const selectedDeskDetails = {
-      desk: desk,
-      picture: deskmap, // Assuming 'Desk1' is replaced with the deskmap image
-      amenities: ['Ergonomic chair', 'Monitor', 'Power outlets'],
-    };
-    setBookingData({ ...bookingData, deskId: desk });
-    setIsAreaClicked(true);
-=======
 
   const handleAreaClick = async (deskId) => {
     try {
@@ -131,10 +91,8 @@ const Booking = () => {
     } catch (error) {
       console.error(error);
     }
->>>>>>> 4d5dea425cfdcd0e3b65b4e584d1d671bf264695
   };
   
-
 
   const [isOn, setIsOn] = useState(false);
 
@@ -392,74 +350,6 @@ const Booking = () => {
                     <span key={index} className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mr-3 mb-2">
                       {equipment}
                     </span>
-<<<<<<< HEAD
-                    <span className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mr-3 mb-2">
-                        Laptop
-                    </span>
-                    <span className="whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 mb-2">
-                        Computer Table
-                    </span>
-                  </div>
-                  <form onSubmit={handleSubmit}>
-        <div className="mb-4 flex">
-          <div className="w-1/2 mr-2">
-            <label htmlFor="deskId" className="block text-sm font-medium text-gray-700">Desk ID:</label>
-            <input
-              type="text"
-              id="deskId"
-              name="deskId"
-              readOnly
-              value={bookingData.deskId}
-              onChange={(e) => setBookingData({ ...bookingData, deskId: e.target.value })}
-              className={`mt-1 p-2 border ${emptyFields.deskId ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-              disabled={!isAreaClicked}
-            />
-          </div>
-          <div className="w-1/2 ml-2">
-            <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date:</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={bookingData.date}
-              onChange={(e) => setBookingData({ ...bookingData, date: e.target.value })}
-              className={`mt-1 p-2 border ${emptyFields.date ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-              disabled={!isAreaClicked}
-            />
-          </div>
-        </div>
-        <div className="mb-10 flex">
-          <div className="w-1/2 mr-2">
-            <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">Start Time:</label>
-            <input
-              type="time"
-              id="startTime"
-              name="startTime"
-              value={bookingData.startTime}
-              onChange={(e) => setBookingData({ ...bookingData, startTime: e.target.value })}
-              className={`mt-1 p-2 border ${emptyFields.startTime ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-              disabled={!isAreaClicked}
-            />
-          </div>
-          <div className="w-1/2 ml-2">
-            <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time:</label>
-            <input
-              type="time"
-              id="endTime"
-              name="endTime"
-              value={bookingData.endTime}
-              onChange={(e) => setBookingData({ ...bookingData, endTime: e.target.value })}
-              className={`mt-1 p-2 border ${emptyFields.endTime ? 'border-red-500' : 'border-gray-300'} rounded-md w-full focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-              disabled={!isAreaClicked}
-            />
-          </div>
-        </div>
-        <div className="flex justify-end">
-          <button type="button" className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-normal py-2 px-4 rounded">Cancel</button>
-          <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-normal py-2 px-4 rounded ml-2" disabled={!isAreaClicked}>Book</button>
-        </div>
-      </form>
-=======
                   ))}
                 </div>
                 <ReservationForm 
@@ -467,7 +357,6 @@ const Booking = () => {
                   isAreaClicked={isAreaClicked}
                   setBookingData={setBookingData}
                   emptyFields={emptyFields} />
->>>>>>> 4d5dea425cfdcd0e3b65b4e584d1d671bf264695
                 </div>
               </div>
             </div>

@@ -12,10 +12,10 @@ import { Skeleton } from "antd";
 
 
 const ADashboard = () => {
-  const { data: availableDeskData, loading: availableDeskLoading, error: availableDeskError } = useFetch("reservations/available-desk");
-  const { data: deskCountData, loading: deskCountLoading, error: deskCountError } = useFetch("desks/count");
-  const { data: deskCountReservedData, loading: deskCountReservedLoading, error: deskCountReservedError } = useFetch("desks/count-reserved");
-  const { data: deskCountUnavailableData, loading: deskCountUnavailableLoading, error: deskCountUnavailableError } = useFetch(  "desks/count-unavailable");
+  const { data: availableDeskData, loading: availableDeskLoading, error: availableDeskError } = useFetch('http://localhost:8800/api/reservations/available-desk');
+  const { data: deskCountData, loading: deskCountLoading, error: deskCountError } = useFetch('http://localhost:8800/api/desks/count');
+  const { data: deskCountReservedData, loading: deskCountReservedLoading, error: deskCountReservedError } = useFetch('http://localhost:8800/api/reservations/count-reservation');
+  const { data: deskCountUnavailableData, loading: deskCountUnavailableLoading, error: deskCountUnavailableError } = useFetch('http://localhost:8800/api/desks/count-unavailable');
 
   
   const navigate = useNavigate();

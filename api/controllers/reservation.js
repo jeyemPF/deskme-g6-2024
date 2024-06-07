@@ -171,21 +171,6 @@ export const deleteAllReservations = async (req, res, next) => {
 };
 
 
-<<<<<<< HEAD
-// Controller function to fetch all reservations
-export const getAllReservations = async (req, res, next) => {
-    try {
-        const reservations = await Reservation.find().populate('user').populate('desk');
-        res.json(reservations);
-    } catch (error) {
-        next(error);
-    }
-};
-
-
-
-=======
->>>>>>> 4d5dea425cfdcd0e3b65b4e584d1d671bf264695
 export const approveReservations = async () => {
     try {
         // Update the status of all pending reservations to "APPROVED"
@@ -350,4 +335,3 @@ export const countUserReservations = async (req, res, next) => {
         next(error);
     }
 };
-

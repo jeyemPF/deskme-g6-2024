@@ -8,7 +8,7 @@ import { Skeleton } from 'antd';
 
 const SABooking = () => {
 
-  const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
+  const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch('http://localhost:8800/api/reservations/pending-counts');
 
   const isLoading = reservationPendingLoading;
   const isError = reservationPendingError;
