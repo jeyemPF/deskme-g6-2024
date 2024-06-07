@@ -145,7 +145,7 @@ const Booking = () => {
   const isLastPage = indexOfLastItem >= tableItems.length;
   const isFirstPage = currentPage === 1;
 
-  const [isOn, setIsOn] = useState(false);
+  const [isOn, setIsOn] = useState(localStorage.getItem('isOn') === 'true');
 
   const handleToggle = async () => {
     const token = localStorage.getItem('token');
@@ -174,7 +174,9 @@ const Booking = () => {
       console.log('Response:', response.data);
   
       // Toggle the state if the request is successful
-      setIsOn(!isOn);
+      const newValue = !isOn;
+      setIsOn(newValue);
+      localStorage.setItem('isOn', newValue.toString());
   
       // Show success notification
       message.success('You have successfully enabled/disabled email receipt.');
@@ -185,6 +187,13 @@ const Booking = () => {
       message.error('Failed to toggle email receipt. Please try again later.');
     }
   };
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem('isOn') === 'true';
+    if (storedValue !== isOn) {
+      setIsOn(storedValue);
+    }
+  }, [isOn]);
 
 
 

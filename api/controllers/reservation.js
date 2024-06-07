@@ -163,13 +163,23 @@ export const cancelReservation = async (req, res, next) => {
 
 export const deleteAllReservations = async (req, res, next) => {
     try {
+        // Get all reserved desks
+        const reservedDesks = await Desk.find({ status: 'reserved' });
+
+        // Update the status of all reserved desks to 'available'
+        await Promise.all(reservedDesks.map(async (desk) => {
+            desk.status = 'available';
+            await desk.save();
+        }));
+
+        // Delete all reservations
         await Reservation.deleteMany({});
+
         res.json({ message: 'All reservations deleted successfully' });
     } catch (error) {
         next(error);
     }
 };
-
 
 export const approveReservations = async () => {
     try {
