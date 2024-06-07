@@ -91,7 +91,7 @@ router.put('/update-profile',verifyUser, upload.single('avatar'), updateProfile)
 router.put("/email-preference", updateAllUsersEmailPreference);
 
 // Update the user receiving email for reservation by id 
-router.put("/:userId/toggle-reservation-emails", toggleReservationEmailNotifications);
+router.put("/toggle-reservation-emails/:userId", toggleReservationEmailNotifications);
 
 // Update the all users email preferences
 router.put("/toggle-reservation-emails-for-all-users",verifyOfficeManager, toggleReservationEmailNotificationsForAllUsers);
