@@ -60,8 +60,11 @@ const NewPassword = () => {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center mt-32'>
-      <div className='border-[1px] border-neutral-700 rounded-lg shadow-lg w-full max-w-md p-8'>
+    <div className='min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900'>
+    <div className='w-full max-w-md p-8 bg-white dark:bg-neutral-800 rounded-lg shadow-lg border border-neutral-700 dark:border-neutral-200'>
+      <div className='hidden'>
+            <Switcher />
+          </div>
         <div className='flex justify-end'>
           <button onClick={() => navigate('/login')} className='text-2xl'><HiOutlineXMark /></button>
         </div>
@@ -100,11 +103,6 @@ const NewPassword = () => {
             Confirm Password
           </button>
         </form>
-      </div>
-      <div className='text-center text-base font-light mt-2 text-neutral-700'>
-        <h1>
-          <span>&#169;</span>2023 DeskMe, All right reserved. Privacy Policy <br /> and Terms & Conditions.
-        </h1>
       </div>
     </div>
   );

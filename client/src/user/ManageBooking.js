@@ -100,7 +100,7 @@ const MyBooking = () => {
   }
 
   return (
-    <>
+    <div className="h-screen dark:bg-neutral-900">
       <Header />
       <div className="flex dark:bg-neutral-900">
         <SidebarProvider>
@@ -274,9 +274,9 @@ const MyBooking = () => {
             </div>
           </div>
         </div>
-      )}
-    </>
-  );
-};
+        )}
+    </div>
+  )
+}
 
 export default MyBooking;

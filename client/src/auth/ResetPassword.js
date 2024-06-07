@@ -48,13 +48,13 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center mt-32'>
-      <div className='border-[1px] border-neutral-700 rounded-lg shadow-lg w-full max-w-md p-8'>
+    <div className='min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900'>
+      <div className='w-full max-w-md p-8 bg-white dark:bg-neutral-800 rounded-lg shadow-lg border border-neutral-700 dark:border-neutral-200'>
         <div className='flex justify-end'>
           <button onClick={() => navigate('/login')} className='text-2xl'><HiOutlineXMark /></button>
         </div>
-        <h1 className='text-4xl font-black text-left text-neutral-700'>Reset Password</h1>
-        <p className='font-normal text-left mt-1 text-neutral-700'>We'll send a code to your email inbox.</p>
+        <h1 className='text-4xl font-black text-left text-neutral-700 dark:text-neutral-200'>Reset Password</h1>
+        <p className='font-normal text-left mt-1 text-neutral-700 dark:text-neutral-200'>We'll send a code to your email inbox.</p>
 
         <form onSubmit={handleSubmit} className='mt-12'>
           <InputField
@@ -69,11 +69,6 @@ const ResetPassword = () => {
             Send Reset Link
           </button>
         </form>
-      </div>
-      <div className='text-center text-base font-light mt-2 text-neutral-700'>
-        <h1>
-          <span>&#169;</span>2023 DeskMe, All right reserved. Privacy Policy <br /> and Terms & Conditions.
-        </h1>
       </div>
     </div>
   );
