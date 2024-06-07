@@ -50,7 +50,7 @@ const SAAuditReport = () => {
       };
 
   return (
-    <>
+    <div className="h-screen dark:bg-neutral-900">
     <Header />
     <div className="flex dark:bg-neutral-900">
     <SidebarProvider>
@@ -113,7 +113,7 @@ const SAAuditReport = () => {
                 </Content>
         </SidebarProvider>
         </div>
-    </>
+    </div>
   )
 }
 
