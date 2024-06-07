@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'
+import axios from 'axios';
 import Switcher from "../components/Switcher";
 
 const InputField = ({ type, name, placeholder, value, onChange, icon, error }) => {
@@ -31,20 +31,17 @@ const InputField = ({ type, name, placeholder, value, onChange, icon, error }) =
 };
 
 function Login() {
-  // Email
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState('');
-  // Password
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [passwordFilled, setPasswordFilled] = useState('');
-  // Toggle Password Visibility
+  
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // Navigation
   const navigate = useNavigate();
 
   const handleClick1 = () => {
@@ -55,7 +52,6 @@ function Login() {
     navigate('/');
   };
 
-  // Validations
   const isEmpty = (str) => {
     return str.trim() === '';
   };
@@ -63,43 +59,31 @@ function Login() {
   const handleLogin = async () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (isEmpty(email)) {
-      if (isEmpty(password)) {
       setEmailError('Please fill out this field.');
       return;
-    }} else if (!emailRegex.test(email)) {
+    } else if (!emailRegex.test(email)) {
       setEmailError('Please enter a valid email address.');
       return;
     }
     if (isEmpty(password)) {
-      setPasswordErrorFilled('Please fill out this field.');
+      setPasswordError('Please fill out this field.');
       return;
     }
     
     try {
-      const credentials = {
-        email,
-        password
-      };
-  
+      const credentials = { email, password };
       const response = await axios.post('http://localhost:8800/api/auth/login', credentials);
-  
       console.log('Login successful');
       console.log('Response:', response.data);
-
       sessionStorage.setItem('userCredentials', JSON.stringify(response.data));
-  
-      // Redirect to the dashboard route after successful login
       navigate("/dashboard");
-  
     } catch (error) {
       if (error.response && error.response.status === 401) {
-        // Unauthorized (401) status code indicates incorrect password
         console.error('Incorrect password');
-        setPasswordError('Incorrect password'); // Set error message for incorrect password
+        setPasswordError('Incorrect password');
       } else {
-        // Handle other errors
         console.error('Login failed:', error.response ? error.response.data.message : error.message);
-        setPasswordError('Incorrect password. Try again.');
+        setPasswordError('Login failed. Try again.');
       }
     }
   };
@@ -110,8 +94,8 @@ function Login() {
   }, [password, email]);
 
   return (
-    <div className='flex flex-col items-center justify-center mt-32'>
-      <div className='border-[1px] border-neutral-700 dark:border-neutral-200 rounded-lg shadow-lg w-full max-w-md p-8 bg-white dark:bg-neutral-800'>
+    <div className='min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900'>
+      <div className='w-full max-w-md p-8 bg-white dark:bg-neutral-800 rounded-lg shadow-lg border border-neutral-700 dark:border-neutral-200'>
         <div className='flex justify-end'>
           <div className='hidden'>
             <Switcher />
@@ -120,7 +104,7 @@ function Login() {
         </div>
         <h1 className='text-4xl font-black text-left text-neutral-700 dark:text-neutral-200'>Sign in</h1>
         <p className='font-normal text-left mt-1 text-neutral-700 dark:text-neutral-200'>Stay updated on your bookings.</p>
-  
+
         <div className='mt-12'>
           <InputField
             type='email'
@@ -132,7 +116,7 @@ function Login() {
             error={emailError}
           />
         </div>
-  
+
         <div className='relative mt-4'>
           <InputField
             style={{ display: 'flex', alignItems: 'center' }}
@@ -157,7 +141,7 @@ function Login() {
             </div>
           )}
         </div>
-  
+
         <div className="flex items-left mt-4 mb-4">
           <input type="checkbox" id="rememberMe" className="w-4 h-5 text-neutral-700 dark:text-neutral-200 bg-gray-100 dark:bg-neutral-700 border-black dark:border-neutral-200 rounded hover:cursor-pointer" />
           <label htmlFor="rememberMe" className="ms-2 text-sm font-medium text-neutral-700 dark:text-neutral-200 hover:cursor-pointer">Remember Me</label>
@@ -165,15 +149,10 @@ function Login() {
             <li onClick={handleClick1} className="font-medium text-sm hover:underline cursor-pointer text-neutral-700 dark:text-neutral-200">Forgot password?</li>
           </div>
         </div>
-  
+
         <div className='text-center mt-14 mb-5'>
-          <button onClick={handleLogin} className='bg-white dark:bg-neutral-700 text-neutral-700 dark:text-white font-semibold rounded-2xl border-[1px] border-neutral-700 dark:border-neutral-200 py-3 w-full hover:bg-neutral-700 hover:text-white dark:hover:bg-neutral-500 dark:hover:text-neutral-200 transition-colors duration-300'>Sign in</button>
+          <button onClick={handleLogin} className='bg-white dark:bg-neutral-700 text-neutral-700 dark:text-white font-semibold rounded-2xl border border-neutral-700 dark:border-neutral-200 py-3 w-full hover:bg-neutral-700 hover:text-white dark:hover:bg-neutral-500 dark:hover:text-neutral-200 transition-colors duration-300'>Sign in</button>
         </div>
-      </div>
-      <div className='text-center text-base font-light mt-2 text-neutral-700 dark:text-neutral-200'>
-        <h1>
-          <span>&#169;</span>2023 DeskMe, All right reserved. Privacy Policy <br /> and Terms & Conditions.
-        </h1>
       </div>
     </div>
   );
