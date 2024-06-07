@@ -281,15 +281,6 @@ export const updateProfile = async (req, res) => {
       });
     }
 
-    // Validate the new username
-    const usernameRegex = /^[a-zA-Z_]+$/;
-    if (username && !usernameRegex.test(username)) {
-      return res.status(400).json({
-        success: false,
-        error: "Invalid username",
-      });
-    }
-
     // Update the username if provided
     if (username) {
       user.username = username;
