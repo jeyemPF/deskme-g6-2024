@@ -73,7 +73,7 @@ const Header = () => {
   return (
     <div>
       <header className="dark:bg-neutral-900 w-screen fixed bg-white p-2 border-b-[1px] border-gray-200 dark:border-neutral-700 dark:shadow-neutral-800">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between px-1">
           <div className="flex items-center space-x-4">
             <img src={Logo} alt="Logo" className="h-9 w-9" />
             <button className="text-black pt-1 ml-5"><Switcher /></button>

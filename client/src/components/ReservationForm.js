@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {  message } from 'antd';
+
 
 const ReservationForm = ({ selectedDesk, isAreaClicked, emptyFields }) => {
     const [bookingData, setBookingData] = useState({
@@ -35,6 +37,7 @@ const ReservationForm = ({ selectedDesk, isAreaClicked, emptyFields }) => {
           }
         );
         console.log('Reservation successful:', response.data);
+        message.success('Your book has been made.');
         
         // Reset form fields after successful booking
         setBookingData({
@@ -50,9 +53,12 @@ const ReservationForm = ({ selectedDesk, isAreaClicked, emptyFields }) => {
         if (error.response.status === 409) {
           // Desk is already reserved, display a message to the user
           setError('There is another reservation for this desk. Please select another desk.');
+          message.error('There is another reservation for this desk. Please select another desk.');
+
         } else {
           // Other errors
           setError(error.response.data.message);
+          message.error('Failed to create your book. Please select another desk.');
         }
       }
       setLoading(false);

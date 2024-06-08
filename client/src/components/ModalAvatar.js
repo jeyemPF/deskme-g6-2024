@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
+import { Skeleton, message } from 'antd';
 
 
 const socket = io('http://localhost:8800');
@@ -10,14 +11,14 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
   const [avatarPreview, setAvatarPreview] = useState(initialAvatar);
   const [username, setUsername] = useState(initialUsername);
   const [loading, setLoading] = useState(false);
-  const [, setError] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     socket.on('profileUpdated', (data) => {
       console.log('Profile updated:', data);
       onAvatarUpdate(data.avatar, data.username);
-      setUsername(data.username); // Update the username in the component state
-      setAvatarPreview(data.avatar); // Ensure avatar preview is updated
+      setUsername(data.username);
+      setAvatarPreview(data.avatar);
       sessionStorage.setItem('userCredentials', JSON.stringify({ user: { avatar: data.avatar, username: data.username, role: data.role } }));
     });
 
@@ -39,7 +40,13 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
   };
 
   const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+    const newUsername = e.target.value;
+    if (newUsername.length <= 17) {
+      setUsername(newUsername);
+      setError(null);
+    } else {
+      setError('Please enter only 17 characters');
+    }
   };
 
   const handleSaveChanges = async () => {
@@ -69,11 +76,13 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
       });
 
       console.log('Profile updated successfully:', response.data);
+      message.success('You have successfully update your profile');
       setError(null);
       onClose(); 
     } catch (error) {
       console.error('Failed to update profile:', error);
       setError('Failed to update profile. Please try again.');
+      message.error('Failed to upload your avatar.');
     } finally {
       setLoading(false);
     }
@@ -112,6 +121,7 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
                   value={username}
                   onChange={handleUsernameChange}
                 />
+                {error && <p className="text-red-500 text-xs italic">{error}</p>}
               </div>
             </form>
           </div>
