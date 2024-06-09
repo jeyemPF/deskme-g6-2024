@@ -10,10 +10,9 @@ import useFetch from '../Hooks/useFetch';
 const OMBooking = () => {
 
   const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
-  const { data: deskCountReservedData, loading: deskCountReservedLoading, error: deskCountReservedError } = useFetch("desks/count-reserved");
 
-  const isLoading = reservationPendingLoading || deskCountReservedLoading;
-  const isError = reservationPendingError || deskCountReservedError;
+  const isLoading = reservationPendingLoading;
+  const isError = reservationPendingError;
 
   const [isOn, setIsOn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -110,7 +109,7 @@ const OMBooking = () => {
                    <Skeleton height={120} count={4} />
                   </>
                 ) : isError ? (
-                  <div>Error: {reservationPendingError?.message || deskCountReservedError?.message }</div>
+                  <div>Error: {reservationPendingError?.message}</div>
                 ) : (
                   <>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
