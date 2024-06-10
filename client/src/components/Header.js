@@ -4,6 +4,8 @@ import Dropdown from './Dropdown';
 import Switcher from '../components/Switcher';
 import ModalAvatar from '../components/ModalAvatar';
 import Logo from '../assets/Logo.png';
+import NotificationDropdown from './NotificationDropdown';
+
 
 const Header = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -11,6 +13,7 @@ const Header = () => {
   const [username, setUsername] = useState('');
   const [role, setRole] = useState('');
   const [avatar, setAvatar] = useState('');
+  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserCredentials = () => {
@@ -69,19 +72,22 @@ const Header = () => {
    
   };
   
+  const toggleNotificationDropdown = () => {
+    setIsNotificationDropdownOpen((prev) => !prev);
+  };
 
   return (
     <div>
       <header className="dark:bg-neutral-900 w-screen fixed bg-white p-2 border-b-[1px] border-gray-200 dark:border-neutral-700 dark:shadow-neutral-800">
         <div className="flex items-center justify-between px-5">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 pl-2">
             <img src={Logo} alt="Logo" className="h-9 w-9" />
-            <button className="text-black pt-1 ml-5"><Switcher /></button>
+            <h1 className='font-extrabold md:text-xl sm:text-lg cursor-pointer text-neutral-600 dark:text-neutral-100'>DESKME</h1>
           </div>
-          <div className="flex items-center space-x-4 flex-row-reverse">
-            <div className="flex flex-col mr-2">
-              <span className="text-sm font-medium text-gray-800 dark:text-neutral-300 ml-3">{username}</span>
-              <span className="text-xs text-gray-500 dark:text-neutral-400 ml-3">{role && role.charAt(0).toUpperCase() + role.slice(1)}</span>
+          <div className="flex items-center md:space-x-4 sm:space-x-2 flex-row-reverse relative">
+          <div className="flex flex-col md:pr-2 sm:pr-0">
+              <span className="md:text-sm sm:text-xs font-medium text-gray-700 dark:text-neutral-100 ml-3">{username}</span>
+              <span className="md:text-xs sm:text-xs text-gray-500 dark:text-neutral-400 ml-3">{role && role.charAt(0).toUpperCase() + role.slice(1)}</span>
             </div>
             <Dropdown>
               {[
@@ -104,7 +110,14 @@ const Header = () => {
                 )),
               ]}
             </Dropdown>
-            <BellIcon className="h-8 w-8 text-neutral-700 rounded-full p-1 hover:bg-neutral-700 hover:text-white dark:text-neutral-300 dark:hover:bg-white dark:hover:text-neutral-700 cursor-pointer" />
+            <div className="relative">
+            <BellIcon
+                className="h-7 w-7 text-neutral-600 rounded-full p-1 hover:bg-neutral-700 hover:text-white dark:text-neutral-100 dark:hover:bg-white dark:hover:text-neutral-700 cursor-pointer"
+                onClick={toggleNotificationDropdown}    
+                />
+                {isNotificationDropdownOpen && <NotificationDropdown />}
+                </div>
+                <button className="text-neutral-700"><Switcher /></button>
           </div>
         </div>
       </header>
