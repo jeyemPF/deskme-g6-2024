@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header'
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
 import { LayoutDashboard, Layers, Flag, BookCopy, Settings, LogOut, Users, FileCog, NotebookTabs } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../Hooks/useFetch';
 import { Skeleton } from 'antd';
+import { format } from 'date-fns';
+import axios from 'axios';
+
 
 const SABooking = () => {
+
+  const [reservationHistory, setReservationHistory] = useState([]);
 
   const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
 
@@ -15,6 +20,18 @@ const SABooking = () => {
     
     const [isOn, setIsOn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchReservationHistory = async () => {
+      try {
+        const response = await axios.get('http://localhost:8800/api/reservations/reservation-history');
+        setReservationHistory(response.data);
+      } catch (error) {
+        console.error('Error fetching reservation history:', error);
+      }
+    };
+    fetchReservationHistory();
+  }, []);
 
   const handleToggle = () => {
     setIsOn(!isOn);
@@ -150,7 +167,7 @@ const SABooking = () => {
                   <table className="w-full table-auto mt-2">
                     <thead className="text-gray-900 font-medium text-lg border-b text-center">
                       <tr>
-                        <th className="py-3 pr-6">ID</th>
+                        <th className="py-3 pr-6">Desk</th>
                         <th className="py-3 pr-6">Name</th>
                         <th className="py-3 pr-6">Date</th>
                         <th className="py-3 pr-6">Time-In</th>
@@ -159,27 +176,28 @@ const SABooking = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                      {
-                        tableItems.map((item, idx) => (
-                          <tr key={idx}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_date}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.start_time}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.end_time}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                {item.status}
-                              </span>
-                            </td>
-                            <td className="whitespace-nowrap text-center">
-                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                                Manage
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      }
+                    {
+                      reservationHistory.map((reservation, index) => (
+                        <tr key={index}>
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td> {/* Desk title */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.username}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td> {/* Format date */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td> {/* Format start time */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td> {/* Format end time */}
+                          <td className="pr-6 py-4 whitespace-nowrap">
+                            <span className={`px-3 py-2 rounded-full font-semibold text-xs ${reservation.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+                              {reservation.status}
+                            </span>
+                          </td>
+                          <td className="whitespace-nowrap text-center">
+                            <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                              Manage
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    }
+
                     </tbody>
                   </table>
                 </div>
@@ -263,7 +281,7 @@ const SABooking = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default SABooking
