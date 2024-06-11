@@ -322,9 +322,12 @@ export const getUserBookingHistory = async (req, res, next) => {
         const userId = req.user.id;
 
         // Fetch reservations associated with the authenticated user
-        const bookings = await Reservation.find({ user: userId })
-            .populate('desk', 'title area ') // Optionally populate desk details
+        let bookings = await Reservation.find({ user: userId })
+            .populate('desk', 'title area') // Optionally populate desk details
             .select('date startTime endTime status'); // Select required fields
+
+        // Reverse the array of bookings
+        bookings = bookings.reverse();
 
         res.status(200).json({ success: true, bookings });
     } catch (err) {

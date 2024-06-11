@@ -79,7 +79,7 @@ const Header = () => {
   return (
     <div>
       <header className="dark:bg-neutral-900 w-screen fixed bg-white p-2 border-b-[1px] border-gray-200 dark:border-neutral-700 dark:shadow-neutral-800">
-        <div className="flex items-center justify-between px-5">
+        <div className="flex items-center justify-between px-2">
           <div className="flex items-center space-x-2 pl-2">
             <img src={Logo} alt="Logo" className="h-9 w-9" />
             <h1 className='font-extrabold md:text-xl sm:text-lg cursor-pointer text-neutral-600 dark:text-neutral-100'>DESKME</h1>
