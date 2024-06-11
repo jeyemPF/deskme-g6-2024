@@ -77,13 +77,14 @@ const AReports = () => {
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Reports</h1>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
-              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-violet-50 to-violet-200 border-[1px] border-neutral-100 shadow-sm">
-                <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: 2</span>
-                  <span className="text-sm font-normal">All Reports</span>
-                </div>
-                <ClipboardMinus className="w-10 h-10 ml-10" />
+            <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-violet-50 to-violet-200 border-[1px] border-neutral-100 shadow-sm">
+              <div className='flex flex-col'>
+                <span className="text-xl font-semibold">Total: {reservationHistory.length}</span>
+                <span className="text-sm font-normal">All Reports</span>
               </div>
+              <ClipboardMinus className="w-10 h-10 ml-10" />
+            </div>
+
             </div>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
             <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm mt-6">
@@ -116,7 +117,7 @@ const AReports = () => {
                   <table className="w-full table-auto mt-2">
                     <thead className="text-gray-900 font-medium text-lg border-b text-center">
                       <tr>
-                        <th className="py-3 pr-6">ID</th>
+                        <th className="py-3 pr-6">Desk</th>
                         <th className="py-3 pr-6">Name</th>
                         <th className="py-3 pr-6">Date</th>
                       </tr>

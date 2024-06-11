@@ -316,11 +316,38 @@ export const getAllReservations = async (req, res, next) => {
             .populate('desk', 'title area') // Populate the desk field to include title and area
             .select('date startTime endTime status desk deskTitle deskArea officeEquipment feedback'); // Select the required fields
 
-        res.status(200).json(reservations);
+        // Count feedback for each reservation
+        const feedbackCounts = await Promise.all(reservations.map(async (reservation) => {
+            const feedbackCount = await Reservation.countDocuments({ _id: reservation._id, feedback: { $ne: "" } });
+            return { reservationId: reservation._id, feedbackCount };
+        }));
+
+        // Merge feedback counts with reservations
+        const reservationsWithFeedbackCount = reservations.map((reservation) => {
+            const feedbackCountObj = feedbackCounts.find((item) => item.reservationId.equals(reservation._id));
+            return { ...reservation.toObject(), feedbackCount: feedbackCountObj ? feedbackCountObj.feedbackCount : 0 };
+        });
+
+        res.status(200).json(reservationsWithFeedbackCount);
     } catch (err) {
         next(err);
     }
 };
+
+
+
+// Example backend endpoint for feedback count
+export const getFeedbackCount = async (req, res, next) => {
+    try {
+        const feedbackCount = await Reservation.countDocuments();
+        res.status(200).json({ count: feedbackCount });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
 
 export const getAllReports = async (req, res, next) => {
     try {
