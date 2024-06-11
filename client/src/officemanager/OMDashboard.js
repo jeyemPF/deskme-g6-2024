@@ -71,13 +71,16 @@ const OMDashboard = () => {
                       <Skeleton active paragraph={{ rows: 2 }} />
                     ) : (
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
-                    <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: {deskCountReservedData}</span>
-                      <span className="text-sm font-normal">All Bookings</span>
-                    </div>
+              
+                      <div className='flex flex-col'>
+                        <span className="text-xl font-semibold">Total: {deskCountReservedData}</span>
+                        <span className="text-sm font-normal">All Bookings</span>
+                      </div>
+                   
                     <ScrollText className="w-10 h-10 ml-10" />
                   </div>
                 )}
+
                 {availableDeskLoading  ? (
                       <Skeleton active paragraph={{ rows: 2 }} />
                     ) : (
@@ -94,23 +97,24 @@ const OMDashboard = () => {
                     ) : (
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-red-50 to-red-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: 3</span>
+                      <span className="text-xl font-semibold">Total: {deskCountUnavailableData}</span>
                       <span className="text-sm font-normal">Unavailable Desks</span>
                     </div>
                     <MonitorX className="w-10 h-10 md:ml-10 sm:ml-5" />
                   </div>
-                )}
-                {deskCountLoading ? (
+                    )}
+
+                    {deskCountLoading ? (
                       <Skeleton active paragraph={{ rows: 2 }} />
                     ) : (
                   <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-yellow-50 to-yellow-200 border-[1px] border-neutral-100 shadow-sm">
                     <div className='flex flex-col'>
-                      <span className="text-xl font-semibold">Total: 10</span>
+                      <span className="text-xl font-semibold">Total: {deskCountData}</span>
                       <span className="text-sm font-normal">All Desks</span>
                     </div>
                     <GalleryVerticalEnd className="w-10 h-10 ml-10" />
                   </div>
-                )}
+                  )}
                 </div>
                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mt-6">
                   <div className="border-[1px] border-neutral-100 rounded-lg shadow-sm bg-white">
