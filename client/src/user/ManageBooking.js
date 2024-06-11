@@ -8,6 +8,8 @@ import { format } from 'date-fns';
 
 const MyBooking = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDesk, setSelectedDesk] = useState(null); // State to store the selected desk for reporting
+  const [report, setReport] = useState(''); // State to store the report text
   const [bookings, setBookings] = useState([]); // State to store booking history
   const [totalBookings, setTotalBookings] = useState(0);
   const [pendingBookings, setPendingBookings] = useState(0);
@@ -50,12 +52,37 @@ const MyBooking = () => {
     }
   };
 
-  const handleManageClick = () => {
+  const handleReportClick = (desk) => {
+    setSelectedDesk(desk);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setReport(''); // Clear the report text
+  };
+
+  const handleReportSubmit = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        `http://localhost:8800/api/reports`,
+        {
+          deskId: selectedDesk._id,
+          reportText: report
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          }
+        }
+      );
+      console.log('Report submitted:', response.data);
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error submitting report:', error);
+    }
   };
 
   const handleSignOutClick = () => {
@@ -168,6 +195,7 @@ const MyBooking = () => {
                         <th className="py-3 pr-6">Time-In</th>
                         <th className="py-3 pr-6">Time-Out</th>
                         <th className="py-3 pr-6">Status</th>
+                        <th className="py-3 pr-6">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
@@ -185,8 +213,8 @@ const MyBooking = () => {
                               </span>
                             </td>
                             <td className="whitespace-nowrap text-center">
-                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                                Manage
+                              <button onClick={() => handleReportClick(booking.desk)} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                                Report
                               </button>
                             </td>
                           </tr>
@@ -256,25 +284,32 @@ const MyBooking = () => {
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg p-6 w-11/12 max-w-md mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Manage Bookings</h2>
-            <p className="mb-6">Do you want to delete or archive this booking?</p>
+            <h2 className="text-xl font-semibold mb-4">Report Desk</h2>
+            <p className="mb-6">Please provide details about the issue you encountered with this desk:</p>
+            <textarea
+              className="w-full p-3 border rounded-lg mb-4"
+              rows="4"
+              placeholder="Describe the issue..."
+              value={report}
+              onChange={(e) => setReport(e.target.value)}
+            />
             <div className="flex justify-end space-x-4">
               <button
                 onClick={handleCloseModal}
                 className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 transition duration-200"
               >
-                Delete
+                Cancel
               </button>
               <button
-                onClick={handleCloseModal}
+                onClick={handleReportSubmit}
                 className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-200"
               >
-                Archive
+                Submit
               </button>
             </div>
           </div>
         </div>
-        )}
+      )}
     </div>
   )
 }
