@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
+import { Skeleton, message } from 'antd';
+
 
 const socket = io('http://localhost:8800');
 
-const ModalAvatar = ({ onClose, username, avatar: initialAvatar, onAvatarUpdate }) => {
+const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar, onAvatarUpdate }) => {
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(initialAvatar);
+  const [username, setUsername] = useState(initialUsername);
   const [loading, setLoading] = useState(false);
-  const [, setError] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    socket.on('avatarUpdated', (data) => {
-      console.log('Avatar updated:', data);
-      onAvatarUpdate(data.avatar);
+    socket.on('profileUpdated', (data) => {
+      console.log('Profile updated:', data);
+      onAvatarUpdate(data.avatar, data.username);
+      setUsername(data.username);
+      setAvatarPreview(data.avatar);
       sessionStorage.setItem('userCredentials', JSON.stringify({ user: { avatar: data.avatar, username: data.username, role: data.role } }));
     });
 
     return () => {
-      socket.off('avatarUpdated');
+      socket.off('profileUpdated');
     };
   }, [onAvatarUpdate]);
 
@@ -34,33 +39,50 @@ const ModalAvatar = ({ onClose, username, avatar: initialAvatar, onAvatarUpdate 
     setAvatarPreview(URL.createObjectURL(file));
   };
 
+  const handleUsernameChange = (e) => {
+    const newUsername = e.target.value;
+    if (newUsername.length <= 17) {
+      setUsername(newUsername);
+      setError(null);
+    } else {
+      setError('Please enter only 17 characters');
+    }
+  };
+
   const handleSaveChanges = async () => {
-    if (!avatar) {
-      setError("Please select an avatar image.");
+    if (!avatar && !username) {
+      setError("Please select an avatar image or enter a username.");
       return;
     }
 
     setLoading(true);
 
     const formData = new FormData();
-    formData.append("avatar", avatar);
+    if (avatar) {
+      formData.append("avatar", avatar);
+    }
+    if (username) {
+      formData.append("username", username);
+    }
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.patch('http://localhost:8800/api/users/self/avatar', formData, {
+      const userId = JSON.parse(sessionStorage.getItem('userCredentials')).user.id;
+      const response = await axios.put(`http://localhost:8800/api/users/update-profile/${userId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
         }
-      }); 
+      });
 
-      console.log('Avatar updated successfully:', response.data);
+      console.log('Profile updated successfully:', response.data);
+      message.success('You have successfully update your profile');
       setError(null);
-      socket.emit('avatarUpdated', response.data);
       onClose(); 
     } catch (error) {
-      console.error('Failed to update avatar:', error);
-      setError('Failed to update avatar. Please try again.');
+      console.error('Failed to update profile:', error);
+      setError('Failed to update profile. Please try again.');
+      message.error('Failed to upload your avatar.');
     } finally {
       setLoading(false);
     }
@@ -95,8 +117,11 @@ const ModalAvatar = ({ onClose, username, avatar: initialAvatar, onAvatarUpdate 
                 <input
                   type="text"
                   className="border-[1px] border-neutral-300 rounded-sm p-2 mt-1 block w-full pl-5 text-sm text-gray-700 placeholder-gray-400"
-                  placeholder={username}
+                  placeholder={initialUsername}
+                  value={username}
+                  onChange={handleUsernameChange}
                 />
+                {error && <p className="text-red-500 text-xs italic">{error}</p>}
               </div>
             </form>
           </div>

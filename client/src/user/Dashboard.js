@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [desksPerPage] = useState(5);
+  const [totalBookings, setTotalBookings] = useState(0); 
 
   useEffect(() => {
     const fetchAvailableDesks = async () => {
@@ -25,11 +26,46 @@ const Dashboard = () => {
       }
     };
 
+    const fetchTotalBookings = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+      
+        // Debugging logs
+        console.log('Token:', token);
+        console.log('UserId:', userId);
+      
+        // Check if token and userId are present
+        if (!token || !userId) {
+          console.error('User is not authenticated');
+          return;
+        }
+    
+        const response = await axios.get(`http://localhost:8800/api/reservations/self-count-reservations/${userId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          }
+        });
+    
+        setTotalBookings(response.data.totalCount);
+        
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+    
+
     fetchAvailableDesks();
+    fetchTotalBookings();
   }, []);
 
   const handleSignOutClick = () => {
     sessionStorage.removeItem('userCredentials');
+    sessionStorage.removeItem('userCredentials');
+    localStorage.removeItem("userCredentials");
+    localStorage.clear("userCredentials");
+    sessionStorage.clear("userCredentials");
     navigate('/login');
   };
 
@@ -49,8 +85,6 @@ const Dashboard = () => {
   const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
   const currentDesks = availableDesks.slice(indexOfFirstDesk, indexOfLastDesk);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === Math.ceil(availableDesks.length / desksPerPage);
 
@@ -65,8 +99,6 @@ const Dashboard = () => {
       setCurrentPage(currentPage - 1);
     }
   };
-
-
 
   const totalPages = Math.ceil(availableDesks.length / desksPerPage);
   const pageNumbers = [];
@@ -93,10 +125,11 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: 0</span>
+                  <span className="text-xl font-semibold">Total: {totalBookings}</span> {/* Display total bookings count */}
                   <span className="text-sm font-normal">Your Bookings</span>
                 </div>
                 <ScrollText className="w-10 h-10 ml-10" />
+
               </div>
             </div>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mt-6">
@@ -144,6 +177,7 @@ const Dashboard = () => {
                     {
                     currentDesks.map((desk, idx) => (
                       <tr key={idx}>
+                      
                         <td className="pr-6 py-4 whitespace-nowrap">{desk.title}</td>
                         <td className="pr-6 py-4 whitespace-nowrap">{desk.area}</td>
                         <td className="pr-6 py-4 whitespace-nowrap">

@@ -85,13 +85,13 @@ router.delete("/", verifySuperAdmin, deleteAllUser);
 router.patch("/self/avatar", protect, upload.single("avatar"), uploadAvatar);
 
 // updating profile
-router.put('/update-profile',verifyUser, upload.single('avatar'), updateProfile);
+router.put('/update-profile/:userId',protect, upload.single('avatar'), updateProfile);
 
 // Update the receiving email of users
 router.put("/email-preference", updateAllUsersEmailPreference);
 
 // Update the user receiving email for reservation by id 
-router.put("/:userId/toggle-reservation-emails", toggleReservationEmailNotifications);
+router.put("/toggle-reservation-emails/:userId", toggleReservationEmailNotifications);
 
 // Update the all users email preferences
 router.put("/toggle-reservation-emails-for-all-users",verifyOfficeManager, toggleReservationEmailNotificationsForAllUsers);

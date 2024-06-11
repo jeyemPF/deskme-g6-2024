@@ -114,9 +114,18 @@ const SAPManage = () => {
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
-    sessionStorage.removeItem("userCredentials");
-    navigate("/login");
+    // Clear session storage
+    sessionStorage.removeItem('userCredentials');
+    localStorage.removeItem("userCredentials");
+    localStorage.clear("userCredentials");
+    sessionStorage.clear("userCredentials");
+
+
+
+    // Navigate to login page
+    navigate('/login');
   };
+
 
   const handleBookingClick = () => {
     navigate("/superbooking");

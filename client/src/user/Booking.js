@@ -7,6 +7,12 @@ import { LayoutDashboard, Layers, BookCopy, LifeBuoy, LogOut, FileCog } from "lu
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ReservationForm from '../components/ReservationForm';
+import useFetch from '../Hooks/useFetch';
+import { Skeleton, message } from 'antd';
+
+
+
+
 
 const Booking = () => {
   const [hoveredArea, setHoveredArea] = useState(null);
@@ -15,6 +21,11 @@ const Booking = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
+  
+
+  const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
+  const isLoading = reservationPendingLoading;
+  const isError = reservationPendingError;
 
 
   useEffect(() => {
@@ -94,17 +105,19 @@ const Booking = () => {
   };
   
 
-  const [isOn, setIsOn] = useState(false);
 
-  const handleToggle = () => {
-    setIsOn(!isOn);
-  };
 
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
     // Clear session storage
     sessionStorage.removeItem('userCredentials');
+    localStorage.removeItem("userCredentials");
+    localStorage.clear("userCredentials");
+    sessionStorage.clear("userCredentials");
+
+
+
     // Navigate to login page
     navigate('/login');
   };
@@ -132,6 +145,56 @@ const Booking = () => {
   const isLastPage = indexOfLastItem >= tableItems.length;
   const isFirstPage = currentPage === 1;
 
+  const [isOn, setIsOn] = useState(localStorage.getItem('isOn') === 'true');
+
+  const handleToggle = async () => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+  
+    // Check if token and userId are present
+    if (!token || !userId) {
+      console.error('User is not authenticated');
+      return;
+    }
+  
+    try {
+      // Make the API request
+      const response = await axios.put(
+        `http://localhost:8800/api/users/toggle-reservation-emails/${userId}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+  
+      // Log the response for debugging
+      console.log('Response:', response.data);
+  
+      // Toggle the state if the request is successful
+      const newValue = !isOn;
+      setIsOn(newValue);
+      localStorage.setItem('isOn', newValue.toString());
+  
+      // Show success notification
+      message.success('You have successfully enabled/disabled email receipt.');
+  
+    } catch (error) {
+      console.error('Error toggling reservation emails:', error);
+      // Show error notification
+      message.error('Failed to toggle email receipt. Please try again later.');
+    }
+  };
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem('isOn') === 'true';
+    if (storedValue !== isOn) {
+      setIsOn(storedValue);
+    }
+  }, [isOn]);
+
 
 
   return (
@@ -151,28 +214,38 @@ const Booking = () => {
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
+            { isLoading ? ( 
+            <>
+            <Skeleton height={120} count={4} />
+            </>
+            ) : isError ? (
+              <div>Error: {reservationPendingError ?.message } </div>
+            ) : (
+              <>
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: 2</span>
+                  <span className="text-xl font-semibold">Total: {reservationPendingData}</span>
                   <span className="text-sm font-normal">Pending Books</span>
                 </div>
                 <FileCog className="w-10 h-10 ml-10" />
               </div>
+              </>
+             )}
 
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8 -mt-2">
               <div className="border-[1px] border-neutral-100 rounded-lg shadow-sm bg-white p-5">
-                 <div className="flex justify-end items-center w-full">
-                  <label className="inline-flex items-center cursor-pointer">
-                    <span className='font-normal pr-3 lg:text-base sm:text-sm'>Disable receipt :</span>
-                    <input type="checkbox" className="sr-only" checked={isOn} onChange={handleToggle} />
-                    <div className={`w-10 h-5 ${isOn ? 'bg-blue-600' : 'bg-gray-200'} rounded-full peer dark:bg-gray-700 shadow-md`}>
-                      <div
-                        className={`w-5 h-5 bg-white rounded-full shadow-md transform ${isOn ? 'translate-x-5' : 'translate-x-0'} transition-transform duration-300 ease-in-out`}
-                      ></div>
-                    </div>
-                  </label>
-                  <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{isOn ? 'On' : 'Off'}</span>
-                </div>
+              <div className="flex justify-end items-center w-full">
+                    <label className="inline-flex items-center cursor-pointer">
+                      <span className='font-normal pr-3 lg:text-base sm:text-sm'>Disable receipt :</span>
+                      <input type="checkbox" className="sr-only" checked={isOn} onChange={handleToggle} />
+                      <div className={`w-10 h-5 ${isOn ? 'bg-blue-600' : 'bg-gray-200'} rounded-full peer dark:bg-gray-700 shadow-md`}>
+                        <div
+                          className={`w-5 h-5 bg-white rounded-full shadow-md transform ${isOn ? 'translate-x-5' : 'translate-x-0'} transition-transform duration-300 ease-in-out`}
+                        ></div>
+                      </div>
+                    </label>
+                    <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{isOn ? 'On' : 'Off'}</span>
+                  </div>
                 <div className="overflow-x-auto">
                       <table className="w-full table-auto">
                         <thead className="text-gray-900 font-medium text-lg border-b text-center">

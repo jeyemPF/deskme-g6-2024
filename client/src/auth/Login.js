@@ -3,6 +3,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import Switcher from "../components/Switcher";
 
 const InputField = ({ type, name, placeholder, value, onChange, icon, error }) => (
   <div className='relative'>
@@ -90,15 +91,15 @@ const Login = () => {
   };
   
   return (
-    <div className='flex flex-col items-center justify-center mt-32'>
-      <div className='border-[1px] border-neutral-700 rounded-lg shadow-lg w-full max-w-md p-8'>
+    <div className='min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900'>
+      <div className='w-full max-w-md p-8 bg-white dark:bg-neutral-800 rounded-lg shadow-lg border border-neutral-700 dark:border-neutral-200'>
         <div className='flex justify-end'>
           <button onClick={() => navigate('/')} className='text-2xl text-neutral-700'>
             <HiOutlineXMark />
           </button>
         </div>
-        <h1 className='text-4xl font-black text-left text-neutral-700'>Sign in</h1>
-        <p className='font-normal text-left mt-1 text-neutral-700'>Stay updated on your bookings.</p>
+        <h1 className='text-4xl font-black text-left text-neutral-700 dark:text-neutral-200'>Sign in</h1>
+        <p className='font-normal text-left mt-1 text-neutral-700 dark:text-neutral-200'>Stay updated on your bookings.</p>
 
         <form onSubmit={handleLogin} className='mt-12'>
           <InputField
@@ -139,11 +140,6 @@ const Login = () => {
             </button>
           </div>
         </form>
-      </div>
-      <div className='text-center text-base font-light mt-2 text-neutral-700'>
-        <h1>
-          <span>&#169;</span>2023 DeskMe, All right reserved. Privacy Policy <br /> and Terms & Conditions.
-        </h1>
       </div>
     </div>
   );

@@ -82,9 +82,16 @@ const ABooking = () => {
   const handleSignOutClick = () => {
     // Clear session storage
     sessionStorage.removeItem('userCredentials');
+    localStorage.removeItem("userCredentials");
+    localStorage.clear("userCredentials");
+    sessionStorage.clear("userCredentials");
+
+
+
     // Navigate to login page
     navigate('/login');
   };
+
 
 
   const handleDashboardClick = () => {
@@ -98,7 +105,7 @@ const ABooking = () => {
   };
 
   return (
-    <>
+    <div className="h-screen dark:bg-neutral-900">
       <Header />
       <div className="flex dark:bg-neutral-900">
         <SidebarProvider>
@@ -152,7 +159,7 @@ const ABooking = () => {
                   <table className="w-full table-auto mt-2">
                     <thead className="text-gray-900 font-medium text-lg border-b text-center">
                       <tr>
-                        <th className="py-3 pr-6">ID</th>
+                        <th className="py-3 pr-6">Desk</th>
                         <th className="py-3 pr-6">Name</th>
                         <th className="py-3 pr-6">Date</th>
                         <th className="py-3 pr-6">Time-In</th>
@@ -164,7 +171,7 @@ const ABooking = () => {
                     {
                       reservationHistory.map((reservation, index) => (
                         <tr key={index}>
-                          <td className="pr-6 py-4 whitespace-nowrap">{index + 1}</td> {/* Sequential ID */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td> {/* Desk title */}
                           <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.username}</td>
                           <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td> {/* Format date */}
                           <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td> {/* Format start time */}
@@ -172,16 +179,17 @@ const ABooking = () => {
                           <td className="pr-6 py-4 whitespace-nowrap">
                             <span className={`px-3 py-2 rounded-full font-semibold text-xs ${reservation.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
                               {reservation.status}
-                              </span>
-                            </td>
-                            <td className="whitespace-nowrap text-center">
-                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                                Manage
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      }
+                            </span>
+                          </td>
+                          <td className="whitespace-nowrap text-center">
+                            <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                              Manage
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    }
+
                     </tbody>
                   </table>
                 </div>
@@ -264,7 +272,7 @@ const ABooking = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

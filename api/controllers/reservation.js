@@ -163,13 +163,23 @@ export const cancelReservation = async (req, res, next) => {
 
 export const deleteAllReservations = async (req, res, next) => {
     try {
+        // Get all reserved desks
+        const reservedDesks = await Desk.find({ status: 'reserved' });
+
+        // Update the status of all reserved desks to 'available'
+        await Promise.all(reservedDesks.map(async (desk) => {
+            desk.status = 'available';
+            await desk.save();
+        }));
+
+        // Delete all reservations
         await Reservation.deleteMany({});
+
         res.json({ message: 'All reservations deleted successfully' });
     } catch (error) {
         next(error);
     }
 };
-
 
 export const approveReservations = async () => {
     try {
@@ -297,13 +307,15 @@ export const getAllReservations = async (req, res, next) => {
         // Fetch all reservations along with user details and avatar
         const reservations = await Reservation.find()
             .populate('user', 'username email')
-            .select('date startTime endTime status deskTitle deskArea officeEquipment feedback'); // Select the required fields
+            .populate('desk', 'title area') // Populate the desk field to include title and area
+            .select('date startTime endTime status desk deskTitle deskArea officeEquipment feedback'); // Select the required fields
 
         res.status(200).json(reservations);
     } catch (err) {
         next(err);
     }
 };
+
 
 export const getUserBookingHistory = async (req, res, next) => {
     try {

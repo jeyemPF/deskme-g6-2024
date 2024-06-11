@@ -21,10 +21,21 @@ const AManageBooking = () => {
   const handleSignOutClick = () => {
     // Clear session storage
     sessionStorage.removeItem('userCredentials');
+    localStorage.removeItem("userCredentials");
+    localStorage.clear("userCredentials");
+    sessionStorage.clear("userCredentials");
+
+
+
     // Navigate to login page
     navigate('/login');
   };
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 57989d9c00565d66f242b7bc2c161b82ff954e69
   const handleBookingClick = () => {
     navigate('/adminbooking');
   };
@@ -79,7 +90,7 @@ const AManageBooking = () => {
   const isError = reservationPendingError || reservationTotalError;
 
   return (
-    <>
+    <div className="h-screen dark:bg-neutral-900">
       <Header />
       <div className="flex dark:bg-neutral-900">
         <SidebarProvider>
@@ -254,9 +265,16 @@ const AManageBooking = () => {
             </div>
           </div>
         </div>
+<<<<<<< HEAD
       )}
     </>
   );
 };
+=======
+        )}
+    </div>
+  )
+}
+>>>>>>> 57989d9c00565d66f242b7bc2c161b82ff954e69
 
 export default AManageBooking;

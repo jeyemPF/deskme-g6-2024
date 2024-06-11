@@ -6,20 +6,19 @@ import Header from '../components/Header';
 import axios from 'axios'; // Import axios for making HTTP requests
 import { format } from 'date-fns';
 
-
 const MyBooking = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookings, setBookings] = useState([]); // State to store booking history
   const [totalBookings, setTotalBookings] = useState(0);
   const [pendingBookings, setPendingBookings] = useState(0);
   
+  const [currentPage, setCurrentPage] = useState(1);
+  const desksPerPage = 5; // Define how many desks per page
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchBookingHistory();
-  }, []);
-
-
+  }, [currentPage]); // Add currentPage as a dependency
 
   const fetchBookingHistory = async () => {
     try {
@@ -50,10 +49,7 @@ const MyBooking = () => {
       console.error('Error fetching booking history:', error);
     }
   };
-  
-  
-  
-  
+
   const handleManageClick = () => {
     setIsModalOpen(true);
   };
@@ -64,6 +60,9 @@ const MyBooking = () => {
 
   const handleSignOutClick = () => {
     sessionStorage.removeItem('userCredentials');
+    localStorage.removeItem("userCredentials");
+    localStorage.clear("userCredentials");
+    sessionStorage.clear("userCredentials");
     navigate('/login');
   };
 
@@ -75,8 +74,33 @@ const MyBooking = () => {
     navigate('/dashboard');
   };
 
+  const indexOfLastDesk = currentPage * desksPerPage;
+  const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
+  const currentDesks = bookings.slice(indexOfFirstDesk, indexOfLastDesk);
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === Math.ceil(bookings.length / desksPerPage);
+
+  const nextPage = () => {
+    if (!isLastPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (!isFirstPage) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const totalPages = Math.ceil(bookings.length / desksPerPage);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
   return (
-    <>
+    <div className="h-screen dark:bg-neutral-900">
       <Header />
       <div className="flex dark:bg-neutral-900">
         <SidebarProvider>
@@ -148,9 +172,9 @@ const MyBooking = () => {
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
                     {
-                        bookings.map((booking, index) => (
+                        currentDesks.map((booking, index) => (
                           <tr key={index}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{index + 1}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{indexOfFirstDesk + index + 1}</td>
                             <td className="pr-6 py-4 whitespace-nowrap">{booking.desk.title}</td>
                             <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(booking.date), 'MMMM dd, yyyy')}</td>
                             <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(booking.startTime),'hh:mm a' )}</td>
@@ -166,64 +190,63 @@ const MyBooking = () => {
                               </button>
                             </td>
                           </tr>
-                         
-                          
                         ))
-                        
                       }
                     </tbody>
                   </table>
                 </div>
                 <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
+                    <li>
+    <button
+        onClick={prevPage}
+        disabled={isFirstPage}
+        className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+    >
+        <span className="sr-only">Prev Page</span>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3 w-3"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+        >
+            <path
+                fillRule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clipRule="evenodd"
+            />
+        </svg>
+    </button>
+</li>
+
                   <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Prev Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
+                      <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
+                          {currentPage}
+                      </span>
+                  </li>
+
+                  <li>
+                      <button
+                          onClick={nextPage}
+                          disabled={isLastPage}
+                          className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
+                          <span className="sr-only">Next Page</span>
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-3 w-3"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                          >
+                              <path
+                                  fillRule="evenodd"
+                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                  clipRule="evenodd"
+                              />
+                          </svg>
+                      </button>
                   </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
-                    >
-                      1
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Next Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
-                  </li>
-                </ol>
+
+                    </ol>
               </div>
             </div>
           </Content>
@@ -251,9 +274,9 @@ const MyBooking = () => {
             </div>
           </div>
         </div>
-      )}
-    </>
-  );
-};
+        )}
+    </div>
+  )
+}
 
 export default MyBooking;

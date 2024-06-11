@@ -13,7 +13,7 @@ router.post('/reservations/:deskId', createReservation);
 router.delete('/cancel-reservation/:reservationId' , cancelReservation);
 
 // Delete all reservation
-router.delete('/', verifyOfficeManager, deleteAllReservations);
+router.delete('/delete-my-reservation/', verifyOfficeManager, deleteAllReservations);
 
 // get the all reservation History
 router.get("/reservation-history", getAllReservations)

@@ -308,7 +308,7 @@ const sendRoleAssignmentEmail = async (email, username, role, password) => {
     const emailContent = {
         body: {
             name: username,
-            intro: `Welcome to DeskMe! You have been assigned the role of <strong>${role}</strong>. Your password is: ${password}`,
+            intro: `Welcome to DeskMe! You have been assigned the role of <strong>${role}</strong>. Your password is: <strong>${password}</strong>`,
             action: {
                 instructions: 'To get started, please log in to your account:',
                 button: {

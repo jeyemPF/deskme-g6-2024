@@ -21,9 +21,18 @@ const ADashboard = () => {
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
+    // Clear session storage
     sessionStorage.removeItem('userCredentials');
+    localStorage.removeItem("userCredentials");
+    localStorage.clear("userCredentials");
+    sessionStorage.clear("userCredentials");
+
+
+
+    // Navigate to login page
     navigate('/login');
   };
+
 
   const handleBookingClick = () => {
     navigate('/adminbooking');
@@ -45,7 +54,7 @@ const ADashboard = () => {
   const isError = availableDeskError || deskCountError || deskCountReservedError || deskCountUnavailableError;
 
   return (
-    <>
+    <div className="h-screen dark:bg-neutral-900">
       <Header />
       <div className="flex dark:bg-neutral-900">
         <SidebarProvider>
@@ -169,8 +178,8 @@ const ADashboard = () => {
           </Content>
         </SidebarProvider>
       </div>
-    </>
-  );
+    </div>
+  )
 }
 
 export default ADashboard;

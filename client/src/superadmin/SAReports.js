@@ -33,6 +33,12 @@ const tableItems = [
     const handleSignOutClick = () => {
       // Clear session storage
       sessionStorage.removeItem('userCredentials');
+      localStorage.removeItem("userCredentials");
+      localStorage.clear("userCredentials");
+      sessionStorage.clear("userCredentials");
+  
+  
+  
       // Navigate to login page
       navigate('/login');
     };
@@ -55,7 +61,7 @@ const tableItems = [
   };
 
   return (
-    <>
+    <div className="h-screen dark:bg-neutral-900">
     <Header />
         <div className="flex dark:bg-neutral-900">
         <SidebarProvider>
@@ -219,7 +225,7 @@ const tableItems = [
           </div>
         </div>
         )}
-    </>
+    </div>
   )
 }
 

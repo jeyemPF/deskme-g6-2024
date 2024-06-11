@@ -38,9 +38,18 @@ const SAAuditReport = () => {
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
+    // Clear session storage
     sessionStorage.removeItem('userCredentials');
+    localStorage.removeItem("userCredentials");
+    localStorage.clear("userCredentials");
+    sessionStorage.clear("userCredentials");
+
+
+
+    // Navigate to login page
     navigate('/login');
   };
+
 
   const handleBookingClick = () => {
     navigate('/superbooking');
@@ -146,7 +155,7 @@ const SAAuditReport = () => {
               <div className="flex justify-center mt-4">
                 <div className="inline-flex items-center justify-center rounded border border-gray-100 bg-white text-gray-900">
                   <button
-                    className={`p-2 border-r ${currentPage === 1 ? 'pointer-events-none opacity-50' : 'hover:bg-gray-200'}`}
+                    className={`p-2 border-r ${currentPage === 1 ? 'inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180' : 'hover:bg-gray-200'}`}
                     onClick={handleClickPrev}
                   >
                     <svg
@@ -162,9 +171,9 @@ const SAAuditReport = () => {
                       />
                     </svg>
                   </button>
-                  <span className="p-2">{currentPage}</span>
+                  <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">{currentPage}</span>
                   <button
-                    className={`p-2 border-l ${currentPage === totalPages ? 'pointer-events-none opacity-50' : 'hover:bg-gray-200'}`}
+                    className={`p-2 border-l ${currentPage === totalPages ? 'inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180' : 'hover:bg-gray-200'}`}
                     onClick={handleClickNext}
                   >
                     <svg
