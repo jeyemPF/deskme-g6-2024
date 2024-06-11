@@ -261,12 +261,18 @@ export const getPendingReservationsCount = async (req, res, next) => {
 
 export const addFeedback = async (req, res, next) => {
     try {
-        const { reservationId } = req.params;
+        const { reservationId, userId } = req.params;
         const { feedback } = req.body;
 
         const reservation = await Reservation.findById(reservationId);
         if (!reservation) {
             return res.status(404).json({ message: "Reservation not found" });
+        }
+
+        // Optionally verify the userId if needed
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
         }
 
         // Update reservation with feedback
@@ -316,6 +322,20 @@ export const getAllReservations = async (req, res, next) => {
     }
 };
 
+export const getAllReports = async (req, res, next) => {
+    try {
+        // fetch the desk and reports of users
+
+        const feedback = await Reservation.find()
+        .populate('user', 'username email')
+        .populate('desk', 'title area') // Populate the desk field to include title and area
+        .select(' deskTitle deskArea feedback'); // Select the required fields
+
+        res.status(200).json(feedback);
+    } catch (err) {
+        next(err);
+    }
+}
 
 export const getUserBookingHistory = async (req, res, next) => {
     try {
@@ -324,7 +344,7 @@ export const getUserBookingHistory = async (req, res, next) => {
         // Fetch reservations associated with the authenticated user
         let bookings = await Reservation.find({ user: userId })
             .populate('desk', 'title area') // Optionally populate desk details
-            .select('date startTime endTime status'); // Select required fields
+            .select('date startTime endTime status feedback '); // Select required fields
 
         // Reverse the array of bookings
         bookings = bookings.reverse();

@@ -1,51 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header'
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
 import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog, ClipboardMinus } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { format } from 'date-fns';
+
 
 const AReports = () => {
+  const [reservationHistory, setReservationHistory] = useState([]);
+  const [selectedFeedback, setSelectedFeedback] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    const fetchReservationHistory = async () => {
+      try {
+        const response = await axios.get('http://localhost:8800/api/reservations/reservation-history');
+        setReservationHistory(response.data);
+      } catch (error) {
+        console.error('Error fetching reservation history:', error);
+      }
+    };
+    fetchReservationHistory();
+  }, []);
 
-const handleManageClick = () => {
+  const handleManageClick = (feedback) => {
+    setSelectedFeedback(feedback); // Set the feedback of the selected reservation
     setIsModalOpen(true);
-    };
-const handleCloseModal = () => {
+  };
+  const handleCloseModal = () => {
     setIsModalOpen(false);
-    };
+  };
 
-const tableItems = [
-    {
-        reservation_id: 1,
-        name: "Elon Musk",
-        reservation_date: "May 1, 2024",
-        status: "Done"
-    },
-    {
-        reservation_id: 2,
-        name: "Mark Zuckerberg",
-        reservation_date: "May 5, 2024",
-        status: "Done"
-    },
-    ];
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const handleSignOutClick = () => {
+    // Clear session storage
+    sessionStorage.removeItem('userCredentials');
+    localStorage.removeItem("userCredentials");
+    localStorage.clear("userCredentials");
+    sessionStorage.clear("userCredentials");
 
-    const handleSignOutClick = () => {
-      // Clear session storage
-      sessionStorage.removeItem('userCredentials');
-      localStorage.removeItem("userCredentials");
-      localStorage.clear("userCredentials");
-      sessionStorage.clear("userCredentials");
-  
-  
-  
-      // Navigate to login page
-      navigate('/login');
-    };
-  
-  
+    // Navigate to login page
+    navigate('/login');
+  };
 
   const handleBookingClick = () => {
     navigate('/adminbooking');
@@ -54,9 +52,11 @@ const tableItems = [
   const handleDashboardClick = () => {
     navigate('/admindashboard');
   };
+
   const handleManageBookingClick = () => {
     navigate('/adminmanagebooking');
   };
+
 
   return (
     <div className="h-screen dark:bg-neutral-900">
@@ -122,20 +122,20 @@ const tableItems = [
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                      {
-                        tableItems.map((item, idx) => (
-                          <tr key={idx}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_date}</td>
-                            <td className="whitespace-nowrap text-center">
-                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                                View Report
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      }
+                    {
+                      reservationHistory.map((reservation, index) => (
+                        <tr key={index}>
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td> {/* Desk title */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.email}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td> {/* Format date */}
+                          <td className="whitespace-nowrap text-center">
+                          <button onClick={() => handleManageClick(reservation.feedback)} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                              View Reports
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    }
                     </tbody>
                   </table>
                 </div>
@@ -197,31 +197,29 @@ const tableItems = [
         </div>
 
         {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 w-11/12 max-w-md mx-auto">
-            <h2 className="text-xl font-semibold mb-4">Report</h2>
-            <p className="mb-6">
-                DeskMe offers a comprehensive set of features that cater to all our office needs.
-                The advanced reporting tools provide valuable insights into desk utilization, 
-                helping us optimize our workspace effectively. 
-            </p>
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={handleCloseModal}
-                className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 transition duration-200"
-              >
-                Close
-              </button>
-              <button
-                onClick={handleCloseModal}
-                className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-200"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-        )}
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white rounded-lg p-6 w-11/12 max-w-md mx-auto">
+      <h2 className="text-xl font-semibold mb-4">Report</h2>
+      <p className="mb-6">{selectedFeedback}</p> {/* Display selected feedback */}
+      <div className="flex justify-end space-x-4">
+        <button
+          onClick={handleCloseModal}
+          className="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-700 transition duration-200"
+        >
+          Close
+        </button>
+        <button
+          onClick={handleCloseModal}
+          className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-200"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
     </div>
   )
 }

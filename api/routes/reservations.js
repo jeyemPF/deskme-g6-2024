@@ -1,7 +1,7 @@
 import express from 'express';
 
-import {deleteAllReservations, createReservation, getAllReservations, approveReservations, cancelReservation, getReservationCount, getAvailableDeskCount, getPendingReservations, getPendingReservationsCount, addFeedback, getReservationFeedback, getUserBookingHistory, countUserReservations } from '../controllers/reservation.js';
-import {protect, verifyOfficeManager, verifyUser } from '../utils/verifyToken.js'
+import {deleteAllReservations, createReservation, getAllReservations, approveReservations, cancelReservation, getReservationCount, getAvailableDeskCount, getPendingReservations, getPendingReservationsCount, addFeedback, getReservationFeedback, getUserBookingHistory, countUserReservations, getAllReports } from '../controllers/reservation.js';
+import {protect, verifyAdmin, verifyOfficeManager, verifyUser } from '../utils/verifyToken.js'
 
 const router = express.Router();
 
@@ -33,7 +33,7 @@ router.get("/get-pendings-bookings", getPendingReservations)
 router.get("/pending-counts", getPendingReservationsCount)
 
 // add feedback
-router.post("/:reservationId", addFeedback);
+router.post("/:reservationId/:userId", protect, addFeedback);
 
 router.get('/:reservationId', getReservationFeedback); 
 
@@ -41,6 +41,7 @@ router.get('/my-booking-history/:userId', protect, getUserBookingHistory);
 
 router.get("/self-count-reservations/:userId", protect, countUserReservations )
 
+router.get('/get-all-reports', getAllReports);
 
 
 export default router;
