@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header'
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
-import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog, ClipboardMinus } from "lucide-react";
+import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy,NotebookTabs,Users,  Settings, LogOut, FileCog, ClipboardMinus } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { format } from 'date-fns';
@@ -45,16 +45,23 @@ const AReports = () => {
     navigate('/login');
   };
 
-  const handleBookingClick = () => {
-    navigate('/adminbooking');
-  };
-
   const handleDashboardClick = () => {
-    navigate('/admindashboard');
+    navigate("/superdashboard");
   };
 
+
+  const handleBookingClick = () => {
+    navigate('/superbooking');
+  }
   const handleManageBookingClick = () => {
-    navigate('/adminmanagebooking');
+    navigate('/supermanagebooking');
+  }
+  const handlePrivManageClick = () => {
+    navigate('/superprivmanage');
+  }
+
+  const handleAuditClick = () => {
+    navigate('/superaudit');
   };
 
 
@@ -63,16 +70,40 @@ const AReports = () => {
     <Header />
         <div className="flex dark:bg-neutral-900">
         <SidebarProvider>
-          <Sidebar>
-            <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick} />
-            <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
-            <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
-            <SidebarItem icon={<Flag size={20} />} text="Reports" active />
+        <Sidebar>
+            <SidebarItem
+              icon={<LayoutDashboard size={20} />}
+              text="Dashboard"
+              onClick={handleDashboardClick}
+            />
+            <SidebarItem
+              icon={<BookCopy size={20} />}
+              text="Booking"
+              onClick={handleBookingClick}
+            />
+            <SidebarItem
+              icon={<Layers size={20} />}
+              text="Manage Bookings"
+              onClick={handleManageBookingClick}
+            />
+             <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
+            <SidebarItem
+              icon={<Flag size={20} />}
+              text="Reports"
+            />
             <hr className="my-3" />
+            <SidebarItem
+              icon={<NotebookTabs size={20} />}
+              text="Audit Trails"
+              onClick={handleAuditClick}
+            />
             <SidebarItem icon={<Settings size={20} />} text="Settings" />
-            <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
             <hr className="my-3" />
-            <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
+            <SidebarItem
+              icon={<LogOut size={20} />}
+              text="Sign Out"
+              onClick={handleSignOutClick}
+            />
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Reports</h1>
