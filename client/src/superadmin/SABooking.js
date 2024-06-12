@@ -35,40 +35,37 @@ const SABooking = () => {
   }, []);
 
 
-  const [isOn, setIsOn] = useState(localStorage.getItem('isOn') === 'true');
+  const [isOn, setIsOn] = useState(() => localStorage.getItem('isOn') === 'true'); // Set initial state from localStorage
+
 
 
   
 
- const handleToggle = async () => {
+  const handleToggle = async () => {
     try {
       // Make the API request
       const response = await axios.put(
         `http://localhost:8800/api/switchs/switch-approve`,
         {},
-        {
-         
-        }
+        {}
       );
-  
+
       // Log the response for debugging
       console.log('Response:', response.data);
-  
+
       // Toggle the state if the request is successful
       const newValue = !isOn;
       setIsOn(newValue);
-      localStorage.setItem('isOn', newValue.toString());
-  
+      localStorage.setItem('isOn', newValue.toString()); // Update localStorage with new value
+
       // Show success notification
-    
-        message.success('You have successfully approved/disapproved all bookings.');
+      message.success('You have successfully approved/disapproved all bookings.');
 
-        } catch (error) {
-          console.error('Error toggling reservation emails:', error);
-          // Show error notification
-          message.error('Failed to toggle booking approval. Please try again later.');
-        }
-
+    } catch (error) {
+      console.error('Error toggling reservation emails:', error);
+      // Show error notification
+      message.error('Failed to toggle booking approval. Please try again later.');
+    }
   };
 
   useEffect(() => {
@@ -127,15 +124,11 @@ const SABooking = () => {
   const handleSignOutClick = () => {
     // Clear session storage
     sessionStorage.removeItem('userCredentials');
-    localStorage.removeItem("userCredentials");
-    localStorage.clear("userCredentials");
-    sessionStorage.clear("userCredentials");
-
-
-
+  
     // Navigate to login page
     navigate('/login');
   };
+  
 
 
   const handleDashboardClick = () => {

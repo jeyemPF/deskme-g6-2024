@@ -72,7 +72,7 @@ export const createReservation = async (req, res, next) => {
             date,
             startTime: reservationStartTime,
             endTime: reservationEndTime,
-            status: 'APPROVED',
+            status: 'PENDING',
             deskArea: desk.area,
             officeEquipment: desk.officeEquipment
         });
@@ -122,6 +122,8 @@ export const createReservation = async (req, res, next) => {
         next(err);
     }
 };
+
+
 
 export const cancelReservation = async (req, res, next) => {
     try {
@@ -183,16 +185,43 @@ export const deleteAllReservations = async (req, res, next) => {
     }
 };
 
+// Function to approve reservations
 export const approveReservations = async () => {
     try {
-        // Update the status of all pending reservations to "APPROVED"
-        await Reservation.updateMany(
-            { status: 'PENDING' },
-            { $set: { status: 'APPROVED' } }
-        );
-        return { success: true, message: 'All pending reservations approved successfully' };
-    } catch (error) {
-        throw new Error('Failed to approve pending reservations');
+        // Find all pending reservations
+        const pendingReservations = await Reservation.find({ status: 'REJECTED' });
+
+        for (const reservation of pendingReservations) {
+            // Update the reservation status to 'APPROVED'
+            reservation.status = 'APPROVED';
+            await reservation.save();
+
+            // Find the user associated with the reservation
+            const user = await User.findById(reservation.user);
+            if (user && user.receiveReservationEmails) {
+                const emailContent = getEmailContentReservation(user.username, reservation);
+                await sendReservationConfirmationEmail(user.email, emailContent);
+            }
+        }
+    } catch (err) {
+        console.error("Error approving reservations:", err);
+        throw err; // Rethrow the error to be handled by the caller
+    }
+};
+
+export const pendingReservations = async () => {
+    try {
+        // Find all approved reservations
+        const approvedReservations = await Reservation.find({ status: 'APPROVED' });
+        
+        for (const reservation of approvedReservations) {
+            // Update the reservation status to 'PENDING'
+            reservation.status = 'REJECTED';
+            await reservation.save();
+        }
+    } catch (err) {
+        console.error("Error setting reservations to pending:", err);
+        throw err; // Rethrow the error to be handled by the caller
     }
 };
 
@@ -399,4 +428,7 @@ export const countUserReservations = async (req, res, next) => {
         next(error);
     }
 };
+
+
+
 

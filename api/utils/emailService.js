@@ -3,6 +3,7 @@ import Mailgen from "mailgen";
 import crypto from "crypto";
 import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
+import { formatInTimeZone,  format } from 'date-fns-tz';
 
 
 dotenv.config();
@@ -143,39 +144,62 @@ const sendMagicLink = async (user, res) => {
     }
   };
 
+  const formatDate = (date) => {
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(date).toLocaleDateString(undefined, options);
+};
 
-  const getEmailContentReservation = (username, reservation) => {
+const formatTime = (time) => {
+    const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+    return new Date(time).toLocaleTimeString(undefined, options);
+};
+
+
+
+const getEmailContentReservation = (username, reservation) => {
+    const formattedDate = formatDate(reservation.date);
+    const formattedStartTime = formatTime(reservation.startTime);
+    const formattedEndTime = formatTime(reservation.endTime);
+
     return {
         body: {
             name: username,
             intro: `
                 <div style="font-family: Arial, sans-serif; color: #333;">
                     <p>Your reservation for "<strong>${reservation.deskTitle}</strong>" has been confirmed with the following details:</p>
-                    <table style="border-collapse: collapse; width: 100%;">
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>Date:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.date}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>Start Time:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.startTime}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>End Time:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.endTime}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>Status:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.status}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>Office Equipment:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.officeEquipment.join(', ')}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>Area:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.deskArea}</td>
-                        </tr>
+                    <table style="border-collapse: collapse; width: 100%; font-size: 14px; margin-top: 10px;">
+                        <thead>
+                            <tr style="background-color: #f2f2f2; color: #333;">
+                                <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Detail</th>
+                                <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Information</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #fafafa;"><strong>Date:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${formattedDate}</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #f0f0f0;"><strong>Start Time:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${formattedStartTime}</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #fafafa;"><strong>End Time:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${formattedEndTime}</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #f0f0f0;"><strong>Status:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${reservation.status}</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #fafafa;"><strong>Office Equipment:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${reservation.officeEquipment.join(', ')}</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #f0f0f0;"><strong>Area:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${reservation.deskArea}</td>
+                            </tr>
+                        </tbody>
                     </table>
                     <br/>
                     <p>Thank you for choosing us for your reservation. If you have any questions, feel free to contact us.</p>
@@ -184,6 +208,8 @@ const sendMagicLink = async (user, res) => {
         }
     };
 };
+
+
 
 
 const sendReservationConfirmationEmail = async (email, emailContent) => {

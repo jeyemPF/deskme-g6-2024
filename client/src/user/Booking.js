@@ -112,16 +112,11 @@ const Booking = () => {
   const handleSignOutClick = () => {
     // Clear session storage
     sessionStorage.removeItem('userCredentials');
-    localStorage.removeItem("userCredentials");
-    localStorage.clear("userCredentials");
-    sessionStorage.clear("userCredentials");
-
-
-
+  
     // Navigate to login page
     navigate('/login');
   };
-
+  
 
   const handleDashboardClick = () => {
     navigate('/dashboard');

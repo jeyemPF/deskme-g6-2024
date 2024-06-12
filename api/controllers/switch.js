@@ -1,7 +1,7 @@
-import Switch from '../models/Switch.js'; 
-import { resetApprovedReservations, approveReservations  } from '../controllers/reservation.js'; // Import the function for approving reservations
+import Switch from '../models/Switch.js';
+import { approveReservations, pendingReservations } from './reservation.js';
 
-// Controller function to handle a request to toggle autoAccepting and approve reservations if enabled
+// Controller function to handle a request to toggle autoAccepting and update reservations accordingly
 export const toggleAutoAccepting = async (req, res, next) => {
     try {
         // Find the existing Switch document in the database
@@ -20,13 +20,11 @@ export const toggleAutoAccepting = async (req, res, next) => {
         existingSwitch.autoAccepting = !existingSwitch.autoAccepting;
         await existingSwitch.save();
 
-        // If autoAccepting is enabled, approve pending reservations, else reset approved reservations
+        // Update reservations based on the new autoAccepting value
         if (existingSwitch.autoAccepting) {
-            // Approve pending reservations
             await approveReservations();
         } else {
-            // Reset approved reservations
-            await resetApprovedReservations();
+            await pendingReservations();
         }
 
         res.status(200).json({ message: 'Auto-accepting toggled successfully', autoAccepting: existingSwitch.autoAccepting });
