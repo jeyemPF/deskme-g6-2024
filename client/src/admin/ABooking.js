@@ -1,34 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
 import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import useFetch from '../Hooks/useFetch';
-import { Skeleton } from "antd";  
-import axios from 'axios';
-import { format } from 'date-fns';
 
 const ABooking = () => {
-  const [reservationHistory, setReservationHistory] = useState([]);
   const [isOn, setIsOn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
-
-  const isLoading = reservationPendingLoading;
-  const isError = reservationPendingError;
-
-  useEffect(() => {
-    const fetchReservationHistory = async () => {
-      try {
-        const response = await axios.get('http://localhost:8800/api/reservations/reservation-history');
-        setReservationHistory(response.data);
-      } catch (error) {
-        console.error('Error fetching reservation history:', error);
-      }
-    };
-    fetchReservationHistory();
-  }, []);
 
   const handleToggle = () => {
     setIsOn(!isOn);
@@ -80,19 +58,8 @@ const ABooking = () => {
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
-    // Clear session storage
-    sessionStorage.removeItem('userCredentials');
-    localStorage.removeItem("userCredentials");
-    localStorage.clear("userCredentials");
-    sessionStorage.clear("userCredentials");
-
-
-
-    // Navigate to login page
     navigate('/login');
   };
-
-
 
   const handleDashboardClick = () => {
     navigate('/admindashboard');
@@ -122,25 +89,15 @@ const ABooking = () => {
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
-          { isLoading ? ( 
-            <>
-            <Skeleton height={120} count={4} />
-            </>
-            ) : isError ? (
-              <div>Error: {reservationPendingError ?.message } </div>
-            ) : (
-              <>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
-            <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
-              <div className='flex flex-col'>
-                <span className="text-xl font-semibold">Total: {reservationPendingData}</span>
-                <span className="text-sm font-normal">Pending Books</span>
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
+              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
+                <div className='flex flex-col'>
+                  <span className="text-xl font-semibold">Total: 4</span>
+                  <span className="text-sm font-normal">Pending Books</span>
+                </div>
+                <FileCog className="w-10 h-10 ml-10" />
               </div>
-              <FileCog className="w-10 h-10 ml-10" />
             </div>
-          </div>
-          </>
-          )}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
               <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
                 <div className="flex justify-end items-center w-full">
@@ -159,7 +116,7 @@ const ABooking = () => {
                   <table className="w-full table-auto mt-2">
                     <thead className="text-gray-900 font-medium text-lg border-b text-center">
                       <tr>
-                        <th className="py-3 pr-6">Desk</th>
+                        <th className="py-3 pr-6">ID</th>
                         <th className="py-3 pr-6">Name</th>
                         <th className="py-3 pr-6">Date</th>
                         <th className="py-3 pr-6">Time-In</th>
@@ -168,28 +125,27 @@ const ABooking = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                    {
-                      reservationHistory.map((reservation, index) => (
-                        <tr key={index}>
-                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td> {/* Desk title */}
-                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.username}</td>
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td> {/* Format date */}
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td> {/* Format start time */}
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td> {/* Format end time */}
-                          <td className="pr-6 py-4 whitespace-nowrap">
-                            <span className={`px-3 py-2 rounded-full font-semibold text-xs ${reservation.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                              {reservation.status}
-                            </span>
-                          </td>
-                          <td className="whitespace-nowrap text-center">
-                            <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                              Manage
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    }
-
+                      {
+                        tableItems.map((item, idx) => (
+                          <tr key={idx}>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_date}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.start_time}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.end_time}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">
+                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+                                {item.status}
+                              </span>
+                            </td>
+                            <td className="whitespace-nowrap text-center">
+                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                                Manage
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      }
                     </tbody>
                   </table>
                 </div>

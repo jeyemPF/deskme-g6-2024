@@ -4,7 +4,7 @@ import Services from '../src/pages/Services';
 import Contact from '../src/pages/Contact';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Authenticate from '../src/auth/Authenticate';
-import Login from '../src/auth/Login'
+import Login from '../src/auth/Login';
 import AuthenticateSuccess from '../src/auth/AuthenticateSuccess';
 import Dashboard from '../src/user/Dashboard';
 import Booking from '../src/user/Booking';
@@ -24,7 +24,6 @@ import SAAuditReport from './superadmin/SAAuditReport';
 import OMDashboard from './officemanager/OMDashboard';
 import OMBooking from './officemanager/OMBooking';
 import OMManageBooking from './officemanager/OMManageBooking';
-import MyBooking from '../src/user/ManageBooking';
 import Error from './components/Error';
 
 function App() {
@@ -41,9 +40,9 @@ function App() {
         <Route path="/authenticatesuccess" element={<AuthenticateSuccess />} />
         <Route path='/dashboard' element={<Dashboard />} /> 
         <Route path='/booking' element={<Booking />} />
-        <Route path='/mybooking' element={<MyBooking />} />
+        <Route path='/managebooking' element={<ManageBooking />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
-        <Route path='/newpassword/:token/:id' element={<NewPassword />} />
+        <Route path='/newpassword' element={<NewPassword />} />
         <Route path='/admindashboard' element={<ADashboard />} />
         <Route path='/adminbooking' element={<ABooking />} />
         <Route path='/adminmanagebooking' element={<AManageBooking />} />

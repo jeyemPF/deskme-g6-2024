@@ -1,68 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog, ScrollText } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
-import Header from '../components/Header';
-import axios from 'axios'; // Import axios for making HTTP requests
-import { format } from 'date-fns';
+import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
+import Header from '../components/Header'
 
-const MyBooking = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bookings, setBookings] = useState([]); // State to store booking history
-  const [totalBookings, setTotalBookings] = useState(0);
-  const [pendingBookings, setPendingBookings] = useState(0);
-  
-  const [currentPage, setCurrentPage] = useState(1);
-  const desksPerPage = 5; // Define how many desks per page
+const ManageBooking = () => {
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+const handleManageClick = () => {
+    setIsModalOpen(true);
+    };
+const handleCloseModal = () => {
+    setIsModalOpen(false);
+    };
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchBookingHistory();
-  }, [currentPage]); // Add currentPage as a dependency
-
-  const fetchBookingHistory = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-    
-      // Debugging logs
-      console.log('Token:', token);
-      console.log('UserId:', userId);
-    
-      // Check if token and userId are present
-      if (!token || !userId) {
-        console.error('User is not authenticated');
-        return;
-      }
-    
-      const response = await axios.get(`http://localhost:8800/api/reservations/my-booking-history/${userId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        }
-      });
-    
-      setBookings(response.data.bookings);
-      setTotalBookings(response.data.bookings.length);
-      setPendingBookings(response.data.bookings.filter(booking => booking.status === 'Pending').length);
-    } catch (error) {
-      console.error('Error fetching booking history:', error);
-    }
-  };
-
-  const handleManageClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
   const handleSignOutClick = () => {
-    sessionStorage.removeItem('userCredentials');
-    localStorage.removeItem("userCredentials");
-    localStorage.clear("userCredentials");
-    sessionStorage.clear("userCredentials");
     navigate('/login');
   };
 
@@ -74,30 +28,9 @@ const MyBooking = () => {
     navigate('/dashboard');
   };
 
-  const indexOfLastDesk = currentPage * desksPerPage;
-  const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
-  const currentDesks = bookings.slice(indexOfFirstDesk, indexOfLastDesk);
+  const tableItems = [
 
-  const isFirstPage = currentPage === 1;
-  const isLastPage = currentPage === Math.ceil(bookings.length / desksPerPage);
-
-  const nextPage = () => {
-    if (!isLastPage) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const prevPage = () => {
-    if (!isFirstPage) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const totalPages = Math.ceil(bookings.length / desksPerPage);
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
+  ];
 
   return (
     <div className="h-screen dark:bg-neutral-900">
@@ -107,25 +40,26 @@ const MyBooking = () => {
           <Sidebar>
             <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick} />
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
-            <SidebarItem icon={<Layers size={20} />} text="My Bookings" active />
+            <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" active />
             <hr className="my-3" />
+            <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>
           <Content>
-            <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>My Bookings</h1>
+            <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Manage Bookings</h1>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: {totalBookings}</span>
+                  <span className="text-xl font-semibold">Total: 0</span>
                   <span className="text-sm font-normal">All Bookings</span>
                 </div>
                 <ScrollText className="w-10 h-10 ml-10" />
               </div>
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: {pendingBookings}</span>
+                  <span className="text-xl font-semibold">Total: 0</span>
                   <span className="text-sm font-normal">Pending Books</span>
                 </div>
                 <FileCog className="w-10 h-10 ml-10" />
@@ -133,30 +67,30 @@ const MyBooking = () => {
             </div>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
               <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
-                <div className="flex justify-end items-center">
-                  <div className="relative w-60 max-w-md">
+              <div className="flex justify-end items-center">
+                <div className="relative w-60 max-w-md">
                     <input
-                      type="text"
-                      className="w-full p-2 pr-10 pl-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
-                      placeholder="Search bookings"
+                    type="text"
+                    className="w-full p-2 pr-10 pl-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
+                    placeholder="Search bookings"
                     />
                     <div className="absolute right-0 top-0 flex items-center h-full pr-4">
-                      <svg
+                    <svg
                         className="w-5 h-5 text-gray-500"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg"
-                      >
+                    >
                         <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
                         />
-                      </svg>
+                    </svg>
                     </div>
-                  </div>
+                </div>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full table-auto mt-2">
@@ -171,17 +105,17 @@ const MyBooking = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                    {
-                        currentDesks.map((booking, index) => (
-                          <tr key={index}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{indexOfFirstDesk + index + 1}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{booking.desk.title}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(booking.date), 'MMMM dd, yyyy')}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(booking.startTime),'hh:mm a' )}</td>
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(booking.endTime), 'hh:mm a' )}</td>
+                      {
+                        tableItems.map((item, idx) => (
+                          <tr key={idx}>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_date}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.start_time}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap">{item.end_time}</td>
                             <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 py-1 rounded-full text-xs font-semibold ${booking.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
-                                {booking.status}
+                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+                                {item.status}
                               </span>
                             </td>
                             <td className="whitespace-nowrap text-center">
@@ -196,57 +130,56 @@ const MyBooking = () => {
                   </table>
                 </div>
                 <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
-                    <li>
-    <button
-        onClick={prevPage}
-        disabled={isFirstPage}
-        className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-    >
-        <span className="sr-only">Prev Page</span>
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-3"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-        >
-            <path
-                fillRule="evenodd"
-                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                clipRule="evenodd"
-            />
-        </svg>
-    </button>
-</li>
-
                   <li>
-                      <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
-                          {currentPage}
-                      </span>
-                  </li>
-
-                  <li>
-                      <button
-                          onClick={nextPage}
-                          disabled={isLastPage}
-                          className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                    <a
+                      href="#"
+                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                    >
+                      <span className="sr-only">Prev Page</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-3 w-3"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
                       >
-                          <span className="sr-only">Next Page</span>
-                          <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-3 w-3"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                          >
-                              <path
-                                  fillRule="evenodd"
-                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                  clipRule="evenodd"
-                              />
-                          </svg>
-                      </button>
+                        <path
+                          fillRule="evenodd"
+                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </a>
                   </li>
 
-                    </ol>
+                  <li>
+                    <a
+                      href="#"
+                      className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
+                    >
+                      1
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                    >
+                      <span className="sr-only">Next Page</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-3 w-3"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </a>
+                  </li>
+                </ol>
               </div>
             </div>
           </Content>
@@ -279,4 +212,4 @@ const MyBooking = () => {
   )
 }
 
-export default MyBooking;
+export default ManageBooking

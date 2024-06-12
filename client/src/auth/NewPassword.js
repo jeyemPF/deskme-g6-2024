@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { HiOutlineXMark } from "react-icons/hi2";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { BsEye, BsEyeSlash } from "react-icons/bs";
-import axios from 'axios';
 import Switcher from '../components/Switcher';
 
 const InputField = ({ type, name, placeholder, value, onChange, icon, error }) => {
@@ -19,7 +18,6 @@ const InputField = ({ type, name, placeholder, value, onChange, icon, error }) =
       />
       {icon && (
         <button
-          type="button"
           className='absolute top-1/2 transform -translate-y-1/2 right-1 focus:outline-none pr-4'
           onClick={icon.onClick}
         >
@@ -32,31 +30,39 @@ const InputField = ({ type, name, placeholder, value, onChange, icon, error }) =
 };
 
 const NewPassword = () => {
+    // Password
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [newpassword, newsetPassword] = useState("");
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { token, id } = useParams();
-  const navigate = useNavigate();
 
+  // Toggle Password Visibility
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setPasswordError('');
-
-    if (password !== confirmPassword) {
-      setPasswordError('Passwords do not match.');
-      return;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'password') {
+      setEmail(value);
     }
+  };
 
-    try {
-      await axios.patch(`http://localhost:8800/api/auth/reset-password/${token}/${id}`, { password, confirmPassword });
-      navigate('/login');
-    } catch (error) {
-      setPasswordError('Failed to reset password. Please try again.');
+  const navigate = useNavigate();
+
+  const handleClick1 = () => {
+    navigate('/login');
+  };
+
+  const isEmpty = (str) => {
+    return str.trim() === '';
+  };
+
+  const handleConfirm = () => {
+    if (isEmpty(password)) {
+        setPasswordError('Please fill out this field.');
+    } else {
+      // Add your logic here to handle the confirm button click
     }
   };
 
@@ -67,46 +73,57 @@ const NewPassword = () => {
             <Switcher />
           </div>
         <div className='flex justify-end'>
-          <button onClick={() => navigate('/login')} className='text-2xl'><HiOutlineXMark /></button>
+          <button onClick={handleClick1} className='text-2xl text-neutral-700 dark:text-neutral-200'><HiOutlineXMark /></button>
         </div>
-        <h1 className='text-4xl font-black text-left text-neutral-700'>New Password</h1>
-        <p className='font-normal text-left mt-1 text-neutral-700'>Set up your new password.</p>
+        <h1 className='text-4xl font-black text-left text-neutral-700 dark:text-neutral-200'>New Password</h1>
+        <p className='font-normal text-left mt-1 text-neutral-700 dark:text-neutral-200'>Setup your new password.</p>
 
-        <form onSubmit={handleSubmit} className='mt-12'>
-          <InputField
-            type={showPassword ? 'text' : 'password'}
-            name='password'
-            placeholder='Password:'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            icon={{
-              component: showPassword ? <BsEye /> : <BsEyeSlash />,
-              onClick: togglePasswordVisibility,
-            }}
-            error={passwordError}
-          />
-
-        <div className='relative mt-4'>
-          <InputField
-            type={showPassword ? 'text' : 'password'}
-            name='confirmPassword'
-            placeholder='Confirm Password:'
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            icon={{
-              component: showPassword ? <BsEye /> : <BsEyeSlash />,
-              onClick: togglePasswordVisibility,
-            }}
-            error={passwordError}
-          />
-           </div>
-          <button type="submit" className='bg-white text-neutral-700 font-semibold rounded-2xl mt-12 mb-4 border-[1px] border-neutral-700 py-3 w-full hover:bg-neutral-700 hover:text-white transition-colors duration-300'>
-            Confirm Password
-          </button>
-        </form>
+        <div className='relative mt-12'>
+            <InputField
+              style={{ display: 'flex', alignItems: 'center' }}
+              type={showPassword ? 'text' : 'password'}
+              name='password'
+              placeholder='Password:'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {passwordError && (
+              <div
+                style={{
+                  fontSize: '0.9rem',
+                  color: 'red',
+                }}
+              >
+                {passwordError}
+              </div>
+            )}
+            <div className='mt-4'></div>
+            <InputField
+              style={{ display: 'flex', alignItems: 'center' }}
+              type={showPassword ? 'text' : 'password'}
+              name='password'
+              placeholder='Confirm Password:'
+              value={newpassword}
+              onChange={(e) => newsetPassword(e.target.value)}
+              icon={{
+                component: showPassword ? <BsEyeSlash /> : <BsEye />,
+                onClick: togglePasswordVisibility,
+              }}
+            />
+            {passwordError && (
+              <div
+                style={{
+                  fontSize: '0.9rem',
+                  color: 'red',
+                }}
+              >
+                {passwordError}
+              </div>
+            )}
+            <button className='bg-white mt-14 dark:bg-neutral-700 text-neutral-700 dark:text-white font-semibold rounded-2xl border-[1px] border-neutral-700 dark:border-neutral-200 py-3 w-full hover:bg-neutral-700 hover:text-white dark:hover:bg-neutral-500 dark:hover:text-neutral-200 transition-colors duration-300' onClick={handleConfirm}>Confirm Password</button>
+        </div>
       </div>
     </div>
   );
 };
-
 export default NewPassword;

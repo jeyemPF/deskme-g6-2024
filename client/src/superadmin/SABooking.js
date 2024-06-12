@@ -3,15 +3,8 @@ import Header from '../components/Header'
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
 import { LayoutDashboard, Layers, Flag, BookCopy, Settings, LogOut, Users, FileCog, NotebookTabs } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import useFetch from '../Hooks/useFetch';
-import { Skeleton } from 'antd';
 
 const SABooking = () => {
-
-  const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
-
-  const isLoading = reservationPendingLoading;
-  const isError = reservationPendingError;
     
     const [isOn, setIsOn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,19 +58,8 @@ const SABooking = () => {
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
-    // Clear session storage
-    sessionStorage.removeItem('userCredentials');
-    localStorage.removeItem("userCredentials");
-    localStorage.clear("userCredentials");
-    sessionStorage.clear("userCredentials");
-
-
-
-    // Navigate to login page
     navigate('/login');
-  };
-
-
+  }
   const handleDashboardClick = () => {
     navigate('/superdashboard');
   };
@@ -112,26 +94,16 @@ const SABooking = () => {
           <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
         </Sidebar>
         <Content>
-        <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
-          { isLoading ? ( 
-            <>
-            <Skeleton height={120} count={4} />
-            </>
-            ) : isError ? (
-              <div>Error: {reservationPendingError ?.message } </div>
-            ) : (
-              <>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
-            <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
-              <div className='flex flex-col'>
-                <span className="text-xl font-semibold">Total: {reservationPendingData}</span>
-                <span className="text-sm font-normal">Pending Books</span>
+            <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
+              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
+                <div className='flex flex-col'>
+                  <span className="text-xl font-semibold">Total: 4</span>
+                  <span className="text-sm font-normal">Pending Books</span>
+                </div>
+                <FileCog className="w-10 h-10 ml-10" />
               </div>
-              <FileCog className="w-10 h-10 ml-10" />
             </div>
-          </div>
-          </>
-          )}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
               <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
                 <div className="flex justify-end items-center w-full">
