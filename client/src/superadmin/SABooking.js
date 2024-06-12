@@ -4,9 +4,10 @@ import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Si
 import { LayoutDashboard, Layers, Flag, BookCopy, Settings, LogOut, Users, FileCog, NotebookTabs } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../Hooks/useFetch';
-import { Skeleton } from 'antd';
+import { Skeleton, message } from 'antd';
 import { format } from 'date-fns';
 import axios from 'axios';
+
 
 
 const SABooking = () => {
@@ -17,8 +18,8 @@ const SABooking = () => {
 
   const isLoading = reservationPendingLoading;
   const isError = reservationPendingError;
-    
-    const [isOn, setIsOn] = useState(false);
+
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
@@ -33,9 +34,51 @@ const SABooking = () => {
     fetchReservationHistory();
   }, []);
 
-  const handleToggle = () => {
-    setIsOn(!isOn);
+
+  const [isOn, setIsOn] = useState(localStorage.getItem('isOn') === 'true');
+
+
+  
+
+ const handleToggle = async () => {
+    try {
+      // Make the API request
+      const response = await axios.put(
+        `http://localhost:8800/api/switchs/switch-approve`,
+        {},
+        {
+         
+        }
+      );
+  
+      // Log the response for debugging
+      console.log('Response:', response.data);
+  
+      // Toggle the state if the request is successful
+      const newValue = !isOn;
+      setIsOn(newValue);
+      localStorage.setItem('isOn', newValue.toString());
+  
+      // Show success notification
+    
+        message.success('You have successfully approved/disapproved all bookings.');
+
+        } catch (error) {
+          console.error('Error toggling reservation emails:', error);
+          // Show error notification
+          message.error('Failed to toggle booking approval. Please try again later.');
+        }
+
   };
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem('isOn') === 'true';
+    if (storedValue !== isOn) {
+      setIsOn(storedValue);
+    }
+  }, [isOn]);
+
+
 
   const handleManageClick = () => {
     setIsModalOpen(true);
