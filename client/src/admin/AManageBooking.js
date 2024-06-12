@@ -31,11 +31,8 @@ const AManageBooking = () => {
     navigate('/login');
   };
 
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 57989d9c00565d66f242b7bc2c161b82ff954e69
   const handleBookingClick = () => {
     navigate('/adminbooking');
   };
@@ -265,16 +262,9 @@ const AManageBooking = () => {
             </div>
           </div>
         </div>
-<<<<<<< HEAD
-      )}
-    </>
-  );
-};
-=======
         )}
     </div>
   )
 }
->>>>>>> 57989d9c00565d66f242b7bc2c161b82ff954e69
 
 export default AManageBooking;

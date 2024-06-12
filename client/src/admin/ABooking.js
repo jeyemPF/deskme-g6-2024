@@ -8,10 +8,13 @@ import { Skeleton } from "antd";
 import axios from 'axios';
 import { format } from 'date-fns';
 
+const ITEMS_PER_PAGE = 10;
+
 const ABooking = () => {
   const [reservationHistory, setReservationHistory] = useState([]);
   const [isOn, setIsOn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch('http://localhost:8800/api/reservations/pending-counts');
 
@@ -22,7 +25,8 @@ const ABooking = () => {
     const fetchReservationHistory = async () => {
       try {
         const response = await axios.get('http://localhost:8800/api/reservations/reservation-history');
-        setReservationHistory(response.data);
+        const sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort data by date in descending order
+        setReservationHistory(sortedData);
       } catch (error) {
         console.error('Error fetching reservation history:', error);
       }
@@ -42,57 +46,16 @@ const ABooking = () => {
     setIsModalOpen(false);
   };
 
-  const tableItems = [
-    {
-      reservation_id: 1,
-      name: "Peter Sthanlie Rayos",
-      reservation_date: "May 20, 2024",
-      start_time: "4:00pm",
-      end_time: "11:00pm",
-      status: "Pending"
-    },
-    {
-      reservation_id: 2,
-      name: "John Carlo Diga",
-      reservation_date: "May 26, 2024",
-      start_time: "12:00pm",
-      end_time: "9:00pm",
-      status: "Pending"
-    },
-    {
-      reservation_id: 3,
-      name: "Johnmack Faeldonia",
-      reservation_date: "May 31, 2024",
-      start_time: "6:00am",
-      end_time: "6:00pm",
-      status: "Pending"
-    },
-    {
-      reservation_id: 4,
-      name: "Jayvee Brian Ibale",
-      reservation_date: "June 3, 2024",
-      start_time: "12:00am",
-      end_time: "12:00pm",
-      status: "Pending"
-    },
-  ];
-
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
-    // Clear session storage
     sessionStorage.removeItem('userCredentials');
     localStorage.removeItem("userCredentials");
     localStorage.clear("userCredentials");
     sessionStorage.clear("userCredentials");
 
-
-
-    // Navigate to login page
     navigate('/login');
   };
-
-
 
   const handleDashboardClick = () => {
     navigate('/admindashboard');
@@ -102,6 +65,22 @@ const ABooking = () => {
   }
   const handleReportClick = () => {
     navigate('/adminreports');
+  };
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedReservations = reservationHistory.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(reservationHistory.length / ITEMS_PER_PAGE);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   return (
@@ -122,25 +101,25 @@ const ABooking = () => {
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
-          { isLoading ? ( 
-            <>
-            <Skeleton height={120} count={4} />
-            </>
+            { isLoading ? ( 
+              <>
+                <Skeleton height={120} count={4} />
+              </>
             ) : isError ? (
-              <div>Error: {reservationPendingError ?.message } </div>
+              <div>Error: {reservationPendingError?.message}</div>
             ) : (
               <>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
-            <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
-              <div className='flex flex-col'>
-                <span className="text-xl font-semibold">Total: {reservationPendingData}</span>
-                <span className="text-sm font-normal">Pending Books</span>
-              </div>
-              <FileCog className="w-10 h-10 ml-10" />
-            </div>
-          </div>
-          </>
-          )}
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
+                  <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
+                    <div className='flex flex-col'>
+                      <span className="text-xl font-semibold">Total: {reservationPendingData}</span>
+                      <span className="text-sm font-normal">Pending Books</span>
+                    </div>
+                    <FileCog className="w-10 h-10 ml-10" />
+                  </div>
+                </div>
+              </>
+            )}
             <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
               <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
                 <div className="flex justify-end items-center w-full">
@@ -169,7 +148,7 @@ const ABooking = () => {
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
                     {
-                      reservationHistory.map((reservation, index) => (
+                      paginatedReservations.map((reservation, index) => (
                         <tr key={index}>
                           <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td> {/* Desk title */}
                           <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.username}</td>
@@ -189,61 +168,34 @@ const ABooking = () => {
                         </tr>
                       ))
                     }
-
                     </tbody>
                   </table>
                 </div>
-                <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
-                  <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                <div className="flex justify-center mt-5">
+                  <button
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 mx-1 border rounded-lg hover:bg-gray-200"
+                  >
+                    Prev
+                  </button>
+                  {[...Array(totalPages).keys()].map((number) => (
+                    <button
+                      key={number}
+                      onClick={() => setCurrentPage(number + 1)}
+                      className={`px-3 py-1 mx-1 border rounded-lg hover:bg-gray-200 ${currentPage === number + 1 ? 'bg-blue-500 text-white' : ''}`}
                     >
-                      <span className="sr-only">Prev Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
-                    >
-                      1
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Next Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
-                  </li>
-                </ol>
+                      {number + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 mx-1 border rounded-lg hover:bg-gray-200"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
           </Content>
