@@ -67,14 +67,16 @@ export const createReservation = async (req, res, next) => {
 
         const newReservation = new Reservation({
             user: userId,
+            deskTitle: desk.title,
             desk: desk._id,
             date,
             startTime: reservationStartTime,
             endTime: reservationEndTime,
             status: 'APPROVED',
-            area: desk.area,
+            deskArea: desk.area,
             officeEquipment: desk.officeEquipment
         });
+        
 
         const savedReservation = await newReservation.save();
 

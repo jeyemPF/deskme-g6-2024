@@ -150,7 +150,7 @@ const sendMagicLink = async (user, res) => {
             name: username,
             intro: `
                 <div style="font-family: Arial, sans-serif; color: #333;">
-                    <p>Your reservation for "<strong>${reservation.title}</strong>" has been confirmed for the following details:</p>
+                    <p>Your reservation for "<strong>${reservation.deskTitle}</strong>" has been confirmed with the following details:</p>
                     <table style="border-collapse: collapse; width: 100%;">
                         <tr>
                             <td style="border: 1px solid #ddd; padding: 8px;"><strong>Date:</strong></td>
@@ -174,7 +174,7 @@ const sendMagicLink = async (user, res) => {
                         </tr>
                         <tr>
                             <td style="border: 1px solid #ddd; padding: 8px;"><strong>Area:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.area}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.deskArea}</td>
                         </tr>
                     </table>
                     <br/>
