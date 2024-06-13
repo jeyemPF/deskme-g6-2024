@@ -128,8 +128,6 @@ const SABooking = () => {
     // Navigate to login page
     navigate('/login');
   };
-  
-
 
   const handleDashboardClick = () => {
     navigate('/superdashboard');

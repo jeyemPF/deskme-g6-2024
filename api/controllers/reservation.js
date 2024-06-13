@@ -123,6 +123,46 @@ export const createReservation = async (req, res, next) => {
     }
 };
 
+// Function to approve reservations
+export const approveReservations = async () => {
+    try {
+        // Find all pending reservations
+        const pendingReservations = await Reservation.find({ status: 'PENDING' });
+
+        for (const reservation of pendingReservations) {
+            // Update the reservation status to 'APPROVED'
+            reservation.status = 'APPROVED';
+            await reservation.save();
+
+            // Find the user associated with the reservation
+            const user = await User.findById(reservation.user);
+            if (user && user.receiveReservationEmails) {
+                const emailContent = getEmailContentReservation(user.username, reservation);
+                await sendReservationConfirmationEmail(user.email, emailContent);
+            }
+        }
+    } catch (err) {
+        console.error("Error approving reservations:", err);
+        throw err; // Rethrow the error to be handled by the caller
+    }
+};
+
+export const pendingReservations = async () => {
+    try {
+        // Find all approved reservations
+        const approvedReservations = await Reservation.find({ status: 'APPROVED' });
+        
+        for (const reservation of approvedReservations) {
+            // Update the reservation status to 'PENDING'
+            reservation.status = 'REJECTED';
+            await reservation.save();
+        }
+    } catch (err) {
+        console.error("Error setting reservations to pending:", err);
+        throw err; // Rethrow the error to be handled by the caller
+    }
+};
+
 
 
 export const cancelReservation = async (req, res, next) => {
@@ -185,45 +225,7 @@ export const deleteAllReservations = async (req, res, next) => {
     }
 };
 
-// Function to approve reservations
-export const approveReservations = async () => {
-    try {
-        // Find all pending reservations
-        const pendingReservations = await Reservation.find({ status: 'PENDING' });
 
-        for (const reservation of pendingReservations) {
-            // Update the reservation status to 'APPROVED'
-            reservation.status = 'APPROVED';
-            await reservation.save();
-
-            // Find the user associated with the reservation
-            const user = await User.findById(reservation.user);
-            if (user && user.receiveReservationEmails) {
-                const emailContent = getEmailContentReservation(user.username, reservation);
-                await sendReservationConfirmationEmail(user.email, emailContent);
-            }
-        }
-    } catch (err) {
-        console.error("Error approving reservations:", err);
-        throw err; // Rethrow the error to be handled by the caller
-    }
-};
-
-export const pendingReservations = async () => {
-    try {
-        // Find all approved reservations
-        const approvedReservations = await Reservation.find({ status: 'APPROVED' });
-        
-        for (const reservation of approvedReservations) {
-            // Update the reservation status to 'PENDING'
-            reservation.status = 'REJECTED';
-            await reservation.save();
-        }
-    } catch (err) {
-        console.error("Error setting reservations to pending:", err);
-        throw err; // Rethrow the error to be handled by the caller
-    }
-};
 
 // Function to set all approved reservations back to "PENDING" status
 export const resetApprovedReservations = async () => {
