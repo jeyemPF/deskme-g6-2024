@@ -2,7 +2,7 @@ import Reservation from "../models/Reservation.js";
 import Desk from "../models/Desk.js";
 import User from "../models/User.js";
 import ReservationHistory from "../models/ReservationHistory.js";
-import { scheduleJob } from 'node-schedule';
+import { scheduleJob, scheduledJobs, cancelJob } from 'node-schedule';
 import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation } from "../utils/emailService.js";
 import AuditTrail from "../models/AuditTrail.js";
 import { formatInTimeZone,  format } from 'date-fns-tz';
@@ -74,7 +74,7 @@ export const createReservation = async (req, res, next) => {
 
         // Determine the initial status based on autoAccepting switch
         const autoAccepting = await getAutoAcceptingStatus();
-        const initialStatus = autoAccepting ? 'APPROVED' : 'PENDING';
+        let initialStatus = autoAccepting ? 'APPROVED' : 'PENDING';
 
         // Create a new reservation with determined initial status
         const newReservation = new Reservation({
@@ -91,34 +91,44 @@ export const createReservation = async (req, res, next) => {
 
         const savedReservation = await newReservation.save();
 
-        // Schedule the job to update the reservation status to 'STARTED' at the start time
-        scheduleJob(`startReservation_${savedReservation._id}`, reservationStartTime, async () => {
+        // Schedule the job to handle reservation status transitions
+        const startJob = scheduleJob(`startReservation_${savedReservation._id}`, reservationStartTime, async () => {
             try {
-                savedReservation.status = 'STARTED';
-                await savedReservation.save();
+                if (savedReservation.status === 'APPROVED') {
+                    savedReservation.status = 'STARTED';
+                    await savedReservation.save();
+                }
             } catch (error) {
                 console.error(`Error updating reservation status to STARTED: ${error.message}`);
             }
         });
 
-        // Schedule the job to update the reservation status to 'COMPLETED' at the end time
-        scheduleJob(`completeReservation_${savedReservation._id}`, reservationEndTime, async () => {
+        const endJob = scheduleJob(`endReservation_${savedReservation._id}`, reservationEndTime, async () => {
             try {
-                savedReservation.status = 'COMPLETED';
-                await savedReservation.save();
-                desk.status = 'available';
-                await desk.save();
+                if (savedReservation.status === 'PENDING') {
+                    savedReservation.status = 'REJECTED';
+                    await savedReservation.save();
+                    desk.status = 'available';
+                    await desk.save();
+                } else if (savedReservation.status === 'STARTED') {
+                    savedReservation.status = 'COMPLETED';
+                    await savedReservation.save();
+                    desk.status = 'available';
+                    await desk.save();
+                }
             } catch (error) {
-                console.error(`Error updating reservation status to COMPLETED: ${error.message}`);
+                console.error(`Error updating reservation status: ${error.message}`);
             }
         });
 
+        // Always send reservation confirmation email
         const user = await User.findById(userId);
         if (user && user.receiveReservationEmails) {
             const emailBody = getEmailContentReservation(user.username, savedReservation);
             await sendReservationConfirmationEmail(user.email, emailBody);
         }
 
+        // Create audit trail for reservation
         await AuditTrail.create({
             actionType: 'reservation',
             userId,
@@ -145,6 +155,7 @@ export const createReservation = async (req, res, next) => {
         next(err);
     }
 };
+
 
 // Function to approve reservations
 export const approveReservations = async () => {
@@ -204,6 +215,20 @@ export const cancelReservation = async (req, res, next) => {
         } else if (reservation.status === 'COMPLETED') {
             return res.status(400).json({ message: "The reservation is already COMPLETED and cannot be canceled." });
         }
+        else if (reservation.status === 'REJECTED') {
+            return res.status(400).json({ message: "The reservation is already REJECTED and cannot be canceled." });
+        }
+
+        // Allow cancellation for reservations with status 'PENDING', 'APPROVED', or 'STARTED'
+        if (reservation.status !== 'PENDING' && reservation.status !== 'APPROVED' && reservation.status !== 'STARTED' ) {
+            return res.status(400).json({ message: "Cannot cancel reservations with the current status." });
+        }
+
+        // Cancel the scheduled jobs for this reservation
+        const startJob = scheduledJobs[`startReservation_${reservation._id}`];
+        const completeJob = scheduledJobs[`completeReservation_${reservation._id}`];
+        if (startJob) cancelJob(`startReservation_${reservation._id}`);
+        if (completeJob) cancelJob(`completeReservation_${reservation._id}`);
 
         // Update the reservation status to 'ABORTED'
         reservation.status = 'ABORTED';
@@ -216,11 +241,18 @@ export const cancelReservation = async (req, res, next) => {
             await desk.save();
         }
 
-        const cancellationTime = new Date(Date.now() + 1 * 60 * 60 * 1000); // 1 hour from now
-        scheduleJob('sendCancellationEmail', cancellationTime, async () => {
-            // Send cancellation confirmation email
-            const emailBody = getEmailContentCancellation(reservation.user.username, reservation);
-            await sendCancellationConfirmationEmail(reservation.user.email, emailBody);
+        // Send cancellation confirmation email
+        const user = await User.findById(userId);
+        if (user && user.receiveReservationEmails) {
+            const emailBody = getEmailContentCancellation(user.username, reservation);
+            await sendCancellationConfirmationEmail(user.email, emailBody);
+        }
+
+        await AuditTrail.create({
+            actionType: 'cancel_reservation',
+            userId,
+            deskId: reservation.desk,
+            ipAddress: req.ip
         });
 
         res.json({ message: 'Reservation ABORTED successfully' });
@@ -228,6 +260,7 @@ export const cancelReservation = async (req, res, next) => {
         next(error);
     }
 };
+
 
 
 
@@ -433,7 +466,7 @@ export const getUserBookingHistory = async (req, res, next) => {
             .select('date startTime endTime status feedback '); // Select required fields
 
         // Reverse the array of bookings
-        bookings = bookings.reverse();
+        bookings = bookings;
 
         res.status(200).json({ success: true, bookings });
     } catch (err) {

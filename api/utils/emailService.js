@@ -240,35 +240,51 @@ const sendReservationConfirmationEmail = async (email, emailContent) => {
 
 
 const getEmailContentCancellation = (username, reservation) => {
+    const formattedDate = formatDate(reservation.date);
+    const formattedStartTime = formatTime(reservation.startTime);
+    const formattedEndTime = formatTime(reservation.endTime);
     return {
         body: {
             name: username,
             intro: `
                 <div style="font-family: Arial, sans-serif; color: #333;">
-                    <p>Your reservation for "<strong>${reservation.desk.title}</strong>" has been cancelled.</p>
-                    <table style="border-collapse: collapse; width: 100%;">
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>Date:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.date}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>Start Time:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.startTime}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>End Time:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.endTime}</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>Status:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">Cancelled</td>
-                        </tr>
-                        <tr>
-                            <td style="border: 1px solid #ddd; padding: 8px;"><strong>Office Equipment:</strong></td>
-                            <td style="border: 1px solid #ddd; padding: 8px;">${reservation.officeEquipment.join(', ')}</td>
-                        </tr>
+                    <p>Your reservation for "<strong>${reservation.deskTitle}</strong>" has been cancelled with the following details:</p>
+                    <table style="border-collapse: collapse; width: 100%; font-size: 14px; margin-top: 10px;">
+                        <thead>
+                            <tr style="background-color: #f2f2f2; color: #333;">
+                                <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Detail</th>
+                                <th style="border: 1px solid #ddd; padding: 12px; text-align: left;">Information</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #fafafa;"><strong>Date:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${formattedDate}</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #f0f0f0;"><strong>Start Time:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${formattedStartTime}</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #fafafa;"><strong>End Time:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${formattedEndTime}</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #f0f0f0;"><strong>Status:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${reservation.status}</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #fafafa;"><strong>Office Equipment:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${reservation.officeEquipment.join(', ')}</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 8px; background-color: #f0f0f0;"><strong>Area:</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">${reservation.deskArea}</td>
+                            </tr>
+                        </tbody>
                     </table>
-                    <p>We regret to inform you that your reservation has been cancelled. If you have any questions, feel free to contact us.</p>
+                    <br/>
+                    <p>Thank you for choosing us for your reservation. If you have any questions, feel free to contact us.</p>
                 </div>
             `,
         }
