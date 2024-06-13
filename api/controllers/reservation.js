@@ -189,7 +189,7 @@ export const deleteAllReservations = async (req, res, next) => {
 export const approveReservations = async () => {
     try {
         // Find all pending reservations
-        const pendingReservations = await Reservation.find({ status: 'REJECTED' });
+        const pendingReservations = await Reservation.find({ status: 'PENDING' });
 
         for (const reservation of pendingReservations) {
             // Update the reservation status to 'APPROVED'

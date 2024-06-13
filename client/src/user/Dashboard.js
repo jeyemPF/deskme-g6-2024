@@ -13,6 +13,7 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [desksPerPage] = useState(5);
   const [totalBookings, setTotalBookings] = useState(0); 
+  const [searchQuery, setSearchQuery] = useState(""); 
 
   useEffect(() => {
     const fetchAvailableDesks = async () => {
@@ -83,10 +84,16 @@ const Dashboard = () => {
 
   const indexOfLastDesk = currentPage * desksPerPage;
   const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
-  const currentDesks = availableDesks.slice(indexOfFirstDesk, indexOfLastDesk);
+  
+  // Filter desks based on search query
+  const filteredDesks = availableDesks.filter(desk => 
+    desk.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  
+  const currentDesks = filteredDesks.slice(indexOfFirstDesk, indexOfLastDesk);
 
   const isFirstPage = currentPage === 1;
-  const isLastPage = currentPage === Math.ceil(availableDesks.length / desksPerPage);
+  const isLastPage = currentPage === Math.ceil(filteredDesks.length / desksPerPage);
 
   const nextPage = () => {
     if (!isLastPage) {
@@ -100,7 +107,7 @@ const Dashboard = () => {
     }
   };
 
-  const totalPages = Math.ceil(availableDesks.length / desksPerPage);
+  const totalPages = Math.ceil(filteredDesks.length / desksPerPage);
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
@@ -145,6 +152,8 @@ const Dashboard = () => {
                       type="text"
                       className="w-full p-2 pr-10 pl-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
                       placeholder="Search desks"
+                      value={searchQuery} 
+                      onChange={e => setSearchQuery(e.target.value)} 
                     />
                     <div className="absolute right-0 top-0 flex items-center h-full pr-4">
                       <svg
