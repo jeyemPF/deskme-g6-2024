@@ -8,8 +8,11 @@ const router = express.Router();
 // Routes for reservations
 router.post('/book/:deskId', protect, createReservation);
 
-// cancel reservation
-router.delete('/cancel-reservation/:reservationId' , cancelReservation);
+// // cancel reservation
+// router.delete('/cancel-reservation/:reservationId' , cancelReservation);
+
+// user must cancel their reservation
+router.delete('/cancel-reservation/:userId/:reservationId' , cancelReservation)
 
 // Delete all reservation
 router.delete('/delete-my-reservation/', verifyOfficeManager, deleteAllReservations);

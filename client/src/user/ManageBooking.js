@@ -5,52 +5,48 @@ import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Si
 import Header from '../components/Header';
 import axios from 'axios'; // Import axios for making HTTP requests
 import { format } from 'date-fns';
+import { message } from 'antd';
 
 const MyBooking = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState(null); // State to store the selected booking for feedback
-  const [feedback, setFeedback] = useState(''); // State to store the feedback text
-  const [bookings, setBookings] = useState([]); // State to store booking history
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [feedback, setFeedback] = useState('');
+  const [bookings, setBookings] = useState([]);
   const [totalBookings, setTotalBookings] = useState(0);
   const [pendingBookings, setPendingBookings] = useState(0);
-  
   const [currentPage, setCurrentPage] = useState(1);
-  const desksPerPage = 5; // Define how many desks per page
+  const desksPerPage = 5;
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     fetchBookingHistory();
-  }, [currentPage]); // Add currentPage as a dependency
+}, [currentPage]);
 
-  const fetchBookingHistory = async () => {
+const fetchBookingHistory = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-    
-      // Debugging logs
-      console.log('Token:', token);
-      console.log('UserId:', userId);
-    
-      // Check if token and userId are present
-      if (!token || !userId) {
-        console.error('User is not authenticated');
-        return;
-      }
-    
-      const response = await axios.get(`http://localhost:8800/api/reservations/my-booking-history/${userId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+
+        if (!token || !userId) {
+            console.error('User is not authenticated');
+            return;
         }
-      });
-    
-      setBookings(response.data.bookings);
-      setTotalBookings(response.data.bookings.length);
-      setPendingBookings(response.data.bookings.filter(booking => booking.status === 'Pending').length);
+
+        const response = await axios.get(`http://localhost:8800/api/reservations/my-booking-history/${userId}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        setBookings(response.data.bookings);
+        setTotalBookings(response.data.bookings.length);
+        setPendingBookings(response.data.bookings.filter(booking => booking.status === 'Pending').length);
     } catch (error) {
-      console.error('Error fetching booking history:', error);
+        console.error('Error fetching booking history:', error);
     }
-  };
+};
 
   const handleFeedbackClick = (booking) => {
     setSelectedBooking(booking);
@@ -91,7 +87,7 @@ const MyBooking = () => {
     sessionStorage.removeItem('userCredentials');
   
     // Navigate to login page
-    navigate('/login');
+    navigate('/login'); 
   };
 
 
@@ -102,6 +98,31 @@ const MyBooking = () => {
   const handleDashboardClick = () => {
     navigate('/dashboard');
   };
+  
+  const handleCancelClick = async (bookingId) => {
+    try {
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        const response = await axios.delete(
+            `http://localhost:8800/api/reservations/cancel-reservation/${userId}/${bookingId}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
+            }
+        );
+        console.log('Booking cancelled:', response.data);
+        message.success('Booking successfully cancelled. Email receipt sent.');
+
+        fetchBookingHistory(); // Refresh the booking history after cancelling
+    } catch (error) {
+        console.error('Error cancelling booking:', error);
+        message.error('Cancellation error. Please try again.');
+
+    }
+};
+
 
   const indexOfLastDesk = currentPage * desksPerPage;
   const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
@@ -214,11 +235,25 @@ const MyBooking = () => {
                                 {booking.status}
                               </span>
                             </td>
+
+                            <td className="py-2 px-4 border-b">
+                            <button
+                                className="py-1.5 px-3 text-red-500 text-sm  hover:text-red-600 duration-150 hover:bg-red-50 border rounded-lg hover:border-red-500"
+                                onClick={() => handleCancelClick(booking._id)}
+                            >
+                                Cancel
+                            </button>
+
+
+                                            </td>
+                          
                             <td className="whitespace-nowrap text-center">
-                              <button onClick={() => handleFeedbackClick(booking)} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                              <button onClick={() => handleFeedbackClick(booking)} className="py-1.5 px-3 text-blue-500 text-sm hover:bg-blue-50 duration-150 border border-blue-500 rounded-lg"
+>
                                 Add Feedback
                               </button>
                             </td>
+                            
                           </tr>
                         ))
                       }

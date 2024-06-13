@@ -190,17 +190,19 @@ export const pendingReservations = async () => {
 
 export const cancelReservation = async (req, res, next) => {
     try {
-        const reservationId = req.params.reservationId;
+        const { userId, reservationId } = req.params;
 
-        // Find the reservation to be ABORTED
-        const reservation = await Reservation.findById(reservationId);
+        // Find the reservation to be canceled by reservationId and userId
+        const reservation = await Reservation.findOne({ _id: reservationId, user: userId });
         if (!reservation) {
             return res.status(404).json({ message: "Reservation not found" });
         }
 
-        // Check if the reservation is already ABORTED
+        // Check if the reservation is already canceled (ABORTED) or completed (COMPLETED)
         if (reservation.status === 'ABORTED') {
-            return res.status(400).json({ message: "The reservation is already ABORTED" });
+            return res.status(400).json({ message: "The reservation is already ABORTED and cannot be canceled." });
+        } else if (reservation.status === 'COMPLETED') {
+            return res.status(400).json({ message: "The reservation is already COMPLETED and cannot be canceled." });
         }
 
         // Update the reservation status to 'ABORTED'
@@ -214,7 +216,6 @@ export const cancelReservation = async (req, res, next) => {
             await desk.save();
         }
 
-      
         const cancellationTime = new Date(Date.now() + 1 * 60 * 60 * 1000); // 1 hour from now
         scheduleJob('sendCancellationEmail', cancellationTime, async () => {
             // Send cancellation confirmation email
@@ -227,6 +228,8 @@ export const cancelReservation = async (req, res, next) => {
         next(error);
     }
 };
+
+
 
 export const deleteAllReservations = async (req, res, next) => {
     try {
