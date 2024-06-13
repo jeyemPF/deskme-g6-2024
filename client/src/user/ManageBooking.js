@@ -119,9 +119,9 @@ const fetchBookingHistory = async () => {
     } catch (error) {
         console.error('Error cancelling booking:', error);
         message.error('Cancellation error. Please try again.');
-
     }
 };
+
 
 
   const indexOfLastDesk = currentPage * desksPerPage;
@@ -223,41 +223,39 @@ const fetchBookingHistory = async () => {
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
                     {
-                        currentDesks.map((booking, index) => (
-                          <tr key={index}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{indexOfFirstDesk + index + 1}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{booking.desk.title}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(booking.date), 'MMMM dd, yyyy')}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(booking.startTime),'hh:mm a' )}</td>
+                      currentDesks.map((booking, index) => (
+                        <tr key={index}>
+                          <td className="pr-6 py-4 whitespace-nowrap">{indexOfFirstDesk + index + 1}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{booking.desk.title}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(booking.date), 'MMMM dd, yyyy')}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(booking.startTime),'hh:mm a' )}</td>
                           <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(booking.endTime), 'hh:mm a' )}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 py-1 rounded-full text-xs font-semibold ${booking.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
-                                {booking.status}
-                              </span>
-                            </td>
+                          <td className="pr-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${booking.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
+                              {booking.status}
+                            </span>
+                          </td>
 
-                            <td className="py-2 px-4 border-b">
-                            <button
-                                className="py-1.5 px-3 text-red-500 text-sm  hover:text-red-600 duration-150 hover:bg-red-50 border rounded-lg hover:border-red-500"
+                          <td className="py-2 px-4 border-b">
+                            {(booking.status !== 'COMPLETED' && booking.status !== 'ABORTED') && (
+                              <button
+                                className="py-1.5 px-3 text-red-500 text-sm hover:text-red-600 duration-150 hover:bg-red-50 border rounded-lg hover:border-red-500"
                                 onClick={() => handleCancelClick(booking._id)}
-                            >
+                              >
                                 Cancel
-                            </button>
-
-
-                                            </td>
-                          
-                            <td className="whitespace-nowrap text-center">
-                              <button onClick={() => handleFeedbackClick(booking)} className="py-1.5 px-3 text-blue-500 text-sm hover:bg-blue-50 duration-150 border border-blue-500 rounded-lg"
->
-                                Add Feedback
                               </button>
-                            </td>
-                            
-                          </tr>
-                        ))
-                      }
-                    </tbody>
+                            )}
+                          </td>
+
+                          <td className="whitespace-nowrap text-center">
+                            <button onClick={() => handleFeedbackClick(booking)} className="py-1.5 px-3 text-blue-500 text-sm hover:bg-blue-50 duration-150 border border-blue-500 rounded-lg">
+                              Add Feedback
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
                   </table>
                 </div>
                 <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
