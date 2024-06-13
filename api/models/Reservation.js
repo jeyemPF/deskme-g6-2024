@@ -28,7 +28,7 @@ const ReservationSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['PENDING', 'APPROVED', 'REJECTED', 'STARTED', 'ABORTED'],
+        enum: ['PENDING', 'APPROVED', 'REJECTED', 'STARTED', 'COMPLETED'],
         default: 'PENDING',
     },
     // Additional information from the Desk schema

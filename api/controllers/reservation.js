@@ -8,7 +8,14 @@ import AuditTrail from "../models/AuditTrail.js";
 import { formatInTimeZone,  format } from 'date-fns-tz';
 import mongoose from "mongoose";
 import {  isValid, parseISO } from 'date-fns';
+import Switch from '../models/Switch.js'; // Import Switch model
 
+
+
+const getAutoAcceptingStatus = async () => {
+    const switchData = await Switch.findOne();
+    return switchData ? switchData.autoAccepting : false; // Default to false if no switch data
+};
 
 export const createReservation = async (req, res, next) => {
     try {
@@ -65,6 +72,11 @@ export const createReservation = async (req, res, next) => {
         desk.status = 'reserved';
         await desk.save();
 
+        // Determine the initial status based on autoAccepting switch
+        const autoAccepting = await getAutoAcceptingStatus();
+        const initialStatus = autoAccepting ? 'APPROVED' : 'PENDING';
+
+        // Create a new reservation with determined initial status
         const newReservation = new Reservation({
             user: userId,
             deskTitle: desk.title,
@@ -72,24 +84,35 @@ export const createReservation = async (req, res, next) => {
             date,
             startTime: reservationStartTime,
             endTime: reservationEndTime,
-            status: 'PENDING',
+            status: initialStatus, // Set the status based on autoAccepting switch
             deskArea: desk.area,
             officeEquipment: desk.officeEquipment
         });
-        
 
         const savedReservation = await newReservation.save();
 
-        scheduleJob(`updateDeskStatus_${desk._id}`, reservationEndTime, async () => {
+        // Schedule the job to update the reservation status to 'STARTED' at the start time
+        scheduleJob(`startReservation_${savedReservation._id}`, reservationStartTime, async () => {
             try {
-                desk.status = 'available';
-                await desk.save();
+                savedReservation.status = 'STARTED';
+                await savedReservation.save();
             } catch (error) {
-                console.error(`Error updating desk status: ${error.message}`);
+                console.error(`Error updating reservation status to STARTED: ${error.message}`);
             }
         });
 
-        
+        // Schedule the job to update the reservation status to 'COMPLETED' at the end time
+        scheduleJob(`completeReservation_${savedReservation._id}`, reservationEndTime, async () => {
+            try {
+                savedReservation.status = 'COMPLETED';
+                await savedReservation.save();
+                desk.status = 'available';
+                await desk.save();
+            } catch (error) {
+                console.error(`Error updating reservation status to COMPLETED: ${error.message}`);
+            }
+        });
+
         const user = await User.findById(userId);
         if (user && user.receiveReservationEmails) {
             const emailBody = getEmailContentReservation(user.username, savedReservation);
@@ -154,7 +177,7 @@ export const pendingReservations = async () => {
         
         for (const reservation of approvedReservations) {
             // Update the reservation status to 'PENDING'
-            reservation.status = 'REJECTED';
+            reservation.status = 'PENDING';
             await reservation.save();
         }
     } catch (err) {
@@ -433,4 +456,67 @@ export const countUserReservations = async (req, res, next) => {
 
 
 
+export const checkReservationStatus = async (req, res) => {
+    const { reservationId } = req.params;
 
+    try {
+        // Find the reservation by ID
+        const reservation = await Reservation.findById(reservationId).populate('user'); // Assuming 'user' is an ObjectId reference in Reservation
+
+        if (!reservation) {
+            return res.status(404).json({ error: "Reservation not found" });
+        }
+
+        // Get the current time
+        const now = new Date();
+
+        // Determine the status based on the reservation's attributes
+        let status = null;
+        if (reservation.status === 'REJECTED') {
+            status = 'REJECTED';
+        } else if (reservation.status === 'CANCELED') {
+            status = 'CANCELED';
+        } else if (reservation.status === 'ABORTED') {
+            status = 'ABORTED';
+        } else if (reservation.endTime <= now) {
+            status = 'COMPLETED';
+        } else if (reservation.startTime > now) {
+            status = 'EXPIRED';
+        }
+
+        // Check if the status is one of the specified statuses
+        const validStatuses = ["REJECTED", "CANCELED", "COMPLETED", "EXPIRED", "ABORTED"];
+        if (status && validStatuses.includes(status)) {
+            // Log the status in the reservation history
+            await ReservationHistory.create({
+                reservation: reservation._id,
+                user: reservation.user._id,
+                desk: reservation.desk, 
+                date: reservation.date,
+                startTime: reservation.startTime,
+                endTime: reservation.endTime,
+                type: status
+            });
+
+            // Include email, date, start time, end time, and status in the response
+            return res.status(200).json({
+                email: reservation.user.email, // Assuming user schema has an email field
+                date: reservation.date,
+                startTime: reservation.startTime,
+                endTime: reservation.endTime,
+                status
+            });
+        }
+
+        return res.status(200).json({
+            email: reservation.user.email, // Assuming user schema has an email field
+            date: reservation.date,
+            startTime: reservation.startTime,
+            endTime: reservation.endTime,
+            status: null
+        });
+    } catch (error) {
+        console.error("Error checking reservation status:", error.message);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};

@@ -22,9 +22,9 @@ export const toggleAutoAccepting = async (req, res, next) => {
 
         // Update reservations based on the new autoAccepting value
         if (existingSwitch.autoAccepting) {
-            await approveReservations();
+            await approveReservations(); // Approve all pending reservations
         } else {
-            await pendingReservations();
+            await pendingReservations(); // Set all approved reservations back to pending
         }
 
         res.status(200).json({ message: 'Auto-accepting toggled successfully', autoAccepting: existingSwitch.autoAccepting });
