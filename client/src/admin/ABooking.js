@@ -25,7 +25,7 @@ const ABooking = () => {
     const fetchReservationHistory = async () => {
       try {
         const response = await axios.get('http://localhost:8800/api/reservations/reservation-history');
-        const sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort data by date in descending order
+        const sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date)); //Sort data by date in descending order
         setReservationHistory(sortedData);
       } catch (error) {
         console.error('Error fetching reservation history:', error);
