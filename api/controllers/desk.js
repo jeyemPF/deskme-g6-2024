@@ -3,10 +3,6 @@ import Reservation from "../models/Reservation.js";
 import { officeEquipmentEnum } from "../utils/officeEquipment.js";
 import mongoose from "mongoose";
 
-
-
-
-
 export const createDesk = async (req, res, next) => {
     const reservationId = req.params.reservationId;
     const newDesk = new Desk(req.body);
