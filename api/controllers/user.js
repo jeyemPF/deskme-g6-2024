@@ -259,7 +259,7 @@ export const uploadAvatar = async function (req, res, next) {
 
 
 export const updateProfile = async (req, res) => {
-  const { username } = req.body;
+  const { username, currentPassword, newPassword } = req.body;
 
   // Ensure the user is authenticated and the user ID is available
   if (!req.user || !req.user.id) {
@@ -270,8 +270,8 @@ export const updateProfile = async (req, res) => {
   }
 
   try {
-    // Fetch the user by ID and exclude the password field
-    const user = await User.findById(req.user.id).select("-password");
+    // Fetch the user by ID and include the password field for password verification
+    const user = await User.findById(req.user.id);
 
     // Check if the user exists
     if (!user) {
@@ -284,6 +284,22 @@ export const updateProfile = async (req, res) => {
     // Update the username if provided
     if (username) {
       user.username = username;
+    }
+
+    // Handle password change if current and new passwords are provided
+    if (currentPassword && newPassword) {
+      // Verify the current password
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({
+          success: false,
+          error: "Current password is incorrect",
+        });
+      }
+
+      // Hash the new password before saving
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
     }
 
     // Upload the avatar if provided
@@ -309,7 +325,6 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
-
     // export const updateUserEmailPreference = async (req, res, next) => {
     //     try {
     //     const { id } = req.params;

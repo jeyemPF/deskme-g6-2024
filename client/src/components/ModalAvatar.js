@@ -3,13 +3,14 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import { Skeleton, message } from 'antd';
 
-
 const socket = io('http://localhost:8800');
 
 const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar, onAvatarUpdate }) => {
   const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(initialAvatar);
   const [username, setUsername] = useState(initialUsername);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -49,9 +50,17 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
     }
   };
 
+  const handleCurrentPasswordChange = (e) => {
+    setCurrentPassword(e.target.value);
+  };
+
+  const handleNewPasswordChange = (e) => {
+    setNewPassword(e.target.value);
+  };
+
   const handleSaveChanges = async () => {
-    if (!avatar && !username) {
-      setError("Please select an avatar image or enter a username.");
+    if (!avatar && !username && !newPassword) {
+      setError("Please select an avatar image, enter a username, or change the password.");
       return;
     }
 
@@ -63,6 +72,12 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
     }
     if (username) {
       formData.append("username", username);
+    }
+    if (currentPassword) {
+      formData.append("currentPassword", currentPassword);
+    }
+    if (newPassword) {
+      formData.append("newPassword", newPassword);
     }
 
     try {
@@ -76,13 +91,13 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
       });
 
       console.log('Profile updated successfully:', response.data);
-      message.success('You have successfully update your profile');
+      message.success('You have successfully updated your profile');
       setError(null);
       onClose(); 
     } catch (error) {
       console.error('Failed to update profile:', error);
       setError('Failed to update profile. Please try again.');
-      message.error('Failed to upload your avatar.');
+      message.error('Failed to update your profile.');
     } finally {
       setLoading(false);
     }
@@ -122,6 +137,24 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
                   onChange={handleUsernameChange}
                 />
                 {error && <p className="text-red-500 text-xs italic">{error}</p>}
+              </div>
+              <div className="mb-4 text-left">
+                <label className="mt-5 block text-sm font-normal text-gray-700 dark:text-neutral-300">Current Password:</label>
+                <input
+                  type="password"
+                  className="border-[1px] border-neutral-300 rounded-sm p-2 mt-1 block w-full pl-5 text-sm text-gray-700 placeholder-gray-400"
+                  value={currentPassword}
+                  onChange={handleCurrentPasswordChange}
+                />
+              </div>
+              <div className="mb-4 text-left">
+                <label className="mt-5 block text-sm font-normal text-gray-700 dark:text-neutral-300">New Password:</label>
+                <input
+                  type="password"
+                  className="border-[1px] border-neutral-300 rounded-sm p-2 mt-1 block w-full pl-5 text-sm text-gray-700 placeholder-gray-400"
+                  value={newPassword}
+                  onChange={handleNewPasswordChange}
+                />
               </div>
             </form>
           </div>
