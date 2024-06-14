@@ -11,6 +11,8 @@ router.post('/book/:deskId', protect, createReservation);
 // // cancel reservation
 // router.delete('/cancel-reservation/:reservationId' , cancelReservation);
 
+// router.post('/accept-cancel/:reservationId', acceptOrDeclineReservation )
+
 // user must cancel their reservation
 router.delete('/cancel-reservation/:userId/:reservationId' , cancelReservation)
 

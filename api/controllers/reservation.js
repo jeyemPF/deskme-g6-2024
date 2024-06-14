@@ -2,13 +2,16 @@ import Reservation from "../models/Reservation.js";
 import Desk from "../models/Desk.js";
 import User from "../models/User.js";
 import ReservationHistory from "../models/ReservationHistory.js";
-import { scheduleJob, scheduledJobs, cancelJob } from 'node-schedule';
+import { scheduleJob, scheduledJobs, cancelJob,  } from 'node-schedule';
 import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation } from "../utils/emailService.js";
 import AuditTrail from "../models/AuditTrail.js";
 import { formatInTimeZone,  format } from 'date-fns-tz';
 import mongoose from "mongoose";
 import {  isValid, parseISO } from 'date-fns';
 import Switch from '../models/Switch.js'; // Import Switch model
+import nodeSchedule from 'node-schedule';
+
+
 
 
 
@@ -156,8 +159,6 @@ export const createReservation = async (req, res, next) => {
     }
 };
 
-
-// Function to approve reservations
 export const approveReservations = async () => {
     try {
         // Find all pending reservations
@@ -168,6 +169,9 @@ export const approveReservations = async () => {
             reservation.status = 'APPROVED';
             await reservation.save();
 
+            // Schedule the job for reservation status transitions
+            scheduleReservationJobs(reservation);
+            
             // Find the user associated with the reservation
             const user = await User.findById(reservation.user);
             if (user && user.receiveReservationEmails) {
@@ -181,15 +185,74 @@ export const approveReservations = async () => {
     }
 };
 
+const scheduleReservationJobs = async (reservation) => {
+    const startJob = scheduleJob(`startReservation_${reservation._id}`, reservation.startTime, async () => {
+        try {
+            if (reservation.status === 'APPROVED') {
+                reservation.status = 'STARTED';
+                await reservation.save();
+            }
+        } catch (error) {
+            console.error(`Error updating reservation status to STARTED: ${error.message}`);
+        }
+    });
+
+    const endJob = scheduleJob(`endReservation_${reservation._id}`, reservation.endTime, async () => {
+        try {
+            if (reservation.status === 'PENDING') {
+                reservation.status = 'REJECTED';
+                await reservation.save();
+                const desk = await Desk.findById(reservation.desk);
+                if (desk) {
+                    desk.status = 'available';
+                    await desk.save();
+                }
+            } else if (reservation.status === 'STARTED') {
+                reservation.status = 'COMPLETED';
+                await reservation.save();
+                const desk = await Desk.findById(reservation.desk);
+                if (desk) {
+                    desk.status = 'available';
+                    await desk.save();
+                }
+            }
+        } catch (error) {
+            console.error(`Error updating reservation status: ${error.message}`);
+        }
+    });
+
+    if (reservation.status === 'APPROVED') {
+        const completeJob = scheduleJob(`completeReservation_${reservation._id}`, reservation.endTime, async () => {
+            try {
+                if (reservation.status === 'APPROVED') {
+                    reservation.status = 'COMPLETED';
+                    await reservation.save();
+                    const desk = await Desk.findById(reservation.desk);
+                    if (desk) {
+                        desk.status = 'available';
+                        await desk.save();
+                    }
+                } 
+            } catch (error) {
+                console.error(`Error marking reservation as COMPLETED: ${error.message}`);
+            }
+        });
+    }
+};
+
+
 export const pendingReservations = async () => {
     try {
         // Find all approved reservations
         const approvedReservations = await Reservation.find({ status: 'APPROVED' });
-        
+
         for (const reservation of approvedReservations) {
             // Update the reservation status to 'PENDING'
             reservation.status = 'PENDING';
             await reservation.save();
+
+            // Cancel existing jobs related to this reservation
+            cancelReservationJobs(reservation);
         }
     } catch (err) {
         console.error("Error setting reservations to pending:", err);
@@ -197,6 +260,22 @@ export const pendingReservations = async () => {
     }
 };
 
+// const cancelReservationJobs = async (reservation) => {
+//     // Cancel existing jobs related to this reservation
+//     const startJobName = `startReservation_${reservation._id}`;
+//     const endJobName = `endReservation_${reservation._id}`;
+    
+//     // Implement your job cancellation logic here based on your scheduler
+
+//     // Example: If using node-schedule for job scheduling
+//     const scheduledJobs = schedule.scheduledJobs;
+//     if (scheduledJobs[startJobName]) {
+//         scheduledJobs[startJobName].cancel();
+//     }
+//     if (scheduledJobs[endJobName]) {
+//         scheduledJobs[endJobName].cancel();
+//     }
+// };
 
 
 export const cancelReservation = async (req, res, next) => {

@@ -237,7 +237,7 @@ const fetchBookingHistory = async () => {
                           </td>
 
                           <td className="py-2 px-4 border-b">
-                            {(booking.status !== 'COMPLETED' && booking.status !== 'ABORTED') && (
+                            {(booking.status !== 'COMPLETED' && booking.status !== 'ABORTED' && booking.status !== 'REJECTED') && (
                               <button
                                 className="py-1.5 px-3 text-red-500 text-sm hover:text-red-600 duration-150 hover:bg-red-50 border rounded-lg hover:border-red-500"
                                 onClick={() => handleCancelClick(booking._id)}

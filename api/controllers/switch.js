@@ -1,8 +1,6 @@
-// api/controllers/switch.js
-
 import Switch from '../models/Switch.js';
 import { approveReservations, pendingReservations } from './reservation.js';
-// Controller function to handle a request to toggle autoAccepting and update reservations accordingly
+
 export const toggleAutoAccepting = async (req, res, next) => {
     try {
         // Find the existing Switch document in the database
