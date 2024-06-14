@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 import { Skeleton, message } from 'antd';
+import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
 const socket = io('http://localhost:8800');
 
@@ -11,6 +12,8 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
   const [username, setUsername] = useState(initialUsername);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -56,6 +59,14 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
 
   const handleNewPasswordChange = (e) => {
     setNewPassword(e.target.value);
+  };
+
+  const toggleCurrentPasswordVisibility = () => {
+    setShowCurrentPassword(!showCurrentPassword);
+  };
+
+  const toggleNewPasswordVisibility = () => {
+    setShowNewPassword(!showNewPassword);
   };
 
   const handleSaveChanges = async () => {
@@ -138,23 +149,29 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
                 />
                 {error && <p className="text-red-500 text-xs italic">{error}</p>}
               </div>
-              <div className="mb-4 text-left">
+              <div className="mb-4 text-left relative">
                 <label className="mt-5 block text-sm font-normal text-gray-700 dark:text-neutral-300">Current Password:</label>
                 <input
-                  type="password"
+                  type={showCurrentPassword ? "text" : "password"}
                   className="border-[1px] border-neutral-300 rounded-sm p-2 mt-1 block w-full pl-5 text-sm text-gray-700 placeholder-gray-400"
                   value={currentPassword}
                   onChange={handleCurrentPasswordChange}
                 />
+                <div className="absolute top-11 right-3 transform -translate-y-1/2 cursor-pointer" onClick={toggleCurrentPasswordVisibility}>
+                  {showCurrentPassword ? <BsEyeSlash /> : <BsEye />}
+                </div>
               </div>
-              <div className="mb-4 text-left">
+              <div className="mb-4 text-left relative">
                 <label className="mt-5 block text-sm font-normal text-gray-700 dark:text-neutral-300">New Password:</label>
                 <input
-                  type="password"
+                  type={showNewPassword ? "text" : "password"}
                   className="border-[1px] border-neutral-300 rounded-sm p-2 mt-1 block w-full pl-5 text-sm text-gray-700 placeholder-gray-400"
                   value={newPassword}
                   onChange={handleNewPasswordChange}
                 />
+                <div className="absolute top-11 right-3 transform -translate-y-1/2 cursor-pointer" onClick={toggleNewPasswordVisibility}>
+                  {showNewPassword ? <BsEyeSlash /> : <BsEye />}
+                </div>
               </div>
             </form>
           </div>

@@ -62,13 +62,12 @@ const Dashboard = () => {
   }, []);
 
   const handleSignOutClick = () => {
-    // Clear session storage
-    sessionStorage.removeItem('userCredentials');
-  
-    // Navigate to login page
+    localStorage.removeItem('token');
+    sessionStorage.clear();
+    // Optionally redirect to login or home page
     navigate('/login');
   };
-
+  
 
   const handleBookingClick = () => {
     navigate('/booking');

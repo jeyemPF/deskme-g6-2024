@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import Switcher from "../components/Switcher";
 
 const InputField = ({ type, name, placeholder, value, onChange, icon, error }) => (
   <div className='relative'>
@@ -36,8 +35,19 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [otp, setOtp] = useState("");
+  const [otpRequired, setOtpRequired] = useState(false);
+  const [otpError, setOtpError] = useState("");
+  
   const navigate = useNavigate();
+
+  // Check if OTP is required on component mount
+  useEffect(() => {
+    const isOtpRequired = sessionStorage.getItem('otpRequired');
+    if (isOtpRequired === 'true') {
+      setOtpRequired(true);
+    }
+  }, []);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -70,6 +80,14 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await axios.post('http://localhost:8800/api/auth/login', { email, password });
+      
+      if (response.data.message === 'OTP sent to your email') {
+        setOtpRequired(true);
+        sessionStorage.setItem('otpRequired', 'true'); // Set OTP required in session storage
+        return; // Exit the function early if OTP is required
+      }
+  
+      // Login successful
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('userId', response.data.user._id); // Store the user ID
       sessionStorage.setItem('userCredentials', JSON.stringify(response.data));
@@ -89,6 +107,43 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+
+  const handleOtpVerification = async (e) => {
+    e.preventDefault();
+    if (!otp.trim()) {
+      setOtpError('Please enter the OTP sent to your email.');
+      return;
+    }
+  
+    setLoading(true);
+    try {
+      const response = await axios.post('http://localhost:8800/api/auth/verify-otp', { email, otp });
+  
+      // OTP verified successfully
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userId', response.data.user._id); // Store the user ID
+      sessionStorage.setItem('userCredentials', JSON.stringify(response.data));
+      
+      // Clear OTP requirement from sessionStorage
+      sessionStorage.removeItem('otpRequired');
+      
+      const userRole = response.data.user.role;
+      if (userRole === 'admin') navigate("/admindashboard");
+      else if (userRole === 'superadmin') navigate("/superdashboard");
+      else if (userRole === 'officemanager') navigate('/officedashboard');
+      else navigate("/dashboard");
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        setOtpError('Invalid or expired OTP');
+      } else {
+        setOtpError('OTP verification failed. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   
   return (
     <div className='min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900'>
@@ -100,49 +155,67 @@ const Login = () => {
         </div>
         <h1 className='text-4xl font-black text-left text-neutral-700 dark:text-neutral-200'>Sign in</h1>
         <p className='font-normal text-left mt-1 text-neutral-700 dark:text-neutral-200'>Stay updated on your bookings.</p>
-
-        <form onSubmit={handleLogin} className='mt-12'>
-          <InputField
-            type='email'
-            name='email'
-            placeholder='Email Address:'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            icon={null}
-            error={emailError}
-          />
-          <div className='relative mt-4'>
+  
+        {otpRequired ? (
+          <form onSubmit={handleOtpVerification} className='mt-12'>
             <InputField
-              type={showPassword ? 'text' : 'password'}
-              name='password'
-              placeholder='Password:'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              icon={{
-                component: showPassword ? <BsEye /> : <BsEyeSlash />,
-                onClick: togglePasswordVisibility,
-              }}
-              error={passwordError}
+              type='text'
+              name='otp'
+              placeholder='Enter OTP:'
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              icon={null}
+              error={otpError}
             />
-          </div>
-
-          <div className="flex items-left mt-4 mb-4">
-            <input type="checkbox" id="rememberMe" className="w-4 h-5 text-neutral-700 bg-gray-100 border-black rounded hover:cursor-pointer" />
-            <label htmlFor="rememberMe" className="ms-2 text-sm font-medium text-neutral-700 hover:cursor-pointer">Remember Me</label>
-            <div className="list-none ml-auto">
-              <li onClick={() => navigate('/resetpassword')} className="font-medium text-sm hover:underline cursor-pointer text-neutral-700">Forgot password?</li>
+            <div className='text-center mt-14 mb-5'>
+              <button type="submit" className='bg-white text-neutral-700 font-semibold rounded-2xl border-[1px] border-neutral-700 py-3 w-full hover:bg-neutral-700 hover:text-white transition-colors duration-300'>
+                {loading ? 'Verifying OTP...' : 'Verify OTP'}
+              </button>
             </div>
-          </div>
-
-          <div className='text-center mt-14 mb-5'>
-            <button type="submit" className='bg-white text-neutral-700 font-semibold rounded-2xl border-[1px] border-neutral-700 py-3 w-full hover:bg-neutral-700 hover:text-white transition-colors duration-300'>
-              {loading ? 'Signing in...' : 'Sign in'}
-            </button>
-          </div>
-        </form>
+          </form>
+        ) : (
+          <form onSubmit={handleLogin} className='mt-12'>
+            <InputField
+              type='email'
+              name='email'
+              placeholder='Email Address:'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              icon={null}
+              error={emailError}
+            />
+            <div className='relative mt-4'>
+              <InputField
+                type={showPassword ? 'text' : 'password'}
+                name='password'
+                placeholder='Password:'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                icon={{
+                  component: showPassword ? <BsEye /> : <BsEyeSlash />,
+                  onClick: togglePasswordVisibility,
+                }}
+                error={passwordError}
+              />
+            </div>
+  
+            <div className="flex items-left mt-4 mb-4">
+              <input type="checkbox" id="rememberMe" className="w-4 h-5 text-neutral-700 bg-gray-100 border-black rounded hover:cursor-pointer" />
+              <label htmlFor="rememberMe" className="ms-2 text-sm font-medium text-neutral-700 hover:cursor-pointer">Remember Me</label>
+              <div className="list-none ml-auto">
+                <li onClick={() => navigate('/resetpassword')} className="font-medium text-sm hover:underline cursor-pointer text-neutral-700">Forgot password?</li>
+              </div>
+            </div>
+  
+            <div className='text-center mt-14 mb-5'>
+              <button type="submit" className='bg-white text-neutral-700 font-semibold rounded-2xl border-[1px] border-neutral-700 py-3 w-full hover:bg-neutral-700 hover:text-white transition-colors duration-300'>
+                {loading ? 'Signing in...' : 'Sign in'}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );
 }
-
 export default Login;
