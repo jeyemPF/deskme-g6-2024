@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
 const AddUserModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const AddUserModal = ({ isOpen, onClose }) => {
     password: ''
   });
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const validRoles = ['admin', 'officemanager', 'user'];
 
@@ -40,6 +42,10 @@ const AddUserModal = ({ isOpen, onClose }) => {
 
   const handleCancel = () => {
     onClose(); // Close the modal when cancel button is clicked
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(prevState => !prevState);
   };
 
   return (
@@ -84,17 +90,26 @@ const AddUserModal = ({ isOpen, onClose }) => {
               placeholder="Enter role"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
             </label>
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               onChange={handleChange}
               className="mt-1 p-2 pl-4 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
               placeholder="Enter password"
             />
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pt-7">
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="text-gray-400 focus:outline-none"
+              >
+                {showPassword ? <BsEyeSlash /> : <BsEye />}
+              </button>
+            </div>
           </div>
           <div className="flex justify-end space-x-4">
             <button

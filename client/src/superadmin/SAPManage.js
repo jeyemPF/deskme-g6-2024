@@ -243,7 +243,7 @@ const SAPManage = () => {
                     onClick={handleManageClick2}
                     className="flex items-center py-1 px-2 border border-blue-600 text-blue-600 rounded-sm hover:bg-blue-50 focus:outline-none transition duration-150 ease-in-out"
                   >
-                    <PlusOutlined style={{ fontSize: '12px', marginRight: '4px' }} /> Add Users
+                    <PlusOutlined style={{ fontSize: '12px', marginRight: '4px' }} /> Users
                   </button>
                 </div>
                 <div className="overflow-x-auto">
