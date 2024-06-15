@@ -1,6 +1,19 @@
 import React from 'react';
+import axios from 'axios';
 
-const ManageUserModal = ({ handleCloseModal }) => {
+const ManageUserModal = ({ userId, handleCloseModal }) => {
+  const handleConfirmDelete = async (userId) => {
+    try {
+      await axios.delete(`http://localhost:8800/api/users/delete-user/${userId}`);
+      console.log(`User with ID ${userId} deleted successfully`);
+      handleCloseModal(); // Close the modal after deletion
+      // Optionally, update the user list or provide feedback to the user
+      window.location.reload(); // You can use a more efficient state update method
+    } catch (error) {
+      console.error(`There was an error deleting the user with ID ${userId}:`, error);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg p-6 w-11/12 max-w-md mx-auto">
@@ -14,11 +27,14 @@ const ManageUserModal = ({ handleCloseModal }) => {
             Cancel
           </button>
           <button
-            onClick={handleCloseModal}
-            className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 transition duration-200"
-          >
-            Delete
-          </button>
+              onClick={() => handleConfirmDelete(userId)}
+              className="py-2 px-4 bg-red-600 text-white rounded-lg shadow hover:bg-red-500 focus:outline-none transition duration-150 ease-in-out"
+            >
+              Delete
+            </button>
+
+
+
         </div>
       </div>
     </div>

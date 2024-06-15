@@ -12,7 +12,48 @@ import axios from 'axios';
 
 const SABooking = () => {
 
-  const [reservationHistory, setReservationHistory] = useState([]);
+  const [reservationHistory, setReservationHistory] = useState([]); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOn, setIsOn] = useState(() => localStorage.getItem('isOn') === 'true'); // Set initial state from localStorage
+  const [currentPage, setCurrentPage] = useState(1);
+  const [reservation, setReservation] = useState([]);
+
+  const desksPerPage = 8;
+  const indexOfLastDesk = currentPage * desksPerPage;
+  const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
+  const currentReservations = reservationHistory.slice(indexOfFirstDesk, indexOfLastDesk);
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === Math.ceil(reservation.length / desksPerPage);
+
+  const nextPage = () => {
+    if (!isLastPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (!isFirstPage) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const totalPages = Math.ceil(reservation.length / desksPerPage);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
+
+
+
+  // 
+
+
+
+
+  const navigate = useNavigate();
+
 
   const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
 
@@ -20,7 +61,7 @@ const SABooking = () => {
   const isError = reservationPendingError;
 
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  
 
   useEffect(() => {
     const fetchReservationHistory = async () => {
@@ -34,12 +75,6 @@ const SABooking = () => {
     fetchReservationHistory();
   }, []);
 
-
-  const [isOn, setIsOn] = useState(() => localStorage.getItem('isOn') === 'true'); // Set initial state from localStorage
-
-
-
-  
 
   const handleToggle = async () => {
     try {
@@ -59,7 +94,7 @@ const SABooking = () => {
       localStorage.setItem('isOn', newValue.toString()); // Update localStorage with new value
 
       // Show success notification
-      message.success('You have successfully approved/disapproved all bookings.');
+      message.success('You have successfully approved/disapproved all reservation.');
 
     } catch (error) {
       console.error('Error toggling reservation emails:', error);
@@ -84,43 +119,7 @@ const SABooking = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  const tableItems = [
-    {
-      reservation_id: 1,
-      name: "Peter Sthanlie Rayos",
-      reservation_date: "May 20, 2024",
-      start_time: "4:00pm",
-      end_time: "11:00pm",
-      status: "Pending"
-    },
-    {
-      reservation_id: 2,
-      name: "John Carlo Diga",
-      reservation_date: "May 26, 2024",
-      start_time: "12:00pm",
-      end_time: "9:00pm",
-      status: "Pending"
-    },
-    {
-      reservation_id: 3,
-      name: "Johnmack Faeldonia",
-      reservation_date: "May 31, 2024",
-      start_time: "6:00am",
-      end_time: "6:00pm",
-      status: "Pending"
-    },
-    {
-      reservation_id: 4,
-      name: "Jayvee Brian Ibale",
-      reservation_date: "June 3, 2024",
-      start_time: "12:00am",
-      end_time: "12:00pm",
-      status: "Pending"
-    },
-  ];
-    
-  const navigate = useNavigate();
-
+  
   const handleSignOutClick = () => {
     // Clear session storage
     sessionStorage.removeItem('userCredentials');
@@ -163,7 +162,7 @@ const SABooking = () => {
           <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
         </Sidebar>
         <Content>
-        <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
+        <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>reservation</h1>
           { isLoading ? ( 
             <>
             <Skeleton height={120} count={4} />
@@ -210,14 +209,13 @@ const SABooking = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                    {
-                      reservationHistory.map((reservation, index) => (
+                    {currentReservations.map((reservation, index) => (
                         <tr key={index}>
-                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td> {/* Desk title */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td>
                           <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.username}</td>
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td> {/* Format date */}
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td> {/* Format start time */}
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td> {/* Format end time */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td>
                           <td className="pr-6 py-4 whitespace-nowrap">
                             <span className={`px-3 py-2 rounded-full font-semibold text-xs ${reservation.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
                               {reservation.status}
@@ -229,63 +227,62 @@ const SABooking = () => {
                             </button>
                           </td>
                         </tr>
-                      ))
-                    }
-
+                      ))}
                     </tbody>
                   </table>
                 </div>
                 <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
+                    <li>
+    <button
+        onClick={prevPage}
+        disabled={isFirstPage}
+        className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+    >
+        <span className="sr-only">Prev Page</span>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3 w-3"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+        >
+            <path
+                fillRule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clipRule="evenodd"
+            />
+        </svg>
+    </button>
+</li>
+
                   <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Prev Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
+                      <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
+                          {currentPage}
+                      </span>
                   </li>
 
                   <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
-                    >
-                      1
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Next Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
+                      <button
+                          onClick={nextPage}
+                          disabled={isLastPage}
+                          className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
+                          <span className="sr-only">Next Page</span>
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-3 w-3"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                          >
+                              <path
+                                  fillRule="evenodd"
+                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                  clipRule="evenodd"
+                              />
+                          </svg>
+                      </button>
                   </li>
-                </ol>
+
+                    </ol>
               </div>
             </div>
           </Content>

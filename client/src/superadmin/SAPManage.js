@@ -25,6 +25,7 @@ import ManageUserModal from "../components/ManageUserModal";
 import useFetchCreatedUsers from "../Hooks/useFetchCreatedUser";
 import useUserCount from "../Hooks/useUserCount";
 import useNonUserCount from "../Hooks/useNonUserCount";
+import { PlusOutlined } from "@ant-design/icons";
 
 const SAPManage = () => {
   const {
@@ -49,6 +50,8 @@ const SAPManage = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [userIdToDelete, setUserIdToDelete] = useState(null);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -93,13 +96,20 @@ const SAPManage = () => {
       )
     : [];
 
-  const handleManageClick = () => {
-    setIsModalOpen(true);
-  };
+    const handleManageClick = (userId) => {
+      setIsModalOpen(true);
+      setUserIdToDelete(userId); // Set the userIdToDelete state
+    };
+    
+
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setUserIdToDelete(null); // Clear userIdToDelete after closing the modal
+
   };
+
+  
 
   const handleManageClick2 = () => {
     console.log("handleManageClick2 called");
@@ -141,6 +151,11 @@ const SAPManage = () => {
   const handleAuditClick = () => {
     navigate("/superaudit");
   };
+
+  const handleConfirmDelete = async (userId) => {
+  };
+
+  
 
   return (
     <>
@@ -224,11 +239,11 @@ const SAPManage = () => {
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8 mt-6">
               <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
                 <div className="flex justify-end items-center">
-                  <button
+                <button
                     onClick={handleManageClick2}
-                    className="py-2 px-4 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-500 focus:outline-none transition duration-150 ease-in-out"
+                    className="flex items-center py-1 px-2 border border-blue-600 text-blue-600 rounded-sm hover:bg-blue-50 focus:outline-none transition duration-150 ease-in-out"
                   >
-                    Add Users
+                    <PlusOutlined style={{ fontSize: '12px', marginRight: '4px' }} /> Add Users
                   </button>
                 </div>
                 <div className="overflow-x-auto">
@@ -261,12 +276,12 @@ const SAPManage = () => {
                             </span>
                           </td>
                           <td className="whitespace-nowrap text-center">
-                            <button
-                              onClick={handleManageClick}
-                              className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg"
-                            >
-                              Manage
-                            </button>
+                          <button
+                          onClick={() => handleManageClick(user._id)} // Pass user._id to handleManageClick
+                          className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg"
+                        >
+                          Manage
+                        </button>
                           </td>
                         </tr>
                       ))}
@@ -384,13 +399,14 @@ const SAPManage = () => {
                             </span>
                           </td>
                           <td className="whitespace-nowrap text-center">
-                            <button
-                              onClick={handleManageClick}
-                              className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg"
-                            >
-                              Manage
-                            </button>
-                          </td>
+                        <button
+                          onClick={() => handleManageClick(user._id)} // Pass user._id to handleManageClick
+                          className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg"
+                        >
+                          Manage
+                        </button>
+                      </td>
+
                         </tr>
                       ))}
                     </tbody>
@@ -453,7 +469,13 @@ const SAPManage = () => {
         </SidebarProvider>
       </div>
 
-      {isModalOpen && <ManageUserModal handleCloseModal={handleCloseModal} />}
+      {isModalOpen && 
+      <ManageUserModal 
+        handleCloseModal={handleCloseModal}
+        userId={userIdToDelete}
+        handleConfirmDelete={handleConfirmDelete} // Pass handleConfirmDelete here
+
+         />}
       {isModalOpen2 && (
         <AddUserModal
           isOpen={isModalOpen2}
