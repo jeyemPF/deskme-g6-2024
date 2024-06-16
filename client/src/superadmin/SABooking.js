@@ -216,9 +216,19 @@
                             <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td>
                             <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td>
                             <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${reservation.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
+                            <span className={`px-3 py-2 rounded-full font-semibold text-xs ${
+                                reservation.status === "APPROVED" ? "text-purple-600 bg-purple-50" :
+                                reservation.status === "REJECTED" ? "text-red-600 bg-red-50" :
+                                reservation.status === "PENDING" ? "text-yellow-600 bg-yellow-50" :
+                                reservation.status === "ABORTED" ? "text-orange-600 bg-orange-50" :
+                                reservation.status === "STARTED" ? "text-blue-600 bg-blue-50" :
+                                reservation.status === "COMPLETED" ? "text-green-600 bg-green-50" : // Adjust with a suitable color for "COMPLETED"
+                                ""
+                              }`}>
+                             
                                 {reservation.status}
                               </span>
+
                             </td>
                             <td className="whitespace-nowrap text-center">
                               <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">

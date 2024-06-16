@@ -1,12 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog, ScrollText } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
 import Header from '../components/Header'
 import useFetch from '../Hooks/useFetch';
 import { Skeleton } from 'antd';
+import { format } from 'date-fns';
+import axios from 'axios';
+
+
+
 
 const OMManageBooking = () => {
+
+  const [reservationHistory, setReservationHistory] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const desksPerPage = 5;
+  const indexOfLastDesk = currentPage * desksPerPage;
+  const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
+   // Filter out reservations with "APPROVED" and "PENDING" statuses
+   const currentReservations = reservationHistory
+   .filter(reservation => reservation.status !== "APPROVED" && reservation.status !== "PENDING")
+   .slice(indexOfFirstDesk, indexOfLastDesk);
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === Math.ceil(reservationHistory.length / desksPerPage);
+
+  const nextPage = () => {
+    if (!isLastPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (!isFirstPage) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const totalPages = Math.ceil(reservationHistory.length / desksPerPage);
+
+  useEffect(() => {
+    const fetchReservationHistory = async () => {
+      try {
+        const response = await axios.get('http://localhost:8800/api/reservations/reservation-history');
+        setReservationHistory(response.data);
+      } catch (error) {
+        console.error('Error fetching reservation history:', error);
+      }
+    };
+    fetchReservationHistory();
+  }, []);
+
 
   const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
   const { data: deskCountReservedData, loading: deskCountReservedLoading, error: deskCountReservedError } = useFetch("desks/count-reserved");
@@ -43,40 +89,32 @@ const handleCloseModal = () => {
     navigate('/officedashboard');
   };
 
-  const tableItems = [
-    {
-      reservation_id: 1,
-      name: "Jireh Belen",
-      reservation_date: "May 14, 2024",
-      start_time: "1:00am",
-      end_time: "1:00pm",
-      status: "Done"
-    },
-    {
-      reservation_id: 2,
-      name: "Algen Rey Ubang",
-      reservation_date: "May 22, 2024",
-      start_time: "12:00pm",
-      end_time: "9:00pm",
-      status: "Cancelled"
-    },
-    {
-      reservation_id: 3,
-      name: "Mhayumie",
-      reservation_date: "May 30, 2024",
-      start_time: "11:00am",
-      end_time: "6:00pm",
-      status: "Cancelled"
-    },
-    {
-      reservation_id: 4,
-      name: "Lebron James",
-      reservation_date: "June 1, 2024",
-      start_time: "2:00am",
-      end_time: "2:00pm",
-      status: "Done"
-    },
-  ];
+ const getStatusText = (backendStatus) => {
+    switch (backendStatus) {
+      case "COMPLETED":
+        return "Done";
+      case "ABORTED":
+        return "Canceled";
+      case "REJECTED":
+        return "Expired";
+      default:
+        return backendStatus; // Fallback in case new statuses are added
+    }
+  };
+
+  const getStatusStyle = (backendStatus) => {
+    switch (backendStatus) {
+      case "COMPLETED":
+        return "text-green-600 bg-green-50";
+      case "ABORTED":
+        return "text-red-600 bg-red-50";
+      case "REJECTED":
+        return "text-yellow-600 bg-yellow-50";
+      default:
+        return "text-blue-600 bg-blue-50"; // Default style for unknown statuses
+    }
+  };
+
 
   return (
     <div className="h-screen dark:bg-neutral-900">
@@ -159,34 +197,33 @@ const handleCloseModal = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                      {
-                        tableItems.map((item, idx) => (
-                          <tr key={idx}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_date}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.start_time}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.end_time}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                {item.status}
-                              </span>
-                            </td>
-                            <td className="whitespace-nowrap text-center">
-                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                                Manage
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      }
+                    {currentReservations.map((reservation, index) => (
+                        <tr key={index}>
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.username}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">
+                            <span className={`px-3 py-2 rounded-full font-semibold text-xs ${getStatusStyle(reservation.status)}`}>
+                              {getStatusText(reservation.status)}
+                            </span>
+                          </td>
+                          <td className="whitespace-nowrap text-center">
+                            <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                              Manage
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
                 <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
                   <li>
-                    <a
-                      href="#"
+                    <button
+                      onClick={prevPage}
+                      disabled={isFirstPage}
                       className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
                     >
                       <span className="sr-only">Prev Page</span>
@@ -202,20 +239,19 @@ const handleCloseModal = () => {
                           clipRule="evenodd"
                         />
                       </svg>
-                    </a>
+                    </button>
                   </li>
 
                   <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
-                    >
-                      1
-                    </a>
+                    <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
+                      {currentPage}
+                    </span>
                   </li>
+
                   <li>
-                    <a
-                      href="#"
+                    <button
+                      onClick={nextPage}
+                      disabled={isLastPage}
                       className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
                     >
                       <span className="sr-only">Next Page</span>
@@ -231,7 +267,7 @@ const handleCloseModal = () => {
                           clipRule="evenodd"
                         />
                       </svg>
-                    </a>
+                    </button>
                   </li>
                 </ol>
               </div>

@@ -13,7 +13,7 @@ const SAManageBooking = () => {
   const [reservationHistory, setReservationHistory] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const desksPerPage = 8;
+  const desksPerPage = 5;
   const indexOfLastDesk = currentPage * desksPerPage;
   const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
    // Filter out reservations with "APPROVED" and "PENDING" statuses
