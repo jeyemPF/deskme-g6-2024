@@ -1,12 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LayoutDashboard, Layers, Users, BookCopy, Flag, Settings, LogOut, FileCog, ScrollText, NotebookTabs } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
-import Header from '../components/Header'
-import useFetch  from '../Hooks/useFetch';
-import { Skeleton } from 'antd'
+import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
+import Header from '../components/Header';
+import useFetch from '../Hooks/useFetch';
+import { Skeleton } from 'antd';
+import axios from 'axios';
+import { format } from 'date-fns';
 
 const SAManageBooking = () => {
+
+  const [reservationHistory, setReservationHistory] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const desksPerPage = 8;
+  const indexOfLastDesk = currentPage * desksPerPage;
+  const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
+   // Filter out reservations with "APPROVED" and "PENDING" statuses
+   const currentReservations = reservationHistory
+   .filter(reservation => reservation.status !== "APPROVED" && reservation.status !== "PENDING")
+   .slice(indexOfFirstDesk, indexOfLastDesk);
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === Math.ceil(reservationHistory.length / desksPerPage);
+
+  const nextPage = () => {
+    if (!isLastPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (!isFirstPage) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const totalPages = Math.ceil(reservationHistory.length / desksPerPage);
 
   const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
   const { data: deskCountReservedData, loading: deskCountReservedLoading, error: deskCountReservedError } = useFetch("desks/count-reserved");
@@ -14,25 +44,37 @@ const SAManageBooking = () => {
   const isLoading = reservationPendingLoading || deskCountReservedLoading;
   const isError = reservationPendingError || deskCountReservedError;
 
+  
 
-const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    const fetchReservationHistory = async () => {
+      try {
+        const response = await axios.get('http://localhost:8800/api/reservations/reservation-history');
+        setReservationHistory(response.data);
+      } catch (error) {
+        console.error('Error fetching reservation history:', error);
+      }
+    };
+    fetchReservationHistory();
+  }, []);
 
-const handleManageClick = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleManageClick = () => {
     setIsModalOpen(true);
-    };
-const handleCloseModal = () => {
+  };
+
+  const handleCloseModal = () => {
     setIsModalOpen(false);
-    };
+  };
 
   const navigate = useNavigate();
 
   const handleSignOutClick = () => {
-    // Clear session storage
     sessionStorage.removeItem('userCredentials');
-  
-    // Navigate to login page
     navigate('/login');
   };
+
   const handleBookingClick = () => {
     navigate('/superbooking');
   };
@@ -40,50 +82,44 @@ const handleCloseModal = () => {
   const handleDashboardClick = () => {
     navigate('/superdashboard');
   };
+
   const handlePrivManageClick = () => {
     navigate('/superprivmanage');
-  }
+  };
+
   const handleReportClick = () => {
     navigate('/superreports');
   };
+
   const handleAuditClick = () => {
     navigate('/superaudit');
   };
 
-  const tableItems = [
-    {
-      reservation_id: 1,
-      name: "Jireh Belen",
-      reservation_date: "May 14, 2024",
-      start_time: "1:00am",
-      end_time: "1:00pm",
-      status: "Done"
-    },
-    {
-      reservation_id: 2,
-      name: "Algen Rey Ubang",
-      reservation_date: "May 22, 2024",
-      start_time: "12:00pm",
-      end_time: "9:00pm",
-      status: "Cancelled"
-    },
-    {
-      reservation_id: 3,
-      name: "Mhayumie",
-      reservation_date: "May 30, 2024",
-      start_time: "11:00am",
-      end_time: "6:00pm",
-      status: "Cancelled"
-    },
-    {
-      reservation_id: 4,
-      name: "Lebron James",
-      reservation_date: "June 1, 2024",
-      start_time: "2:00am",
-      end_time: "2:00pm",
-      status: "Done"
-    },
-  ];
+  const getStatusText = (backendStatus) => {
+    switch (backendStatus) {
+      case "COMPLETED":
+        return "Done";
+      case "ABORTED":
+        return "Canceled";
+      case "REJECTED":
+        return "Expired";
+      default:
+        return backendStatus; // Fallback in case new statuses are added
+    }
+  };
+
+  const getStatusStyle = (backendStatus) => {
+    switch (backendStatus) {
+      case "COMPLETED":
+        return "text-green-600 bg-green-50";
+      case "ABORTED":
+        return "text-red-600 bg-red-50";
+      case "REJECTED":
+        return "text-yellow-600 bg-yellow-50";
+      default:
+        return "text-blue-600 bg-blue-50"; // Default style for unknown statuses
+    }
+  };
 
   return (
     <div className="h-screen dark:bg-neutral-900">
@@ -95,67 +131,68 @@ const handleCloseModal = () => {
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" active />
             <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
-            <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick}/>
+            <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
             <hr className="my-3" />
             <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails" onClick={handleAuditClick} />
             <hr className="my-3" />
-            <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />  
+            <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>
           <Content>
             <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Manage Bookings</h1>
-      
-             { isLoading ? (
-                  <>
-                   <Skeleton height={120} count={4} />
-                  </>
-                ) : isError ? (
-                  <div>Error: {reservationPendingError?.message || deskCountReservedError?.message }</div>
-                ) : (
-                  <><div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
-              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
-                <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: {deskCountReservedData}</span>
-                  <span className="text-sm font-normal">All Bookings</span>
+
+            {isLoading ? (
+              <>
+                <Skeleton height={120} count={4} />
+              </>
+            ) : isError ? (
+              <div>Error: {reservationPendingError?.message || deskCountReservedError?.message}</div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
+                  <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
+                    <div className='flex flex-col'>
+                      <span className="text-xl font-semibold">Total: {deskCountReservedData}</span>
+                      <span className="text-sm font-normal">All Bookings</span>
+                    </div>
+                    <ScrollText className="w-10 h-10 ml-10" />
+                  </div>
+                  <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
+                    <div className='flex flex-col'>
+                      <span className="text-xl font-semibold">Total: {reservationPendingData}</span>
+                      <span className="text-sm font-normal">Pending Books</span>
+                    </div>
+                    <FileCog className="w-10 h-10 ml-10" />
+                  </div>
                 </div>
-                <ScrollText className="w-10 h-10 ml-10" />
-              </div>
-              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
-                <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: {reservationPendingData}</span>
-                  <span className="text-sm font-normal">Pending Books</span>
-                </div>
-                <FileCog className="w-10 h-10 ml-10" />
-              </div>
-            </div>
-            </>
+              </>
             )}
-   
+
             <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
               <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
-              <div className="flex justify-end items-center">
-                <div className="relative w-60 max-w-md">
+                <div className="flex justify-end items-center">
+                  <div className="relative w-60 max-w-md">
                     <input
-                    type="text"
-                    className="w-full p-2 pr-10 pl-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
-                    placeholder="Search bookings"
+                      type="text"
+                      className="w-full p-2 pr-10 pl-4 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-150 ease-in-out"
+                      placeholder="Search bookings"
                     />
                     <div className="absolute right-0 top-0 flex items-center h-full pr-4">
-                    <svg
+                      <svg
                         className="w-5 h-5 text-gray-500"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg"
-                    >
+                      >
                         <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
                         />
-                    </svg>
+                      </svg>
                     </div>
-                </div>
+                  </div>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full table-auto mt-2">
@@ -170,34 +207,33 @@ const handleCloseModal = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                      {
-                        tableItems.map((item, idx) => (
-                          <tr key={idx}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_id}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.name}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.reservation_date}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.start_time}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{item.end_time}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">
-                              <span className={`px-3 py-2 rounded-full font-semibold text-xs ${item.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
-                                {item.status}
-                              </span>
-                            </td>
-                            <td className="whitespace-nowrap text-center">
-                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                                Manage
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      }
+                      {currentReservations.map((reservation, index) => (
+                        <tr key={index}>
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.username}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">
+                            <span className={`px-3 py-2 rounded-full font-semibold text-xs ${getStatusStyle(reservation.status)}`}>
+                              {getStatusText(reservation.status)}
+                            </span>
+                          </td>
+                          <td className="whitespace-nowrap text-center">
+                            <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                              Manage
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
                 <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
                   <li>
-                    <a
-                      href="#"
+                    <button
+                      onClick={prevPage}
+                      disabled={isFirstPage}
                       className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
                     >
                       <span className="sr-only">Prev Page</span>
@@ -213,20 +249,19 @@ const handleCloseModal = () => {
                           clipRule="evenodd"
                         />
                       </svg>
-                    </a>
+                    </button>
                   </li>
 
                   <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
-                    >
-                      1
-                    </a>
+                    <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
+                      {currentPage}
+                    </span>
                   </li>
+
                   <li>
-                    <a
-                      href="#"
+                    <button
+                      onClick={nextPage}
+                      disabled={isLastPage}
                       className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
                     >
                       <span className="sr-only">Next Page</span>
@@ -242,7 +277,7 @@ const handleCloseModal = () => {
                           clipRule="evenodd"
                         />
                       </svg>
-                    </a>
+                    </button>
                   </li>
                 </ol>
               </div>
@@ -272,9 +307,9 @@ const handleCloseModal = () => {
             </div>
           </div>
         </div>
-        )}
+      )}
     </div>
   )
 }
 
-export default SAManageBooking
+export default SAManageBooking;
