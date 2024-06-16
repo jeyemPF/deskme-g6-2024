@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog, ScrollText } from "lucide-react";
+import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog, ScrollText, Users } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
 import Header from '../components/Header'
@@ -121,6 +121,10 @@ const handleCloseModal = () => {
     }
   };
 
+  const handlePrivManageClick = () => {
+    navigate('/adminmanage');
+  };
+
   return (
     <div className="h-screen dark:bg-neutral-900">
       <Header />
@@ -131,7 +135,9 @@ const handleCloseModal = () => {
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" active />
             <hr className="my-3" />
+            <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
             <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
+
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>

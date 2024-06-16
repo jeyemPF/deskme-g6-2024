@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, 
-  ScrollText, MonitorCheck, MonitorX, GalleryVerticalEnd 
+  ScrollText, MonitorCheck, MonitorX, GalleryVerticalEnd, Users 
 } from "lucide-react";
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
 import Header from '../components/Header';
@@ -45,7 +45,10 @@ const ADashboard = () => {
   const handleReportClick = () => {
     navigate('/adminreports');
   };
-
+  
+  const handlePrivManageClick = () => {
+    navigate('/adminmanage')
+  };
   const onPanelChange = (value, mode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
   };
@@ -63,6 +66,7 @@ const ADashboard = () => {
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
             <hr className="my-3" />
+            <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
             <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />

@@ -27,7 +27,7 @@ import useUserCount from "../Hooks/useUserCount";
 import useNonUserCount from "../Hooks/useNonUserCount";
 import { PlusOutlined } from "@ant-design/icons";
 
-const SAPManage = () => {
+const AManage = () => {
   const {
     data: createdUsers,
     loading: createdUsersLoading,
@@ -133,23 +133,19 @@ const SAPManage = () => {
 
 
   const handleBookingClick = () => {
-    navigate("/superbooking");
+    navigate("/adminbooking");
   };
 
   const handleDashboardClick = () => {
-    navigate("/superdashboard");
+    navigate("/admindashboard");
   };
 
   const handleManageBookingClick = () => {
-    navigate("/supermanagebooking");
+    navigate("/adminmanagebooking");
   };
 
   const handleReportClick = () => {
-    navigate("/superreports");
-  };
-
-  const handleAuditClick = () => {
-    navigate("/superaudit");
+    navigate("/adminreports");
   };
 
   const handleConfirmDelete = async (userId) => {
@@ -178,23 +174,20 @@ const SAPManage = () => {
               text="Manage Bookings"
               onClick={handleManageBookingClick}
             />
+                <hr className="my-3" />
             <SidebarItem
               icon={<Users size={20} />}
               text="Manage Users"
               active
             />
-            <hr className="my-3" />
+           
             <SidebarItem
               icon={<Flag size={20} />}
               text="Reports"
               onClick={handleReportClick}
             />
-            <SidebarItem
-              icon={<NotebookTabs size={20} />}
-              text="Audit Trails"
-              onClick={handleAuditClick}
-            />
-            <hr className="my-3" />
+             <hr className="my-3" />
+          
             <SidebarItem
               icon={<LogOut size={20} />}
               text="Sign Out"
@@ -488,4 +481,4 @@ const SAPManage = () => {
   );
 };
 
-export default SAPManage;
+export default AManage;

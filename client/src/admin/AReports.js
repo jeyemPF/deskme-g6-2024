@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header'
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar'
-import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog, ClipboardMinus } from "lucide-react";
+import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog, ClipboardMinus, Users } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { format } from 'date-fns';
@@ -84,7 +84,9 @@ const AReports = () => {
   const handleManageBookingClick = () => {
     navigate('/adminmanagebooking');
   };
-
+  const handlePrivManageClick = () => {
+    navigate('/adminmanage');
+  }
 
   return (
     <div className="h-screen dark:bg-neutral-900">
@@ -96,6 +98,7 @@ const AReports = () => {
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
             <hr className="my-3" />
+            <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
             <SidebarItem icon={<Flag size={20} />} text="Reports" active />
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />

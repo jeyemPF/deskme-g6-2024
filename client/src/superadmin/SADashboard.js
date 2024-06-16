@@ -58,8 +58,8 @@ const SADashboard = () => {
           <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
           <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
           <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
-          <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick}/>
           <hr className="my-3" />
+          <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick}/>
           <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails" onClick={handleAuditClick} />
           <hr className="my-3" />
           <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />

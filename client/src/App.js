@@ -14,6 +14,7 @@ import NewPassword from './auth/NewPassword';
 import ADashboard from './admin/ADashboard';
 import ABooking from './admin/ABooking';
 import AManageBooking from './admin/AManageBooking';
+import AManage from './admin/AManage';
 import AReports from './admin/AReports';
 import SADashboard from './superadmin/SADashboard';
 import SABooking from './superadmin/SABooking';
@@ -49,6 +50,8 @@ function App() {
         <Route path='/admindashboard' element={<ADashboard />} />
         <Route path='/adminbooking' element={<ABooking />} />
         <Route path='/adminmanagebooking' element={<AManageBooking />} />
+        <Route path= '/adminmanage' element={<AManage/>} />
+
         <Route path='/adminreports' element={<AReports />} />
         <Route path='/superdashboard' element={<SADashboard />} />
         <Route path='/superbooking' element={<SABooking />} />
