@@ -11,6 +11,34 @@ const AReports = () => {
   const [reservationHistory, setReservationHistory] = useState([]);
   const [selectedFeedback, setSelectedFeedback] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const desksPerPage = 8;
+  const indexOfLastDesk = currentPage * desksPerPage;
+  const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
+  const currentReservations = reservationHistory.slice(indexOfFirstDesk, indexOfLastDesk);
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === Math.ceil(reservationHistory.length / desksPerPage);
+
+  const nextPage = () => {
+    if (!isLastPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (!isFirstPage) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const totalPages = Math.ceil(reservationHistory.length / desksPerPage);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
 
   useEffect(() => {
     const fetchReservationHistory = async () => {
@@ -121,74 +149,73 @@ const AReports = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                    {
-                      reservationHistory.map((reservation, index) => (
+                    {currentReservations.map((reservation, index) => (
                         <tr key={index}>
-                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td> {/* Desk title */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td>
                           <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.email}</td>
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td> {/* Format date */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td>
                           <td className="whitespace-nowrap text-center">
-                          <button onClick={() => handleManageClick(reservation.feedback)} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
-                              View Reports
+                            <button onClick={() => handleManageClick(reservation.feedback)} className="py-1.5 px-3 text-violet-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg border-violet-500">
+                              View Report
                             </button>
                           </td>
                         </tr>
-                      ))
-                    }
+                      ))}
                     </tbody>
                   </table>
                 </div>
                 <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
+                    <li>
+    <button
+        onClick={prevPage}
+        disabled={isFirstPage}
+        className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+    >
+        <span className="sr-only">Prev Page</span>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3 w-3"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+        >
+            <path
+                fillRule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clipRule="evenodd"
+            />
+        </svg>
+    </button>
+</li>
+
                   <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Prev Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
+                      <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
+                          {currentPage}
+                      </span>
                   </li>
 
                   <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
-                    >
-                      1
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Next Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
+                      <button
+                          onClick={nextPage}
+                          disabled={isLastPage}
+                          className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
+                          <span className="sr-only">Next Page</span>
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-3 w-3"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                          >
+                              <path
+                                  fillRule="evenodd"
+                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                  clipRule="evenodd"
+                              />
+                          </svg>
+                      </button>
                   </li>
-                </ol>
+
+                    </ol>
                 </div>
                 </div>
           </Content>
