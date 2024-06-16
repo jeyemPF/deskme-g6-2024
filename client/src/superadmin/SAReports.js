@@ -157,7 +157,7 @@ const AReports = () => {
                           <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.email}</td>
                           <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td> {/* Format date */}
                           <td className="whitespace-nowrap text-center">
-                          <button onClick={() => handleManageClick(reservation.feedback)} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                          <button onClick={() => handleManageClick(reservation.feedback)} className="py-1.5 px-3 text-violet-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg border-violet-500">
                               View Report
                             </button>
                           </td>
