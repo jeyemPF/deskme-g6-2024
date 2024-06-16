@@ -157,12 +157,11 @@ const SABooking = () => {
           <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick}/>
           <hr className="my-3" />
           <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails" onClick={handleAuditClick} />
-          <SidebarItem icon={<Settings size={20} />} text="Settings" />
           <hr className="my-3" />
           <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
         </Sidebar>
         <Content>
-        <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>reservation</h1>
+        <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Reservation</h1>
           { isLoading ? ( 
             <>
             <Skeleton height={120} count={4} />

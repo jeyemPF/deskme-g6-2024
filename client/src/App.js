@@ -26,6 +26,8 @@ import OMBooking from './officemanager/OMBooking';
 import OMManageBooking from './officemanager/OMManageBooking';
 import MyBooking from '../src/user/ManageBooking';
 import Error from './components/Error';
+import Help from './user/Help'
+import Manual from './components/Manual'
 
 function App() {
   return (
@@ -58,6 +60,10 @@ function App() {
         <Route path='/officebooking' element={<OMBooking />} />
         <Route path='/officemanagebooking' element={<OMManageBooking />} />
         <Route path='/error' element={<Error />} />
+        <Route path='/help' element={<Help />} />
+        <Route path='/manual' element={<Manual />} />
+
+        
       </Routes>
     </Router> 
   </div>

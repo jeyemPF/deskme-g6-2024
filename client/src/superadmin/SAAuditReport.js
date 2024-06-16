@@ -106,11 +106,11 @@ const SAAuditReport = () => {
           <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick}/>
           <hr className="my-3" />
           <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails"/>
-          <SidebarItem icon={<Settings size={20} />} text="Settings" />
           <hr className="my-3" />
           <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
         </Sidebar>
           <Content>
+          <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Audit Trails</h1>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8 mt-6">
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-pink-50 to-pink-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>

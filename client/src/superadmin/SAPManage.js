@@ -194,7 +194,6 @@ const SAPManage = () => {
               text="Audit Trails"
               onClick={handleAuditClick}
             />
-            <SidebarItem icon={<Settings size={20} />} text="Settings" />
             <hr className="my-3" />
             <SidebarItem
               icon={<LogOut size={20} />}

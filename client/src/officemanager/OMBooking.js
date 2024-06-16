@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
 import { LayoutDashboard, Layers, Flag, BookCopy, LifeBuoy, Settings, LogOut, FileCog } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
-import { Skeleton } from 'antd'
+import { Skeleton, message } from 'antd';
 import useFetch from '../Hooks/useFetch';
 import axios from 'axios';
 import { format } from 'date-fns';
@@ -11,9 +11,41 @@ import { format } from 'date-fns';
 const OMBooking = () => {
 
   const [reservationHistory, setReservationHistory] = useState([]);
-  const [isOn, setIsOn] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOn, setIsOn] = useState(() => localStorage.getItem('isOn') === 'true'); // Set initial state from localStorage
+  const [currentPage, setCurrentPage] = useState(1);
+  const [reservation, setReservation] = useState([]);
 
+  const desksPerPage = 8;
+  const indexOfLastDesk = currentPage * desksPerPage;
+  const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
+  const currentReservations = reservationHistory.slice(indexOfFirstDesk, indexOfLastDesk);
+
+
+  const nextPage = () => {
+    if (!isLastPage) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (!isFirstPage) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const totalPages = Math.ceil(reservation.length / desksPerPage);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
+  
+
+
+
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === Math.ceil(reservation.length / desksPerPage);
   const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
 
   const isLoading = reservationPendingLoading;
@@ -31,9 +63,40 @@ const OMBooking = () => {
     fetchReservationHistory();
   }, []);
 
-  const handleToggle = () => {
-    setIsOn(!isOn);
+  const handleToggle = async () => {
+    try {
+      // Make the API request
+      const response = await axios.put(
+        `http://localhost:8800/api/switchs/switch-approve`,
+        {},
+        {}
+      );
+
+      // Log the response for debugging
+      console.log('Response:', response.data);
+
+      // Toggle the state if the request is successful
+      const newValue = !isOn;
+      setIsOn(newValue);
+      localStorage.setItem('isOn', newValue.toString()); // Update localStorage with new value
+
+      // Show success notification
+      message.success('You have successfully approved/disapproved all reservation.');
+
+    } catch (error) {
+      console.error('Error toggling reservation emails:', error);
+      // Show error notification
+      message.error('Failed to toggle booking approval. Please try again later.');
+    }
   };
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem('isOn') === 'true';
+    if (storedValue !== isOn) {
+      setIsOn(storedValue);
+    }
+  }, [isOn]);
+
 
   const handleManageClick = () => {
     setIsModalOpen(true);
@@ -83,16 +146,10 @@ const OMBooking = () => {
   const handleSignOutClick = () => {
     // Clear session storage
     sessionStorage.removeItem('userCredentials');
-    localStorage.removeItem("userCredentials");
-    localStorage.clear("userCredentials");
-    sessionStorage.clear("userCredentials");
-
-
-
+  
     // Navigate to login page
     navigate('/login');
   };
-
 
 
   const handleDashboardClick = () => {
@@ -112,13 +169,10 @@ const OMBooking = () => {
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" active />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
             <hr className="my-3" />
-            <SidebarItem icon={<Settings size={20} />} text="Settings" />
-            <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
-            <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>
           <Content>
-          <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Bookings</h1>
+        <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Reservation</h1>
           { isLoading ? ( 
             <>
             <Skeleton height={120} count={4} />
@@ -165,14 +219,13 @@ const OMBooking = () => {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
-                    {
-                      reservationHistory.map((reservation, index) => (
+                    {currentReservations.map((reservation, index) => (
                         <tr key={index}>
-                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td> {/* Desk title */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td>
                           <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.username}</td>
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td> {/* Format date */}
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td> {/* Format start time */}
-                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td> {/* Format end time */}
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td>
+                          <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td>
                           <td className="pr-6 py-4 whitespace-nowrap">
                             <span className={`px-3 py-2 rounded-full font-semibold text-xs ${reservation.status === "Active" ? "text-green-600 bg-green-50" : "text-blue-600 bg-blue-50"}`}>
                               {reservation.status}
@@ -184,63 +237,62 @@ const OMBooking = () => {
                             </button>
                           </td>
                         </tr>
-                      ))
-                    }
-
+                      ))}
                     </tbody>
                   </table>
                 </div>
                 <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
+                    <li>
+    <button
+        onClick={prevPage}
+        disabled={isFirstPage}
+        className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+    >
+        <span className="sr-only">Prev Page</span>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3 w-3"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+        >
+            <path
+                fillRule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clipRule="evenodd"
+            />
+        </svg>
+    </button>
+</li>
+
                   <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Prev Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
+                      <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
+                          {currentPage}
+                      </span>
                   </li>
 
                   <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
-                    >
-                      1
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Next Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
+                      <button
+                          onClick={nextPage}
+                          disabled={isLastPage}
+                          className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
+                          <span className="sr-only">Next Page</span>
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-3 w-3"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                          >
+                              <path
+                                  fillRule="evenodd"
+                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                  clipRule="evenodd"
+                              />
+                          </svg>
+                      </button>
                   </li>
-                </ol>
+
+                    </ol>
               </div>
             </div>
           </Content>

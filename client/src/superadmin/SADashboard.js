@@ -61,7 +61,6 @@ const SADashboard = () => {
           <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick}/>
           <hr className="my-3" />
           <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails" onClick={handleAuditClick} />
-          <SidebarItem icon={<Settings size={20} />} text="Settings" />
           <hr className="my-3" />
           <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
         </Sidebar>

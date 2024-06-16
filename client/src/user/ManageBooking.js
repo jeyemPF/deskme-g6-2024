@@ -149,6 +149,10 @@ const fetchBookingHistory = async () => {
     pageNumbers.push(i);
   }
 
+  const handleHelp = () =>{
+    navigate('/help');
+  }
+
   return (
     <div className="h-screen dark:bg-neutral-900">
       <Header />
@@ -159,7 +163,8 @@ const fetchBookingHistory = async () => {
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
             <SidebarItem icon={<Layers size={20} />} text="My Bookings" active />
             <hr className="my-3" />
-            <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
+            <SidebarItem icon={<LifeBuoy size={20} />} text="Help" onClick={handleHelp} />
+
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>

@@ -112,6 +112,10 @@ const Dashboard = () => {
     pageNumbers.push(i);
   }
 
+  const handleHelp = () =>{
+    navigate('/help');
+  }
+
   return (
     <>
       <Header />
@@ -122,7 +126,7 @@ const Dashboard = () => {
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
             <SidebarItem icon={<Layers size={20} />} text="My Bookings" onClick={handleMyBookingClick} />
             <hr className="my-3" />
-            <SidebarItem icon={<LifeBuoy size={20} />} text="Help" />
+            <SidebarItem icon={<LifeBuoy size={20} />} text="Help" onClick={handleHelp} />
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>
