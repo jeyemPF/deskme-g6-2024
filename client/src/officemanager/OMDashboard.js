@@ -139,9 +139,9 @@ const OMDashboard = () => {
                       <strong className="block text-sm font-medium text-gray-500"> Users </strong>
 
                       <p>
-                        <span className="text-2xl font-medium text-gray-900"> 1,000 </span>
+                        <span className="text-2xl font-medium text-gray-900"> 11 </span>
 
-                        <span className="text-xs text-gray-500"> from 50 </span>
+                        <span className="text-xs text-gray-500"> from 1 </span>
                       </p>
                     </div>
                   </article>
@@ -170,9 +170,9 @@ const OMDashboard = () => {
                       <strong className="block text-sm font-medium text-gray-500"> Bookings per day </strong>
 
                       <p>
-                        <span className="text-2xl font-medium text-gray-900"> 30 </span>
+                        <span className="text-2xl font-medium text-gray-900"> 10 </span>
 
-                        <span className="text-xs text-gray-500"> from 5 </span>
+                        <span className="text-xs text-gray-500"> from 1 </span>
                       </p>
                     </div>
                   </article>

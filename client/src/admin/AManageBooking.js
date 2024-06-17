@@ -235,8 +235,9 @@ const handleCloseModal = () => {
                 </div>
                 <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
                   <li>
-                    <a
-                      href="#"
+                    <button
+                      onClick={prevPage}
+                      disabled={isFirstPage}
                       className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
                     >
                       <span className="sr-only">Prev Page</span>
@@ -252,20 +253,19 @@ const handleCloseModal = () => {
                           clipRule="evenodd"
                         />
                       </svg>
-                    </a>
+                    </button>
                   </li>
 
                   <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white"
-                    >
-                      1
-                    </a>
+                    <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
+                      {currentPage}
+                    </span>
                   </li>
+
                   <li>
-                    <a
-                      href="#"
+                    <button
+                      onClick={nextPage}
+                      disabled={isLastPage}
                       className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
                     >
                       <span className="sr-only">Next Page</span>
@@ -281,7 +281,7 @@ const handleCloseModal = () => {
                           clipRule="evenodd"
                         />
                       </svg>
-                    </a>
+                    </button>
                   </li>
                 </ol>
               </div>

@@ -52,7 +52,7 @@ const AReports = () => {
   }, []);
 
   const handleManageClick = (feedback) => {
-    setSelectedFeedback(feedback); // Set the feedback of the selected reservation
+    setSelectedFeedback(feedback || "No report in this desk"); // Set the feedback of the selected reservation or default message
     setIsModalOpen(true);
   };
   
@@ -220,7 +220,7 @@ const AReports = () => {
                       </button>
                   </li>
 
-                    </ol>
+                </ol>
               </div>
             </div>
           </Content>
