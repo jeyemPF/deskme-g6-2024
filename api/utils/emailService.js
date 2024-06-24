@@ -202,6 +202,11 @@ const getEmailContentReservation = (username, reservation) => {
                         </tbody>
                     </table>
                     <br/>
+                    ${reservation.deskImage ? `
+                    <div style="text-align: center; margin-top: 20px;">
+                        <img src="${reservation.deskImage}" alt="Desk Image" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <br/>` : ''}
                     <p>Thank you for choosing us for your reservation. If you have any questions, feel free to contact us.</p>
                 </div>
             `,
@@ -215,10 +220,45 @@ const getEmailContentReservation = (username, reservation) => {
 const sendReservationConfirmationEmail = async (email, emailContent) => {
     try {
         const mailGenerator = new Mailgen({
-            theme: "default",
+            theme: {
+                // Define the custom theme
+                name: 'default',
+                textDirection: 'ltr',
+                header: {
+                    logo: 'https://res.cloudinary.com/dihmqs39z/image/upload/v1717536275/viql0flgvvdxzkx610jm.png',
+                    logoHeight: '60px',
+                    title: 'DeskMe'
+                },
+                body: {
+                    backgroundColor: '#ffffff',
+                    contentCellBackgroundColor: '#ffffff',
+                    contentWidth: '600px',
+                    fontFamily: 'Arial, sans-serif',
+                    textColor: '#333333',
+                    contentCellPadding: '20px',
+                    button: {
+                        color: '#ffffff',
+                        backgroundColor: '#000000',
+                        borderRadius: '4px',
+                        fontWeight: 'bold'
+                    }
+                },
+                footer: {
+                    textColor: '#333333',
+                    fontFamily: 'Arial, sans-serif',
+                    fontSize: '12px',
+                    lineHeight: '18px',
+                    padding: '20px 0 0 0',
+                    link: {
+                        color: '#000000',
+                        textDecoration: 'underline'
+                    }
+                }
+            },
             product: {
-                name: "DeskMe",
-                link: "http://localhost:3000/"
+                name: 'DeskMe',
+                link: 'http://localhost:3000/',
+                logo: 'https://res.cloudinary.com/dihmqs39z/image/upload/v1717536275/viql0flgvvdxzkx610jm.png'
             }
         });
 
@@ -237,7 +277,6 @@ const sendReservationConfirmationEmail = async (email, emailContent) => {
         throw err; // Rethrow the error to be handled by the caller
     }
 };
-
 
 const getEmailContentCancellation = (username, reservation) => {
     const formattedDate = formatDate(reservation.date);

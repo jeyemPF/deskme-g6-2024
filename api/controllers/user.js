@@ -4,17 +4,28 @@ import cloudinary from "../config/cloudinary.js";
 import { io } from "../index.js";
 import { sendRoleAssignmentEmail } from "../utils/emailService.js";
 import AuditTrail from "../models/AuditTrail.js";
+import mongoose from "mongoose";
 
 
 
 // DELETE
 export const deleteUser = async (req, res, next) => {
-    try {
-        await User.findByIdAndDelete(req.params.id);
-        res.status(200).json({ message: "User has been deleted" });
-    } catch (err) {
-        next(err);
+  try {
+    const userId = req.params.userId;
+    // Validate userId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ success: false, message: 'Invalid user ID' });
     }
+    // Perform deletion using findOneAndDelete or similar
+    const deletedUser = await User.findOneAndDelete({ _id: userId });
+    if (!deletedUser) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.status(200).json({ success: true, message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ success: false, message: 'Internal server error', error: error.message });
+  }
 };
 
 // GET

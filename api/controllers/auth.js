@@ -5,6 +5,8 @@ import bcrypt from "bcryptjs"
 import { createError } from "../utils/error.js";
 import  jwt  from "jsonwebtoken";
 import OTP from "../models/OTP.js";
+// import { sendOTPEmail } from '../utils/emailService.js';
+
 
 
 
@@ -45,6 +47,101 @@ export const register = async (req, res, next) => {
 };
 
 
+// const generateOTP = () => {
+//   return Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit OTP
+// };
+
+// export const login = async (req, res, next) => {
+//   try {
+//     const { email, password } = req.body;
+//     const user = await User.findOne({ email });
+
+//     if (!user) {
+//       return next(createError(404, 'User not found'));
+//     }
+
+//     const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+//     if (!isPasswordCorrect) {
+//       return next(createError(400, 'Wrong password or email!'));
+//     }
+
+//     const previousLogin = await AuditTrail.findOne({ userId: user._id, actionType: 'login' }).sort({ createdAt: -1 });
+//     if (!previousLogin || req.ip !== previousLogin.ipAddress) {
+//       const otpCode = generateOTP();
+//       const otp = new OTP({ email: user.email, otp: otpCode });
+//       await otp.save();
+//       await sendOTPEmail(user.email, otpCode);
+//       return res.status(200).json({ message: 'OTP sent to your email' });
+//     }
+
+//     const tokenPayload = {
+//       id: user._id,
+//       role: user.role,
+//       username: user.username,
+//     };
+
+//     const token = jwt.sign(tokenPayload, process.env.JWT);
+
+//     const auditTrail = await AuditTrail.create({
+//       actionType: 'login',
+//       userId: user._id,
+//       ipAddress: req.ip
+//     });
+
+//     console.log('Audit Trail:', {
+//       auditTrail,
+//       ipAddress: req.ip,
+//       userId: user._id,
+//       email: user.email,
+//     });
+
+//     res.cookie('access_token', token, {
+//       httpOnly: true,
+//     }).status(200).json({ user: user.toObject(), token });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
+// export const verifyOTP = async (req, res, next) => {
+//   try {
+//     const { email, otp } = req.body;
+//     const user = await User.findOne({ email });
+
+//     if (!user) {
+//       return next(createError(404, 'User not found'));
+//     }
+
+//     const otpRecord = await OTP.findOne({ email, otp });
+
+//     if (!otpRecord) {
+//       return next(createError(400, 'Invalid or expired OTP'));
+//     }
+
+//     await OTP.deleteOne({ email, otp });
+
+//     const tokenPayload = {
+//       id: user._id,
+//       role: user.role,
+//       username: user.username,
+//     };
+
+//     const token = jwt.sign(tokenPayload, process.env.JWT);
+
+//     res.cookie('access_token', token, {
+//       httpOnly: true,
+//     }).status(200).json({ user: user.toObject(), token });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
+
+
+
+
+// ORIGINAL LOGIN FUCNTION
 export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;

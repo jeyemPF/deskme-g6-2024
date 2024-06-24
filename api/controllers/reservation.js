@@ -89,7 +89,8 @@ export const createReservation = async (req, res, next) => {
             endTime: reservationEndTime,
             status: initialStatus, // Set the status based on autoAccepting switch
             deskArea: desk.area,
-            officeEquipment: desk.officeEquipment
+            officeEquipment: desk.officeEquipment,
+            deskImage: desk.image
         });
 
         const savedReservation = await newReservation.save();

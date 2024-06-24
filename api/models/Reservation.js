@@ -38,6 +38,10 @@ const ReservationSchema = new Schema({
         type: String,
         enum: officeEquipmentEnum,
     }],
+    deskImage: {
+        type: String,
+        default: '',
+    },
     feedback: {
         type: String,
         default: '',

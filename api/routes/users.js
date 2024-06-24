@@ -69,6 +69,8 @@ router.get ('/self', protect, getSelf);
 // get all users by superadmin
 // router.get("/", verifyOfficeManager, getUsers);
 
+router.delete('/delete-user/:userId', deleteUser);
+
 // Only super admins can create admin users
 router.post("/admin", verifySuperAdmin, createAdminUser);
 

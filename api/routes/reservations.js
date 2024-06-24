@@ -17,7 +17,7 @@ router.post('/book/:deskId', protect, createReservation);
 router.delete('/cancel-reservation/:userId/:reservationId' , cancelReservation)
 
 // Delete all reservation
-router.delete('/delete-my-reservation/', verifyOfficeManager, deleteAllReservations);
+router.delete('/delete-my-reservation/', deleteAllReservations);
 
 // get the all reservation History
 router.get("/reservation-history", getAllReservations)

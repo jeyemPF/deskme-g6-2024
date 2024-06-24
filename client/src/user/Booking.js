@@ -19,6 +19,7 @@ const Booking = () => {
   const [selectedDesk, setSelectedDesk] = useState(null);
   const [tableItems, setTableItems] = useState([]);
 
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
   
@@ -415,7 +416,12 @@ const Booking = () => {
                 <div className="border-[1px] border-neutral-100 rounded-lg shadow-sm bg-white p-5">
                   <h1 className="lg:text-xl font-bold mb-4">Details:</h1>
                   <div className="mb-5">
-                    <img src={Desk1} className='rounded-md'/>
+                  {selectedDesk && selectedDesk.image ? (
+                                        <img src={selectedDesk.image} className='rounded-md' alt={selectedDesk.title} />
+                                    ) : (
+                                        <p>No image available</p>
+                                    )}
+
                   </div>
                   <div className="mb-5 flex flex-wrap">
                   {selectedDesk && selectedDesk.officeEquipment && selectedDesk.officeEquipment.map((equipment, index) => (
