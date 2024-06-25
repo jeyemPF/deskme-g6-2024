@@ -3,7 +3,7 @@ import Desk from "../models/Desk.js";
 import User from "../models/User.js";
 import ReservationHistory from "../models/ReservationHistory.js";
 import { scheduleJob, scheduledJobs, cancelJob,  } from 'node-schedule';
-import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation } from "../utils/emailService.js";
+import { sendReservationConfirmationEmail, getEmailContentReservation, sendCancellationConfirmationEmail ,getEmailContentCancellation, sendNotificationEmail } from "../utils/emailService.js";
 import AuditTrail from "../models/AuditTrail.js";
 import { formatInTimeZone,  format } from 'date-fns-tz';
 import mongoose from "mongoose";
@@ -122,6 +122,20 @@ export const createReservation = async (req, res, next) => {
                 }
             } catch (error) {
                 console.error(`Error updating reservation status: ${error.message}`);
+            }
+        });
+
+        // Schedule a notification 1 hour before the end time
+        const notificationTime = new Date(reservationEndTime.getTime() - (60 * 60 * 1000)); // 1 hour before endTime
+        const notificationJob = scheduleJob(`notifyUser_${savedReservation._id}`, notificationTime, async () => {
+            try {
+                const user = await User.findById(userId);
+                if (user) {
+                    const notificationMessage = `Your booking is until ${formattedEndTime}.`;
+                    await sendNotificationEmail(user.email, "Reservation Notification", notificationMessage);
+                }
+            } catch (error) {
+                console.error(`Error sending notification: ${error.message}`);
             }
         });
 

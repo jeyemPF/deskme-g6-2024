@@ -422,5 +422,34 @@ const sendRoleAssignmentEmail = async (email, username, role, password) => {
 };
 
 
+export const sendNotificationEmail = async (to, subject, text) => {
+    const mailOptions = {
+        from: 'your-email@gmail.com',
+        to,
+        subject,
+        text
+    };
 
-export { transporter,mailOtpSender, sendRoleAssignmentEmail, sendCancellationConfirmationEmail ,getEmailContentCancellation,sendReservationConfirmationEmail, getEmailContentReservation, getEmailContent, emailContents, generateMailGenerator, sendRegistrationConfirmationEmail,sendPasswordResetEmail, sendMagicLink  };
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log('Notification email sent successfully');
+    } catch (error) {
+        console.error('Error sending notification email:', error);
+    }
+};
+
+
+
+export { transporter,
+        mailOtpSender,
+        sendRoleAssignmentEmail,
+        sendCancellationConfirmationEmail,
+        getEmailContentCancellation,
+        sendReservationConfirmationEmail,
+        getEmailContentReservation,
+        getEmailContent,
+        emailContents,
+        generateMailGenerator,
+        sendRegistrationConfirmationEmail,
+        sendPasswordResetEmail,
+        sendMagicLink  };
