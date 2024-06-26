@@ -8,7 +8,7 @@ import AuditTrail from "../models/AuditTrail.js";
 import { formatInTimeZone,  format } from 'date-fns-tz';
 import mongoose from "mongoose";
 import {  isValid, parseISO } from 'date-fns';
-import Switch from '../models/Switch.js'; // Import Switch model
+import Switch from '../models/Switch.js'; 
 import nodeSchedule from 'node-schedule';
 
 
@@ -267,7 +267,7 @@ export const pendingReservations = async () => {
             await reservation.save();
 
             // Cancel existing jobs related to this reservation
-            cancelReservationJobs(reservation);
+            scheduleReservationJobs(reservation);
         }
     } catch (err) {
         console.error("Error setting reservations to pending:", err);

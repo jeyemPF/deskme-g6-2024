@@ -174,7 +174,7 @@ const fetchBookingHistory = async () => {
               <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-green-50 to-green-200 border-[1px] border-neutral-100 shadow-sm">
                 <div className='flex flex-col'>
                   <span className="text-xl font-semibold">Total: {totalBookings}</span>
-                  <span className="text-sm font-normal">All Bookings</span>
+                  <span className="text-sm font-normal">My Bookings</span>
                 </div>
                 <ScrollText className="w-10 h-10 ml-10" />
               </div>
