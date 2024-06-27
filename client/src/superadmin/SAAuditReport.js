@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Sidebar, { SidebarItem, SidebarProvider, Content } from '../components/Sidebar';
-import { LayoutDashboard, Layers, Flag, BookCopy, Settings, LogOut, Users, NotebookTabs } from "lucide-react";
+import { LayoutDashboard, Layers, Flag, BookCopy, LogOut, Users, NotebookTabs } from "lucide-react";
 
 const SAAuditReport = () => {
   const [auditTrails, setAuditTrails] = useState([]);
@@ -40,7 +40,7 @@ const SAAuditReport = () => {
   const handleSignOutClick = () => {
     // Clear session storage
     sessionStorage.removeItem('userCredentials');
-  
+
     // Navigate to login page
     navigate('/login');
   };
@@ -99,59 +99,62 @@ const SAAuditReport = () => {
       <div className="flex dark:bg-neutral-900">
         <SidebarProvider>
           <Sidebar>
-            <SidebarItem icon={<LayoutDashboard size={20} onClick={handleDashboardClick} />} text="Dashboard" />
+            <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick} />
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
-          <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
-          <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
-          <hr className="my-3" />
-
-          <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick}/>
-          <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails"/>
-          <hr className="my-3" />
-          <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
-        </Sidebar>
+            <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
+            <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
+            <hr className="my-3" />
+            <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
+            <SidebarItem icon={<NotebookTabs size={20} />} text="Audit Trails" />
+            <hr className="my-3" />
+            <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
+          </Sidebar>
           <Content>
-          <h1 className='font-bold text-xl mb-3 dark:text-neutral-50'>Audit Trails</h1>
+            <h1 className="font-bold text-xl mb-3 dark:text-neutral-50">Audit Trails</h1>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8 mt-6">
-              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-pink-50 to-pink-200 border-[1px] border-neutral-100 shadow-sm">
-                <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Audit Trails History</span>
+              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-pink-50 to-pink-200 dark:bg-gradient-to-r dark:from-pink-900 dark:to-pink-700 border-[1px] border-neutral-100 shadow-sm dark:border-neutral-700">
+                <div className="flex flex-col">
+                  <span className="text-xl font-semibold dark:text-neutral-50">Audit Trails History</span>
                 </div>
-                <NotebookTabs className="w-10 h-10 ml-10" />
+                <NotebookTabs className="w-10 h-10 ml-10 dark:text-neutral-50" />
               </div>
             </div>
-            <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm mt-6 lg:col-span-2">
-            <div className="overflow-x-auto">
-    <table className="w-full table-auto mt-2">
-      <thead className="text-gray-900 font-medium text-lg border-b text-center">
-        <tr>
-          <th className="py-3 pr-6">Email</th>
-          <th className="py-3 pr-6">Roles</th>
-          <th className="py-3 pr-6">Action type</th>
-          <th className="py-3 pr-6">IP address</th>
-          <th className="py-3 pr-6">Date</th>
-        </tr>
-      </thead>
-      <tbody className="text-gray-600 divide-y text-center text-sm">
-        {/* Reverse the order of items before mapping */}
-        {currentItems.slice().map((item, idx) => (
-          <tr key={idx}>
-            <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.email : 'N/A'}</td>
-            <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.role : 'N/A'}</td>
-            <td className="pr-6 py-4 whitespace-nowrap">{item.actionType}</td>
-            <td className="pr-6 py-4 whitespace-nowrap">{item.ipAddress}</td>
-            <td className="pr-6 py-4 whitespace-nowrap">{new Date(item.timestamp).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' })}, {new Date(item.timestamp).toLocaleTimeString('en-PH', { hour: 'numeric', minute: 'numeric' })}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+            <div className="rounded-lg bg-white dark:bg-neutral-800 p-5 border-[1px] border-neutral-100 shadow-sm mt-6 lg:col-span-2 dark:border-neutral-700">
+              <div className="overflow-x-auto">
+                <table className="w-full table-auto mt-2">
+                  <thead className="text-gray-900 dark:text-neutral-50 font-medium text-lg border-b text-center">
+                    <tr>
+                      <th className="py-3 pr-6">Email</th>
+                      <th className="py-3 pr-6">Roles</th>
+                      <th className="py-3 pr-6">Action type</th>
+                      <th className="py-3 pr-6">IP address</th>
+                      <th className="py-3 pr-6">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-gray-600 dark:text-neutral-300 divide-y text-center text-sm">
+                    {/* Reverse the order of items before mapping */}
+                    {currentItems.slice().map((item, idx) => (
+                      <tr key={idx}>
+                        <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.email : 'N/A'}</td>
+                        <td className="pr-6 py-4 whitespace-nowrap">{item.userId ? item.userId.role : 'N/A'}</td>
+                        <td className="pr-6 py-4 whitespace-nowrap">{item.actionType}</td>
+                        <td className="pr-6 py-4 whitespace-nowrap">{item.ipAddress}</td>
+                        <td className="pr-6 py-4 whitespace-nowrap">
+                          {new Date(item.timestamp).toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' })}, 
+                          {new Date(item.timestamp).toLocaleTimeString('en-PH', { hour: 'numeric', minute: 'numeric' })}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               {/* Pagination */}
               <div className="flex justify-center mt-4">
-                <div className="inline-flex items-center justify-center rounded border border-gray-100 bg-white text-gray-900">
+                <div className="inline-flex items-center justify-center rounded border border-gray-100 bg-white text-gray-900 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-50">
                   <button
-                    className={`p-2 border-r ${currentPage === 1 ? 'inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180' : 'hover:bg-gray-200'}`}
+                    className={`p-2 border-r ${currentPage === 1 ? 'inline-flex items-center justify-center text-gray-400' : 'hover:bg-gray-200 dark:hover:bg-neutral-700'}`}
                     onClick={handleClickPrev}
+                    disabled={currentPage === 1}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -166,10 +169,11 @@ const SAAuditReport = () => {
                       />
                     </svg>
                   </button>
-                  <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">{currentPage}</span>
+                  <span className="block w-8 text-center leading-8">{currentPage}</span>
                   <button
-                    className={`p-2 border-l ${currentPage === totalPages ? 'inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180' : 'hover:bg-gray-200'}`}
+                    className={`p-2 border-l ${currentPage === totalPages ? 'inline-flex items-center justify-center text-gray-400' : 'hover:bg-gray-200 dark:hover:bg-neutral-700'}`}
                     onClick={handleClickNext}
+                    disabled={currentPage === totalPages}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

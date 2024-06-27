@@ -72,9 +72,9 @@ const Header = () => {
    
   };
   
-  const toggleNotificationDropdown = () => {
-    setIsNotificationDropdownOpen((prev) => !prev);
-  };
+  // const toggleNotificationDropdown = () => {
+  //   setIsNotificationDropdownOpen((prev) => !prev);
+  // };
 
   return (
     <div>
@@ -110,13 +110,13 @@ const Header = () => {
                 )),
               ]}
             </Dropdown>
-            <div className="relative">
+            {/* <div className="relative">
             <BellIcon
                 className="h-7 w-7 text-neutral-600 rounded-full p-1 hover:bg-neutral-700 hover:text-white dark:text-neutral-100 dark:hover:bg-white dark:hover:text-neutral-700 cursor-pointer"
                 onClick={toggleNotificationDropdown}    
                 />
                 {isNotificationDropdownOpen && <NotificationDropdown />}
-                </div>
+                </div> */}
                 <button className="text-neutral-700"><Switcher /></button>
           </div>
         </div>
