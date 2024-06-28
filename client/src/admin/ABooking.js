@@ -129,9 +129,6 @@ const ABooking = () => {
   const handleManageBookingClick = () => {
     navigate('/adminmanagebooking');
   }
-  const handleReportClick = () => {
-    navigate('/adminreports');
-  };
   const handlePrivManageClick = () => {
     navigate('/adminmanage');
   };
@@ -146,9 +143,7 @@ const ABooking = () => {
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" active />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
             <hr className="my-3" />
-            <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
-            <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
-            <hr className="my-3" />
+            <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />            <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>
             <Content>

@@ -15,7 +15,6 @@ import ADashboard from './admin/ADashboard';
 import ABooking from './admin/ABooking';
 import AManageBooking from './admin/AManageBooking';
 import AManage from './admin/AManage';
-import AReports from './admin/AReports';
 import SADashboard from './superadmin/SADashboard';
 import SABooking from './superadmin/SABooking';
 import SAManageBooking from './superadmin/SAManageBooking';
@@ -24,11 +23,13 @@ import SAReports from './superadmin/SAReports';
 import SAAuditReport from './superadmin/SAAuditReport';
 import OMDashboard from './officemanager/OMDashboard';
 import OMBooking from './officemanager/OMBooking';
+import OMReports from './officemanager/OMReports'
 import OMManageBooking from './officemanager/OMManageBooking';
 import MyBooking from '../src/user/ManageBooking';
 import Error from './components/Error';
 import Help from './user/Help'
 import Manual from './components/Manual'
+
 
 function App() {
   return (
@@ -52,7 +53,6 @@ function App() {
         <Route path='/adminmanagebooking' element={<AManageBooking />} />
         <Route path= '/adminmanage' element={<AManage/>} />
 
-        <Route path='/adminreports' element={<AReports />} />
         <Route path='/superdashboard' element={<SADashboard />} />
         <Route path='/superbooking' element={<SABooking />} />
         <Route path='/supermanagebooking' element={<SAManageBooking />} />
@@ -62,6 +62,7 @@ function App() {
         <Route path='/officedashboard' element={<OMDashboard />} />
         <Route path='/officebooking' element={<OMBooking />} />
         <Route path='/officemanagebooking' element={<OMManageBooking />} />
+        <Route path='/officereports' element={<OMReports />} />
         <Route path='/error' element={<Error />} />
         <Route path='/help' element={<Help />} />
         <Route path='/manual' element={<Manual />} />

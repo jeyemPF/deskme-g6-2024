@@ -33,6 +33,10 @@ const OMDashboard = () => {
   const handleManageBookingClick = () => {
     navigate('/officemanagebooking');
   }
+  
+  const handleReportClick = () => {
+    navigate('/officereports');
+  }
 
   const onPanelChange = (value, mode) => {
     console.log(value.format('YYYY-MM-DD'), mode);
@@ -52,6 +56,8 @@ const OMDashboard = () => {
           <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" active />
           <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
           <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
+          <hr className='my-3' />
+          <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
           <hr className="my-3" />
           <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
         </Sidebar>

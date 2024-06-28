@@ -89,6 +89,9 @@ const handleCloseModal = () => {
     navigate('/officedashboard');
   };
 
+  const handleReportClick = () => {
+  navigate('/officereports');
+  };
  const getStatusText = (backendStatus) => {
     switch (backendStatus) {
       case "COMPLETED":
@@ -125,7 +128,9 @@ const handleCloseModal = () => {
             <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick} />
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" onClick={handleBookingClick} />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" active />
-            <hr className="my-3" />
+            <hr className='my-3' />
+          <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
+          <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>
           <Content>

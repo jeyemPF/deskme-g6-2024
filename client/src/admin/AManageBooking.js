@@ -91,9 +91,7 @@ const handleCloseModal = () => {
   const handleDashboardClick = () => {
     navigate('/admindashboard');
   };
-  const handleReportClick = () => {
-    navigate('/adminreports');
-  };
+
 
   const getStatusText = (backendStatus) => {
     switch (backendStatus) {
@@ -136,8 +134,6 @@ const handleCloseModal = () => {
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" active />
             <hr className="my-3" />
             <SidebarItem icon={<Users size={20} />} text="Manage Users" onClick={handlePrivManageClick} />
-            <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
-
             <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>

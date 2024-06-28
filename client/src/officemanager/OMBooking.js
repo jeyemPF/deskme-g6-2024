@@ -158,6 +158,9 @@ const OMBooking = () => {
   const handleManageBookingClick = () => {
     navigate('/officemanagebooking');
   }
+  const handleReportClick = () => {
+    navigate('/officereports');
+  }
 
   return (
     <div className="h-screen dark:bg-neutral-900">
@@ -168,7 +171,9 @@ const OMBooking = () => {
             <SidebarItem icon={<LayoutDashboard size={20} />} text="Dashboard" onClick={handleDashboardClick}/>
             <SidebarItem icon={<BookCopy size={20} />} text="Booking" active />
             <SidebarItem icon={<Layers size={20} />} text="Manage Bookings" onClick={handleManageBookingClick} />
-            <hr className="my-3" />
+            <hr className='my-3' />
+          <SidebarItem icon={<Flag size={20} />} text="Reports" onClick={handleReportClick} />
+          <hr className="my-3" />
             <SidebarItem icon={<LogOut size={20} />} text="Sign Out" onClick={handleSignOutClick} />
           </Sidebar>
           <Content>

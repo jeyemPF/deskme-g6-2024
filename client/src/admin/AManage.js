@@ -144,10 +144,6 @@ const AManage = () => {
     navigate("/adminmanagebooking");
   };
 
-  const handleReportClick = () => {
-    navigate("/adminreports");
-  };
-
   const handleConfirmDelete = async (userId) => {
   };
 
@@ -181,11 +177,6 @@ const AManage = () => {
               active
             />
            
-            <SidebarItem
-              icon={<Flag size={20} />}
-              text="Reports"
-              onClick={handleReportClick}
-            />
              <hr className="my-3" />
           
             <SidebarItem
