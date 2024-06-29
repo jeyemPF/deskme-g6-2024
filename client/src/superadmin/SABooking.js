@@ -171,21 +171,22 @@
               ) : (
                 <>
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1 lg:gap-8">
-              <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 shadow-sm">
-                <div className='flex flex-col'>
-                  <span className="text-xl font-semibold">Total: {reservationPendingData}</span>
-                  <span className="text-sm font-normal">Pending Books</span>
-                </div>
-                <FileCog className="w-10 h-10 ml-10" />
-              </div>
+            <div className="flex flex-row items-center justify-center h-32 rounded-lg bg-gradient-to-r from-orange-50 to-orange-200 border-[1px] border-neutral-100 dark:border-neutral-700 shadow-sm dark:bg-gradient-to-r dark:from-orange-900 dark:to-orange-700">
+  <div className='flex flex-col'>
+    <span className="text-xl font-semibold dark:text-neutral-50">Total: {reservationPendingData}</span>
+    <span className="text-sm font-normal dark:text-neutral-300">Pending Books</span>
+  </div>
+  <FileCog className="w-10 h-10 ml-10" />
+</div>
+
             </div>
             </>
             )}
-              <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6">
-                <div className="rounded-lg bg-white p-5 border-[1px] border-neutral-100 shadow-sm">
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols mt-6 ">
+                <div className="rounded-lg  dark:bg-neutral-800 p-5 border-[1px] border-neutral-100 shadow-sm mt-6 lg:col-span-2 dark:border-neutral-700">
                   <div className="flex justify-end items-center w-full">
                     <label className="inline-flex items-center cursor-pointer">
-                      <span className='font-normal pr-3'>Auto accept :</span>
+                      <span className='font-normal pr-3 dark:text-gray-300 '>Auto accept :</span>
                       <input type="checkbox" className="sr-only" checked={isOn} onChange={handleToggle} />
                       <div className={`w-10 h-5 ${isOn ? 'bg-blue-600' : 'bg-gray-200'} rounded-full peer dark:bg-gray-700 shadow-md`}>
                         <div
@@ -199,39 +200,39 @@
                     <table className="w-full table-auto mt-2">
                       <thead className="text-gray-900 font-medium text-lg border-b text-center">
                         <tr>
-                          <th className="py-3 pr-6">Desk</th>
-                          <th className="py-3 pr-6">Name</th>
-                          <th className="py-3 pr-6">Date</th>
-                          <th className="py-3 pr-6">Time-In</th>
-                          <th className="py-3 pr-6">Time-Out</th>
-                          <th className="py-3 pr-6">Status</th>
+                          <th className="py-3 pr-6 dark:text-neutral-200">Desk</th>
+                          <th className="py-3 pr-6 dark:text-neutral-200">Name</th>
+                          <th className="py-3 pr-6 dark:text-neutral-200">Date</th>
+                          <th className="py-3 pr-6 dark:text-neutral-200">Time-In</th>
+                          <th className="py-3 pr-6 dark:text-neutral-200">Time-Out</th>
+                          <th className="py-3 pr-6 dark:text-neutral-200 ">Status</th>
                         </tr>
                       </thead>
                       <tbody className="text-gray-600 divide-y text-center text-sm">
                       {currentReservations.map((reservation, index) => (
                           <tr key={index}>
-                            <td className="pr-6 py-4 whitespace-nowrap">{reservation.desk.title}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{reservation.user.username}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.startTime), 'hh:mm a')}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">{format(new Date(reservation.endTime), 'hh:mm a')}</td>
-                            <td className="pr-6 py-4 whitespace-nowrap">
+                            <td className="pr-6 py-4 whitespace-nowrap dark:text-neutral-200 ">{reservation.desk.title}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap dark:text-neutral-200 ">{reservation.user.username}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap dark:text-neutral-200">{format(new Date(reservation.date), 'MMMM dd, yyyy')}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap dark:text-neutral-200">{format(new Date(reservation.startTime), 'hh:mm a')}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap dark:text-neutral-200">{format(new Date(reservation.endTime), 'hh:mm a')}</td>
+                            <td className="pr-6 py-4 whitespace-nowrap dark:text-neutral-200">
                             <span className={`px-3 py-2 rounded-full font-semibold text-xs ${
-                                reservation.status === "APPROVED" ? "text-purple-600 bg-purple-50" :
-                                reservation.status === "REJECTED" ? "text-red-600 bg-red-50" :
-                                reservation.status === "PENDING" ? "text-yellow-600 bg-yellow-50" :
-                                reservation.status === "ABORTED" ? "text-orange-600 bg-orange-50" :
-                                reservation.status === "STARTED" ? "text-blue-600 bg-blue-50" :
-                                reservation.status === "COMPLETED" ? "text-green-600 bg-green-50" : // Adjust with a suitable color for "COMPLETED"
-                                ""
-                              }`}>
-                             
-                                {reservation.status}
-                              </span>
+                              reservation.status === "APPROVED" ? "text-purple-600 bg-purple-50 dark:text-purple-200 dark:bg-purple-600" :
+                              reservation.status === "REJECTED" ? "text-red-600 bg-red-50 dark:text-red-200 dark:bg-red-600" :
+                              reservation.status === "PENDING" ? "text-yellow-600 bg-yellow-50 dark:text-yellow-200 dark:bg-yellow-600" :
+                              reservation.status === "ABORTED" ? "text-orange-600 bg-orange-50 dark:text-orange-200 dark:bg-orange-600" :
+                              reservation.status === "STARTED" ? "text-blue-600 bg-blue-50 dark:text-blue-200 dark:bg-blue-600" :
+                              reservation.status === "COMPLETED" ? "text-green-600 bg-green-50 dark:text-green-200 dark:bg-green-600" :
+                              ""
+                          }`}>
+                            {reservation.status}
+                          </span>
+
 
                             </td>
                             <td className="whitespace-nowrap text-center">
-                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
+                              <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 dark:text-neutral-200 hover:bg-gray-50 border rounded-lg dark:border-neutral-700 ">
                                 Manage
                               </button>
                             </td>
