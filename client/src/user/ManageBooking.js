@@ -64,9 +64,7 @@ const fetchBookingHistory = async () => {
       const userId = localStorage.getItem('userId'); 
       const response = await axios.post(
         `http://localhost:8800/api/reservations/${selectedBooking._id}/${userId}`,
-        {
-          feedback
-        },
+        { feedback },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -75,13 +73,14 @@ const fetchBookingHistory = async () => {
         }
       );
       console.log('Feedback submitted:', response.data);
+      message.success('Your feedback has been sent');
       handleCloseModal();
-      fetchBookingHistory(); // Refresh the booking history after submitting feedback
+      fetchBookingHistory();
     } catch (error) {
       console.error('Error submitting feedback:', error);
+      message.error('Error submitting feedback. Please try again.');
     }
   };
-
   const handleSignOutClick = () => {
     // Clear session storage
     sessionStorage.removeItem('userCredentials');
