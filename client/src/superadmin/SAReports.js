@@ -150,7 +150,7 @@ const AReports = () => {
                         <th className="py-3 pr-6">Desk</th>
                         <th className="py-3 pr-6">Name</th>
                         <th className="py-3 pr-6">Date</th>
-                        <th className="py-3 pr-6">Actions</th>
+                        <th className="py-3 pr-6">Reports</th>
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 divide-y text-center text-sm">
@@ -171,26 +171,26 @@ const AReports = () => {
                 </div>
                 <ol className="flex justify-center gap-1 mt-5 text-xs font-medium">
                     <li>
-    <button
-        onClick={prevPage}
-        disabled={isFirstPage}
-        className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-    >
-        <span className="sr-only">Prev Page</span>
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-3"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-        >
-            <path
-                fillRule="evenodd"
-                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                clipRule="evenodd"
-            />
-        </svg>
-    </button>
-</li>
+            <button
+                onClick={prevPage}
+                disabled={isFirstPage}
+                className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+            >
+                <span className="sr-only">Prev Page</span>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-3 w-3"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                >
+                    <path
+                        fillRule="evenodd"
+                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                    />
+                </svg>
+            </button>
+            </li>
 
                   <li>
                       <span className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">

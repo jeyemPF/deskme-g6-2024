@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { HiOutlineXMark } from "react-icons/hi2";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { message } from 'antd';
 
 const InputField = ({ type, name, placeholder, value, onChange, error }) => {
   return (
@@ -41,8 +42,11 @@ const ResetPassword = () => {
     } else {
       try {
         await axios.post('http://localhost:8800/api/auth/forgot-password', { email });
+        message.success('Reset email sent successfully. Check your registered email.');
       } catch (error) {
         setEmailError('Failed to send reset email. Please try again.');
+        message.error("The email address you entered is invalid")
+        
       }
     }
   };

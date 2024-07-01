@@ -70,7 +70,7 @@ const ReservationForm = ({ selectedDesk, isAreaClicked, emptyFields }) => {
     <form onSubmit={handleSubmit}>
       <div className="mb-4 flex">
         <div className="w-1/2 mr-2">
-          <label htmlFor="deskId" className="block text-sm font-medium text-gray-700">Desk ID:</label>
+          <label htmlFor="deskId" className="block text-sm font-medium text-gray-700">Desk Number</label>
           <input
             type="text"
             id="deskId"
@@ -83,7 +83,7 @@ const ReservationForm = ({ selectedDesk, isAreaClicked, emptyFields }) => {
           />
         </div>
         <div className="w-1/2 ml-2">
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date:</label>
+          <label htmlFor="date" className="block text-sm font-medium text-gray-700">Date</label>
           <input
             type="date"
             id="date"
@@ -97,7 +97,7 @@ const ReservationForm = ({ selectedDesk, isAreaClicked, emptyFields }) => {
       
       <div className="mb-10 flex">
         <div className="w-1/2 mr-2">
-          <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">Start Time:</label>
+          <label htmlFor="startTime" className="block text-sm font-medium text-gray-700">Start time</label>
           <input
             type="time"
             id="startTime"
@@ -108,7 +108,7 @@ const ReservationForm = ({ selectedDesk, isAreaClicked, emptyFields }) => {
           />
         </div>
         <div className="w-1/2 ml-2">
-          <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End Time:</label>
+          <label htmlFor="endTime" className="block text-sm font-medium text-gray-700">End time</label>
           <input
             type="time"
             id="endTime"
