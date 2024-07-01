@@ -3,6 +3,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 import { useNavigate, useParams } from 'react-router-dom';
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import axios from 'axios';
+import { message } from 'antd';
 import Switcher from '../components/Switcher';
 
 const InputField = ({ type, name, placeholder, value, onChange, icon, error }) => {
@@ -55,8 +56,10 @@ const NewPassword = () => {
     try {
       await axios.patch(`http://localhost:8800/api/auth/reset-password/${token}/${id}`, { password, confirmPassword });
       navigate('/login');
+      message.success("Password reset successfully")
     } catch (error) {
       setPasswordError('Failed to reset password. Please try again.');
+      message.error("Failed to reset password. Please try again.")
     }
   };
 
