@@ -71,7 +71,7 @@ const AManage = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8800/api/users/authorized-user",
+        `${process.env.REACT_APP_API_URL}/api/users/authorized-user`, 
         formData
       );
       console.log(response.data);
@@ -82,6 +82,7 @@ const AManage = () => {
       // Optionally, you can handle specific errors and provide user feedback
     }
   };
+  
 
   // Separate users with roles "Office Manager" and "Admin"
   const adminAndOfficeManagerUsers = createdUsers

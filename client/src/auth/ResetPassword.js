@@ -41,7 +41,7 @@ const ResetPassword = () => {
       setEmailError('Please enter a valid email address.');
     } else {
       try {
-        await axios.post('http://localhost:8800/api/auth/forgot-password', { email });
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/forgot-password`, { email });
         message.success('Reset email sent successfully. Check your registered email.');
       } catch (error) {
         setEmailError('Failed to send reset email. Please try again.');

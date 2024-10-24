@@ -47,21 +47,24 @@ const NewPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setPasswordError('');
-
+  
     if (password !== confirmPassword) {
       setPasswordError('Passwords do not match.');
       return;
     }
-
+  
     try {
-      await axios.patch(`http://localhost:8800/api/auth/reset-password/${token}/${id}`, { password, confirmPassword });
+      // Use the API URL from the environment variable
+      await axios.patch(`${process.env.REACT_APP_API_URL}/api/auth/reset-password/${token}/${id}`, { password, confirmPassword });
+      
       navigate('/login');
-      message.success("Password reset successfully")
+      message.success("Password reset successfully");
     } catch (error) {
       setPasswordError('Failed to reset password. Please try again.');
-      message.error("Failed to reset password. Please try again.")
+      message.error("Failed to reset password. Please try again.");
     }
   };
+  
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900'>
