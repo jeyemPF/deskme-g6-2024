@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import { Skeleton, message } from 'antd';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
-const socket = io('http://localhost:8800');
+const socket = io(process.env.REACT_APP_API_URL);
 
 const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar, onAvatarUpdate }) => {
   const [avatar, setAvatar] = useState(null);
@@ -74,9 +74,9 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
       setError("Please select an avatar image, enter a username, or change the password.");
       return;
     }
-  
+
     setLoading(true);
-  
+
     const formData = new FormData();
     if (avatar) {
       formData.append("avatar", avatar);
@@ -90,7 +90,7 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
     if (newPassword) {
       formData.append("newPassword", newPassword);
     }
-  
+
     try {
       const token = localStorage.getItem('token');
       const userId = JSON.parse(sessionStorage.getItem('userCredentials')).user.id;
@@ -100,7 +100,7 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
           'Authorization': `Bearer ${token}`,
         }
       });
-  
+
       console.log('Profile updated successfully:', response.data);
       message.success('You have successfully updated your profile');
       setError(null);
@@ -113,7 +113,6 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     return () => {
