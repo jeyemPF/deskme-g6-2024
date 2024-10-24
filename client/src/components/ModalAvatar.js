@@ -74,9 +74,9 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
       setError("Please select an avatar image, enter a username, or change the password.");
       return;
     }
-
+  
     setLoading(true);
-
+  
     const formData = new FormData();
     if (avatar) {
       formData.append("avatar", avatar);
@@ -90,7 +90,7 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
     if (newPassword) {
       formData.append("newPassword", newPassword);
     }
-
+  
     try {
       const token = localStorage.getItem('token');
       const userId = JSON.parse(sessionStorage.getItem('userCredentials')).user.id;
@@ -100,7 +100,7 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
           'Authorization': `Bearer ${token}`,
         }
       });
-
+  
       console.log('Profile updated successfully:', response.data);
       message.success('You have successfully updated your profile');
       setError(null);
@@ -113,6 +113,7 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     return () => {
