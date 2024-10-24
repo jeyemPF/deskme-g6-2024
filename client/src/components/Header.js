@@ -57,7 +57,7 @@ const Header = () => {
         const data = await response.json();
         setAvatar(data.user.avatar);
         setUsername(data.user.username);
-        setRole(data.user.role); // Corrected to set role instead of overwriting avatar
+        setAvatar(data.user.role); 
       } else {
         console.error('Error fetching updated user information');
       }
