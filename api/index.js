@@ -27,13 +27,14 @@ const io = new Server(server, {
   },
 });
 
+// Cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Configure CORS
+// CORS configuration
 const allowedOrigins = ['http://localhost:3000'];
 app.use(cors({
   origin: function (origin, callback) {
@@ -46,7 +47,7 @@ app.use(cors({
   credentials: true,
 }));
 
-// Connect to MongoDB
+// MongoDB connection
 const connect = async () => {
   try {
     await mongoose.connect(process.env.MONGO);
@@ -56,19 +57,19 @@ const connect = async () => {
   }
 };
 
+// MongoDB connection events
 mongoose.connection.on('disconnected', () => {
   console.log('MongoDB disconnected');
 });
-
 mongoose.connection.on('connected', () => {
   console.log('MongoDB connected');
 });
 
-// Middlewares
+// Middleware
 app.use(cookieParser());
 app.use(express.json());
 
-// Use routes
+// Routes
 app.use('/api/auth', authRoute);
 app.use('/api/users', usersRoute);
 app.use('/api/desks', desksRoute);
@@ -76,6 +77,11 @@ app.use('/api/reservations', reservationsRoute);
 app.use('/api/switchs', switchsRoute);
 app.use('/api/auditTrails', auditTrailsRoute);
 app.use('/api/otp', otpRoutes);
+
+// A simple route to display a custom message
+app.get('/api/status', (req, res) => {
+  res.json({ message: "Successfully deployed by Johnmack!" });
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
