@@ -18,7 +18,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchAvailableDesks = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/api/desks/get-desk-available/');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/desks/get-desk-available/`);
         setAvailableDesks(response.data);
         
       } catch (err) {
@@ -42,7 +42,7 @@ const Dashboard = () => {
           return;
         }
     
-        const response = await axios.get(`http://localhost:8800/api/reservations/self-count-reservations/${userId}`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/reservations/self-count-reservations/${userId}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,

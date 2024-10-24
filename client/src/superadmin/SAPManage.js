@@ -71,7 +71,7 @@ const SAPManage = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8800/api/users/authorized-user",
+        `${process.env.REACT_APP_API_URL}/api/users/authorized-user`,
         formData
       );
       console.log(response.data);

@@ -37,7 +37,7 @@ const ReservationForm = ({ selectedDesk, isAreaClicked, emptyFields }) => {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.post(
-          `http://localhost:8800/api/reservations/book/${selectedDesk._id}`, 
+          `${process.env.REACT_APP_API_URL}/api/reservations/book/${selectedDesk._id}`, 
           bookingData,
           {
             headers: {
@@ -68,7 +68,7 @@ const ReservationForm = ({ selectedDesk, isAreaClicked, emptyFields }) => {
       }
       setLoading(false);
     };
-
+    
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4 flex">
