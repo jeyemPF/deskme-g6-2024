@@ -6,9 +6,8 @@
 
 *Revolutionizing the way you work, one desk at a time!*
 
-[![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/yourusername/deskme-g6-2024)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Made with PAGIBIG](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/yourusername/deskme-g6-2024)
+
 
 </div>
 
@@ -126,6 +125,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 *Transforming workspaces, one desk at a time.*
 
-[🐦 Twitter](https://twitter.com/deskme) | [📘 Facebook](https://facebook.com/deskme) | [🖼️ Instagram](https://instagram.com/deskme)
 
 </div>
