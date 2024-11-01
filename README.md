@@ -102,9 +102,9 @@ Embark on your Desk Me journey with these simple steps:
 4. **Start the development servers** (Ignition sequence start!)
    ```bash
    # In the api directory
-   npm run dev
+    npm start
    # In the client directory
-   npm start
+   npm run start or npm start
    ```
 
 5. **Open your browser and witness the magic at** `http://localhost:3000`
