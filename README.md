@@ -1,13 +1,12 @@
-<div align="center">
-
-# 🖥️ Desk Me: Where Workspace Meets Innovation 🚀
+ 🖥️ Desk Me: Where Workspace Meets Innovation 🚀
 
 ![Desk Me Logo](https://res.cloudinary.com/dihmqs39z/image/upload/v1729821878/DESK_ME_1_frmkev.png)
 
 *Revolutionizing the way you work, one desk at a time!*
 
-[![Made with PAGIBIG](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/yourusername/deskme-g6-2024)
-
+[![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/yourusername/deskme-g6-2024)
+[![ISPM Project](https://img.shields.io/badge/ISPM-Project-blue.svg)](https://yourschool.edu)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 </div>
 
@@ -18,6 +17,12 @@
 Imagine a world where finding your perfect workspace is as easy as ordering your morning coffee. That's the world **Desk Me** is creating! 🌍✨
 
 Our cutting-edge hotdesk booking system is not just a tool; it's your office's new best friend. Whether you're an early bird 🐦 catching the prime window seat or a night owl 🦉 seeking a quiet corner, Desk Me has got you covered!
+
+## 📚 About This Project
+
+This project is part of our **Information Systems Project Management (ISPM)** course in our third year. It's not just any project; it's our gateway to revolutionizing workspace management for PAGIBIG! 🏠💙
+
+**Checked and Approved by:** Mr. Pebz Ronquillo Buan 👨‍🏫✅
 
 ## 🎭 Meet the Dream Team: Group 6 Extraordinaire
 
@@ -113,9 +118,7 @@ We believe in the power of community! Here's how you can be part of our journey:
 - 🐛 Found a bug? Open an issue (Help us squash those pesky bugs)
 - 💡 Have an idea? We're all ears! Open a pull request
 
-## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details. (It's our way of saying "Share the love!")
 
 ---
 
