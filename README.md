@@ -20,7 +20,7 @@ Our cutting-edge hotdesk booking system is not just a tool; it's your office's n
 
 ## 📚 About This Project
 
-This project is part of our **Information Systems Project Management (ISPM)** course in our third year. It's not just any project; it's our gateway to revolutionizing workspace management for PAGIBIG! 🏠💙
+This project is part of our Information Systems Project Management (ISPM) course in our third year. It's not just any project; it's our gateway to revolutionizing workspace management as we move beyond our third-year era. 💙
 
 **Checked and Approved by:** Mr. Pebz Ronquillo Buan 👨‍🏫✅
 
