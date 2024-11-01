@@ -1,4 +1,4 @@
- 🖥️ Desk Me: Where Workspace Meets Innovation 🚀
+# 🖥️ Desk Me: Where Workspace Meets Innovation 🚀
 
 ![Desk Me Logo](https://res.cloudinary.com/dihmqs39z/image/upload/v1729821878/DESK_ME_1_frmkev.png)
 
