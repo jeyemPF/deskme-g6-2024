@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
+import { message } from 'antd';
+
 
 const AddUserModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
@@ -34,8 +36,10 @@ const AddUserModal = ({ isOpen, onClose }) => {
       console.log(response.data);
       onClose(); // Close the modal on successful submission
       // Optionally, you can add a success message or refresh the users list
+      message.success('You have successfully added a new user');
     } catch (error) {
       setError('Failed to add user. Please try again.'); // Set error message if submission fails
+      message.error('The system have already that email address');
       console.error(error);
     }
   };

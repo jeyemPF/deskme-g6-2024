@@ -206,11 +206,11 @@ const ABooking = () => {
                               {reservation.status}
                             </span>
                           </td>
-                          <td className="whitespace-nowrap text-center">
+                          {/* <td className="whitespace-nowrap text-center">
                             <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 hover:bg-gray-50 border rounded-lg">
                               Manage
                             </button>
-                          </td>
+                          </td> */}
                         </tr>
                       ))}
                     </tbody>

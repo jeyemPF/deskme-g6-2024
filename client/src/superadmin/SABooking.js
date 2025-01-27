@@ -94,7 +94,7 @@
         localStorage.setItem('isOn', newValue.toString()); // Update localStorage with new value
 
         // Show success notification
-        message.success('You have successfully approved/disapproved all reservation.');
+        message.success('You have successfully approved all reservation.');
 
       } catch (error) {
         console.error('Error toggling reservation emails:', error);
@@ -231,11 +231,11 @@
 
 
                             </td>
-                            <td className="whitespace-nowrap text-center">
+                            {/* <td className="whitespace-nowrap text-center">
                               <button onClick={handleManageClick} className="py-1.5 px-3 text-gray-600 text-sm hover:text-gray-500 duration-150 dark:text-neutral-200 hover:bg-gray-50 border rounded-lg dark:border-neutral-700 ">
                                 Manage
                               </button>
-                            </td>
+                            </td> */}
                           </tr>
                         ))}
                       </tbody>

@@ -4,7 +4,7 @@ const axiosInstance = axios.create({
   baseURL: 'http://localhost:8800', // Replace with your API base URL
   withCredentials: true, // Include cookies in cross-origin requests
 });
-
+  
 // Add a request interceptor to automatically include the bearer token
 axiosInstance.interceptors.request.use(
   (config) => {
