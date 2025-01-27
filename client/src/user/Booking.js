@@ -35,7 +35,7 @@ const Booking = () => {
 
   const fetchTableItems = async () => {
     try {
-      const response = await axios.get('http://localhost:8800/api/desks/get-all-desks/');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/desks/get-all-desks/`);
       setTableItems(response.data);
     } catch (error) {
       console.error(error);
@@ -98,7 +98,7 @@ const Booking = () => {
 
   const handleAreaClick = async (deskId) => {
     try {
-      const response = await axios.get(`http://localhost:8800/api/desks/get-all-desks/${deskId}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/desks/get-all-desks/${deskId}`);
       setSelectedDesk(response.data);
     } catch (error) {
       console.error(error);
@@ -156,7 +156,7 @@ const Booking = () => {
     try {
       // Make the API request
       const response = await axios.put(
-        `http://localhost:8800/api/users/toggle-reservation-emails/${userId}`,
+        `${process.env.REACT_APP_API_URL}/api/users/toggle-reservation-emails/${userId}`,
         {},
         {
           headers: {

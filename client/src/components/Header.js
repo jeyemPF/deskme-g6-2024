@@ -52,12 +52,12 @@ const Header = () => {
 
   const fetchUpdatedUser = async () => {
     try {
-      const response = await fetch('http://localhost:8800/api/routes/users/avatar/self');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/routes/users/avatar/self`);
       if (response.ok) {
         const data = await response.json();
         setAvatar(data.user.avatar);
         setUsername(data.user.username);
-        setAvatar(data.user.role);
+        setAvatar(data.user.role); 
       } else {
         console.error('Error fetching updated user information');
       }
@@ -65,6 +65,7 @@ const Header = () => {
       console.error('Error fetching updated user information', error);
     }
   };
+  
 
   const handleAvatarUpdate = (newAvatar, newUsername) => {
     setAvatar(newAvatar);

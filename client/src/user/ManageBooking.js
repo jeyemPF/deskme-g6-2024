@@ -33,7 +33,7 @@ const fetchBookingHistory = async () => {
             return;
         }
 
-        const response = await axios.get(`http://localhost:8800/api/reservations/my-booking-history/${userId}`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/reservations/my-booking-history/${userId}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -63,7 +63,7 @@ const fetchBookingHistory = async () => {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId'); 
       const response = await axios.post(
-        `http://localhost:8800/api/reservations/${selectedBooking._id}/${userId}`,
+        `${process.env.REACT_APP_API_URL}/api/reservations/${selectedBooking._id}/${userId}`,
         { feedback },
         {
           headers: {
@@ -103,7 +103,7 @@ const fetchBookingHistory = async () => {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
         const response = await axios.delete(
-            `http://localhost:8800/api/reservations/cancel-reservation/${userId}/${bookingId}`,
+            `${process.env.REACT_APP_API_URL}/api/reservations/cancel-reservation/${userId}/${bookingId}`,
             {
                 headers: {
                     'Content-Type': 'application/json',

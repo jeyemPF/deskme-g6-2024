@@ -22,7 +22,7 @@ const SAAuditReport = () => {
     const fetchAuditTrails = async () => {
       try {
         const queryParams = new URLSearchParams(filters).toString();
-        const response = await fetch(`http://localhost:8800/api/auditTrails/get-audit-trails?${queryParams}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auditTrails/get-audit-trails?${queryParams}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

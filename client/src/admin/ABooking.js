@@ -9,7 +9,6 @@ import axios from 'axios';
 import { format } from 'date-fns';
 
 const ABooking = () => {
-
   const [reservationHistory, setReservationHistory] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOn, setIsOn] = useState(() => localStorage.getItem('isOn') === 'true'); // Set initial state from localStorage
@@ -20,7 +19,6 @@ const ABooking = () => {
   const indexOfLastDesk = currentPage * desksPerPage;
   const indexOfFirstDesk = indexOfLastDesk - desksPerPage;
   const currentReservations = reservationHistory.slice(indexOfFirstDesk, indexOfLastDesk);
-
 
   const nextPage = () => {
     if (!isLastPage) {
@@ -40,10 +38,6 @@ const ABooking = () => {
     pageNumbers.push(i);
   }
 
-  
-
-
-
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === Math.ceil(reservation.length / desksPerPage);
   const { data: reservationPendingData, loading: reservationPendingLoading, error: reservationPendingError } = useFetch("reservations/pending-counts");
@@ -54,7 +48,7 @@ const ABooking = () => {
   useEffect(() => {
     const fetchReservationHistory = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/api/reservations/reservation-history');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/reservations/reservation-history`);
         setReservationHistory(response.data);
       } catch (error) {
         console.error('Error fetching reservation history:', error);
@@ -67,8 +61,7 @@ const ABooking = () => {
     try {
       // Make the API request
       const response = await axios.put(
-        `http://localhost:8800/api/switchs/switch-approve`,
-        {},
+        `${process.encv.REACT_APP_API_URL}/api/switchs/switch-approve`,
         {}
       );
 
@@ -81,7 +74,7 @@ const ABooking = () => {
       localStorage.setItem('isOn', newValue.toString()); // Update localStorage with new value
 
       // Show success notification
-      message.success('You have successfully approved/disapproved all reservation.');
+      message.success('You have successfully approved/disapproved all reservations.');
 
     } catch (error) {
       console.error('Error toggling reservation emails:', error);
@@ -96,7 +89,6 @@ const ABooking = () => {
       setIsOn(storedValue);
     }
   }, [isOn]);
-
 
   const handleManageClick = () => {
     setIsModalOpen(true);
@@ -115,20 +107,18 @@ const ABooking = () => {
     localStorage.clear("userCredentials");
     sessionStorage.clear("userCredentials");
 
-
-
     // Navigate to login page
     navigate('/login');
   };
 
-
-
   const handleDashboardClick = () => {
     navigate('/admindashboard');
   };
+
   const handleManageBookingClick = () => {
     navigate('/adminmanagebooking');
-  }
+  };
+
   const handlePrivManageClick = () => {
     navigate('/adminmanage');
   };

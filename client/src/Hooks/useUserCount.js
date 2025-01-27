@@ -9,7 +9,7 @@ const useUserCount = () => {
   useEffect(() => {
     const fetchUserCount = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/api/users/count-user-role');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}api/users/count-user-role`);
         setUserCount(response.data.userCount);
       } catch (err) {
         setError(err);

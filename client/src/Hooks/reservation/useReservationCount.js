@@ -9,7 +9,7 @@ const useReservationCount = () => {
   useEffect(() => {
     const fetchReservationCount = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/api/reservations/count-reservation');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/reservations/count-reservation`);
         setReservationCount(response.data.reservationCount);
       } catch (err) {
         setError(err);

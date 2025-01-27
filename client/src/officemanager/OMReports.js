@@ -43,7 +43,7 @@ const OMReports = () => {
     useEffect(() => {
       const fetchReservationHistory = async () => {
         try {
-          const response = await axios.get('http://localhost:8800/api/reservations/reservation-history');
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/reservations/reservation-history`);
           setReservationHistory(response.data);
         } catch (error) {
           console.error('Error fetching reservation history:', error);

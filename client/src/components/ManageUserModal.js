@@ -5,7 +5,7 @@ import { message } from 'antd';
 const ManageUserModal = ({ userId, handleCloseModal }) => {
   const handleConfirmDelete = async (userId) => {
     try {
-      await axios.delete(`http://localhost:8800/api/users/delete-user/${userId}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/users/delete-user/${userId}`);
       console.log(`User with ID ${userId} deleted successfully`);
       handleCloseModal(); // Close the modal after deletion
       message.success("User deleted successfully")

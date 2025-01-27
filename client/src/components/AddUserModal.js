@@ -32,7 +32,7 @@ const AddUserModal = ({ isOpen, onClose }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8800/api/users/authorized-user', formData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/users/authorized-user`, formData);
       console.log(response.data);
       onClose(); // Close the modal on successful submission
       // Optionally, you can add a success message or refresh the users list
@@ -42,7 +42,7 @@ const AddUserModal = ({ isOpen, onClose }) => {
       message.error('The system have already that email address');
       console.error(error);
     }
-  };
+  }    
 
   const handleCancel = () => {
     onClose(); // Close the modal when cancel button is clicked

@@ -9,7 +9,7 @@ const useNonUserCount = () => {
   useEffect(() => {
     const fetchNonUserCount = async () => {
       try {
-        const response = await axios.get('http://localhost:8800/api/users/count-not-user');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/count-not-user`);
         setNonUserCount(response.data.nonUserCount);
       } catch (err) {
         setError(err);

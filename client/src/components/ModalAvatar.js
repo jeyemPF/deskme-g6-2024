@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import { Skeleton, message } from 'antd';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
-const socket = io('http://localhost:8800');
+const socket = io(process.env.REACT_APP_API_URL);
 
 const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar, onAvatarUpdate }) => {
   const [avatar, setAvatar] = useState(null);
@@ -94,7 +94,7 @@ const ModalAvatar = ({ onClose, username: initialUsername, avatar: initialAvatar
     try {
       const token = localStorage.getItem('token');
       const userId = JSON.parse(sessionStorage.getItem('userCredentials')).user.id;
-      const response = await axios.put(`http://localhost:8800/api/users/update-profile/${userId}`, formData, {
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/users/update-profile/${userId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
